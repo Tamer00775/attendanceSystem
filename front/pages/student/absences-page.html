@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
+    <link rel="stylesheet" href="../../assets/styles/stu-absence-style.css">
+    <title>Admin Page</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__wrapper">
+                <div class="logo">
+                </div>
+                <div class="admin">
+                    <div class="admin-details">
+                        <div class="admin-info">
+                            <p>NAME SURNAME:</p> 
+                            <p id="name">PALENSHEEVA PALENSHE</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>SPECIALITY NAME:</p> 
+                            <p id="name">COMPUTER SCIENCE</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>LAST LOGIN DATE:</p> 
+                            <p id="login-date">08 FEB 2024</p>
+                        </div>
+                    </div>
+                    <div class="icon" style="background-image: url(../../assets/images/icon.png);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main__wrapper">
+                <div class="sidebar__wrapper">
+                    <nav class="menu">
+                        <a href="./home-page.html">HOME PAGE</a>
+                        <a href="./schedule-page.html">Course schedule</a>
+                        <a href="./attendence-page.html" >ATTENDANCE</a>
+                        <a href="./profile-page.html">my profile</a>
+                        <a href="#" id="selected">absence</a>
+                        <form action="" class="logout">
+                            <button >Log out</button>
+                        </form>
+                    </nav>
+                </div>
+                <div class="main__content">
+                    <div class="page-name">
+                        <h1>ABSENCES</h1>
+                    </div>
+                    <form action="#" class="absence-form">
+                        <label for="section" class="label">
+                            SECTION NAME :
+                            <input type="text" name="section" id="section">
+                        </label>
+                        <label for="date" class="label">
+                            DATE :
+                            <input type="date" name="date" id="date">
+                        </label>
+                        <label for="reason" class="label">
+                            REASON OF ABSENCE :
+                            <input type="text" name="reason" id="reason">
+                        </label>
+                        <label for="section" class="label">
+                            UPLOAD THE DOCUMENT :
+                            <input type="file" name="reason" id="reason">
+                        </label>
+                        <div style=" width: 100%;text-align: center;">
+                            <button class="btn" style="background: #DFBC5F; color: black; font-weight: 600; width: 200px; ">SUBMIT</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="notif" style="display: none;">
+                    <p style="color: green;">YOU’VE SUBMITTED SUCCESSFULLY!</p>
+                    <p style="color: red;">ERROR HAS OCCURRED, RECHECK THE DATA!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Table</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .attendance-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .attendance-table th, .attendance-table td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: center;
+    }
+    .attendance-table th {
+        background-color: #004680;
+        color: #fff;
+    }
+    .attendance-table td {
+        background-color: #e6f3ff;
+    }
+    .checkmark {
+        color: green;
+    }
+    .crossmark {
+        color: red;
+    }
+    .late {
+        color: blue;
+    }
+    .pagination {
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<table class="attendance-table">
+    <!-- Table Header -->
+    <thead>
+        <tr>
+            <th colspan="8">Attendance Records</th>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <th>Hour</th>
+            <th>Attendance</th>
+            <th>Place</th>
+        </tr>
+    </thead>
+    <!-- Table Body -->
+    <tbody id="attendance-body">
+        <!-- Dynamic rows will be inserted here by JavaScript -->
+    </tbody>
+</table>
+
+<!-- Pagination Controls -->
+<div>
+    <span class="pagination" onclick="showPage(1)">1-8</span>
+    <span class="pagination" onclick="showPage(2)">9-16</span>
+</div>
+
+<script>
+    // JavaScript to handle pagination and dynamic content
+    const data = [
+        // First set of data
+        [
+            { date: '01.01.2023', hour: '14:00', attendance: '✓', place: 'G304' },
+            { date: '08.01.2023', hour: '14:00', attendance: 'P', place: 'G304' },
+            // ... More data for the first set
+        ],
+        // Second set of data
+        [
+            { date: '26.01.2023', hour: '14:00', attendance: '✓', place: 'G304' },
+            { date: '03.02.2023', hour: '14:00', attendance: '✓', place: 'G304' },
+            // ... More data for the second set
+        ],
+        // Add more sets as needed
+    ];
+
+    function showPage(pageNumber) {
+        const tableBody = document.getElementById('attendance-body');
+        tableBody.innerHTML = ''; // Clear the table body
+
+        // Get the correct set of data based on the page number
+        const pageData = data[pageNumber - 1];
+
+        // Loop through the data and append rows to the table body
+        pageData.forEach((record) => {
+            const row = tableBody.insertRow();
+            row.innerHTML = `
+                <td>${record.date}</td>
+                <td>${record.hour}</td>
+                <td class="${getClassForAttendance(record.attendance)}">${record.attendance}</td>
+                <td>${record.place}</td>
+            `;
+        });
+    }
+
+    function getClassForAttendance(attendance) {
+        switch (attendance) {
+            case '✓':
+                return 'checkmark';
+            case 'P':
+                return 'late';
+            case '✗':
+                return 'crossmark';
+            default:
+                return '';
+        }
+    }
+
+    // Initialize the first page
+    showPage(1);
+</script>
+
+</body>
+</html>

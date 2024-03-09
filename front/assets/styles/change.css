@@ -1,0 +1,88 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+body{
+    background-color: #204066;
+}
+.container{
+    padding: 10px 10%;
+}
+
+/* HEADER */
+.header__wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo{
+    background: url("../images/logo.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 150px;
+    width: 325px;
+}
+
+
+.forgot-password-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+}
+.inner-container {
+    background: linear-gradient(rgba(245, 245, 245, 0.05), rgba(224, 200, 75, 0.05));
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+.inner-container h2 {
+    margin-top: 20px;
+    text-align: center;
+}
+.form-group {
+    padding: 0px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+.form-group input {
+    width: 350px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.form-group button {
+    background-color: #ffc107;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 300px;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+.form-group button:hover {
+    background-color: #e0a800;
+}
+.valid p{
+    font-size: 13px;
+    text-align: left;
+    color: red;
+    padding: 0;
+}

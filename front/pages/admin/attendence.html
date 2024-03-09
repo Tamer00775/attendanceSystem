@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest"></script>
+    <link rel="stylesheet" href="../../assets/styles/attendence-style.css">
+    <title>Admin Page</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__wrapper">
+                <div class="logo">
+                </div>
+                <div class="admin">
+                    <div class="admin-details">
+                        <div class="admin-info">
+                            <p>NAME SURNAME:</p> 
+                            <p id="name">PALENSHEEVA PALENSHE</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>Status:</p> 
+                            <p id="status">Admin</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>LAST LOGIN DATE:</p> 
+                            <p id="login-date">08 FEB 2024</p>
+                        </div>
+                    </div>
+                    <div class="icon" style="background-image: url(../../assets/images/icon.png);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main__wrapper">
+                <div class="sidebar__wrapper">
+                    <nav class="menu">
+                        <a href="./admin-page.html">HOME PAGE</a>
+                        <a href="./student-page.html" >ALL STUDENTS</a>
+                        <a href="./teachers-page.html" >LIST OF TEACHERS</a>
+                        <a href="./attendence.html" id="selected">ATTENDANCE</a>
+                        <a href="./courses-page.html">LIST OF COURSES</a>
+                        <form action="" class="logout">
+                            <button >Log out</button>
+                        </form>
+                    </nav>
+                </div>
+                <div class="main__content">
+                    <div class="page-name">
+                        <h1>STATISTICS OF ATTENDANCE</h1>
+                    </div>
+                    <div class="attendence">
+                        <div class="attendence-list">
+                            <ul id="tabs">
+                                <li><a class="tablinks active" onclick="openTab(event, 'Attendance')">Attendance</a></li>
+                                <li><a class="tablinks" onclick="openTab(event, 'CourseAttendance')">Course Attendance</a></li>
+                                <li><a class="tablinks" onclick="openTab(event, 'StudentAttendance')">Student Attendance</a></li>
+                                <li><a class="tablinks" onclick="openTab(event, 'AbsenceReasons')">Absence Reasons Attendance</a></li>
+                            </ul>
+                        </div>
+                        <div id="Attendance" class="tabcontent">
+                            <canvas id="attendence" width="300x" height="300px"></canvas>
+                        </div>
+                        <div id="CourseAttendance" class="tabcontent" style="display:none">
+                            <form action="" class="lable">
+                                <label for="course-cod">Course code</label>
+                                <input type="text" name="course-cod" id="course-cod">
+                                <button class="btn">Search</button>
+                            </form>
+                            <div style="margin-top: 5px;">
+                                <canvas id="course" width="300x" height="300px"></canvas>
+                            </div>
+                        </div>
+                        <div id="StudentAttendance" class="tabcontent" style="display:none">
+                            <form action="" class="lable">
+                                <label for="student-id">Student id Number</label>
+                                <input type="number" name="student-id" id="student-id">
+                                <button class="btn">Search</button>
+                            </form>
+                            <div style="margin-top: 5px;">
+                                <canvas id="student" width="300x" height="300px"></canvas>
+                            </div>
+                        </div>
+                        <div id="AbsenceReasons" class="tabcontent" style="display:none">
+                            <canvas id="absence" width="300x" height="300px"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="../../assets/scripts/script.js"></script>
+</body>
+</html>

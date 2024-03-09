@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
+    <link rel="stylesheet" href="../../assets/styles/teach-att.css">
+    <title>Admin Page</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__wrapper">
+                <div class="logo">
+                </div>
+                <div class="admin">
+                    <div class="admin-details">
+                        <div class="admin-info">
+                            <p>NAME SURNAME:</p> 
+                            <p id="name">PALENSHEEVA PALENSHE</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>LAST LOGIN DATE:</p> 
+                            <p id="login-date">08 FEB 2024</p>
+                        </div>
+                    </div>
+                    <div class="icon" style="background-image: url(../../assets/images/icon.png);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main__wrapper">
+                <div class="sidebar__wrapper">
+                    <nav class="menu">
+                        <a href="./home-page.html">HOME PAGE</a>
+                        <a href="./schedule-page.html">Course schedule</a>
+                        <a href="./course-page.html">start course</a>
+                        <a href="#" id="selected">set ATTENDANCE</a>
+                        <a href="./absences-page.html">absence reasons</a>
+                        <a href="./profile-page.html">my profile</a>
+                        <form action="" class="logout">
+                            <button >Log out</button>
+                        </form>
+                    </nav>
+                </div>
+                <div class="main__content">
+                    <div class="page-name">
+                        <h1>SET ATTENDANCE</h1>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <td class="id">№</td>
+                                <td class="code">Code</td>
+                                <td class="name">Course Name</td>
+                                <td style="padding-left: 5px;">GROUP NUMBER</td>
+                            </tr>
+                            <tr>
+                                <td class="id">1</td>
+                                <td class="code id="groupButton"">CSS 228</td>
+                                <td class="name">ADVANCED ALGORITHM</td>
+                                <td class="groupButton">03-P</td>
+                            </tr>
+                            <tr>
+                                <td class="id">2</td>
+                                <td class="code" id="groupButton"></td>
+                                <td class="name"></td>
+                                <td class="groupButton"></td>
+                            </tr>
+                            <tr>
+                                <td class="id">3</td>
+                                <td class="code" id="groupButton"></td>
+                                <td class="name"></td>
+                                <td class="groupButton"></td>
+                            </tr>
+                            <tr>
+                                <td class="id">4</td>
+                                <td class="code" id="groupButton"></td>
+                                <td class="name"></td>
+                                <td class="groupButton"></td>
+                            </tr>
+                            <tr>
+                                <td class="id">5</td>
+                                <td class="code" id="groupButton"></td>
+                                <td class="name"></td>
+                                <td class="groupButton"></td>
+                            </tr>
+                            <tr>
+                                <td class="id">6</td>
+                                <td class="code" id="groupButton"></td>
+                                <td class="name"></td>
+                                <td class="groupButton"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="table" style="display: none;">
+                        <button class="btn">Back</button>
+                        <table class="groupTable">
+                            <tr>
+                                <td class="id">№</td>
+                                <td class="name">Name</td>
+                                <td class="day">13 Feb</td>
+                                <td class="day">14 Feb</td>
+                                <td class="day">15 Feb</td>
+                                <td class="day">16 Feb</td>
+                                <td class="day">17 Feb</td>
+                            </tr>
+                            <tr>
+                                <td class="id">1</td>
+                                <td class="name">Palensheeva Palenshe</td>
+                                <td class="day"><input type="checkbox"></td>
+                                <td class="day"><input type="checkbox"></td>
+                                <td class="day"><input type="checkbox"></td>
+                                <td class="day"><input type="checkbox"></td>
+                                <td class="day"><input type="checkbox"></td>
+                            </tr>
+                        </table>
+                        <form action="" class="buttons">
+                            <button>Save</button>
+                            <button>Clear</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        const table = document.querySelector(".table-container");
+        const buttons = document.querySelectorAll(".groupButton");
+        const tables = document.querySelectorAll(".table");
+        const back = document.querySelector(".btn");
+
+        buttons.forEach((button, index) => {
+            button.addEventListener("click", () => {
+                table.style.display = 'none';
+                tables[index].style.display = 'block';
+            });
+        });
+        
+        back.addEventListener("click", ()=>{
+            table.style.display = 'flex';
+            for (let i = 0; i < tables.length; i++){
+                tables[i].style.display = 'none';
+            }
+        })
+
+    </script>
+</body>
+</html>

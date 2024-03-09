@@ -1,0 +1,197 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
+    <link rel="stylesheet" href="../../assets/styles/stu-home-style.css">
+
+
+    <title>Home Page</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__wrapper">
+                <div class="logo">
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main__wrapper">
+                <div class="sidebar__wrapper">
+                    <nav class="menu">
+                        <a href="#" id="selected">HOME PAGE</a>
+                        <a href="./schedule-page.html">Course schedule</a>
+                        <a href="./attendence-page.html">ATTENDANCE</a>
+                        <a href="./profile-page.html">my profile</a>
+                        <a href="./absences-page.html">absence</a>
+                        <form action="" class="logout">
+                            <button >Log out</button>
+                        </form>
+                    </nav>
+                </div>
+                <div class="main__content">
+                    <div class="page-name">
+                        <h1>Home page</h1>
+                    </div>
+                    <div class="info">
+                        <div class="icon" style="background-image: url(../../assets/images/icon.png);">
+                        </div>
+                        <div class="details">
+                            <div class="personal-info">
+                                <p >ID NUMBER:</p> 
+                                <p id="id"">210107045</p>
+                            </div>
+                            <div class="personal-info">
+                                <p >NAME SURNAME:</p> 
+                                <p id="name"">PALENSHEEVA PALENSHE</p>
+                            </div>
+                            <div class="personal-info">
+                                <p >SPECIALITY NAME:</p> 
+                                <p id="name"">COMPUTER SCIENCE</p>
+                            </div>
+                            <div class="personal-info">
+                                <p >GENDER:</p> 
+                                <p id="gender">FEMALE</p>
+                            </div>
+                            <div class="personal-info">
+                                <p>EMAIL:</p> 
+                                <p id="email">palensheeva.palenshe@gmail.com</p>
+                            </div>
+                            <div class="personal-info">
+                                <p>BIRTH DATE:</p>
+                                <p id="birth-date">09-FEB-04</p> 
+                            </div>
+                            <div class="personal-info">
+                                <p>LAST LOGIN DATE:</p> 
+                                <p id="login-date">08 FEB 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
+    <link rel="stylesheet" href="../../assets/styles/stu-home-style.css">
+    <title>Home Page</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__wrapper">
+                <div class="logo">
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main__wrapper">
+                <div class="sidebar__wrapper">
+                    <nav class="menu">
+                        <a href="#" id="selected">HOME PAGE</a>
+                        <a href="./schedule-page.html">Course schedule</a>
+                        <a href="./attendence-page.html">ATTENDANCE</a>
+                        <a href="./profile-page.html">my profile</a>
+                        <a href="./absences-page.html">absence</a>
+                        <form action="" class="logout">
+                            <button>Log out</button>
+                        </form>
+                    </nav>
+                </div>
+                <div class="main__content">
+                    <div class="page-name">
+                        <h1>Home page</h1>
+                    </div>
+                    <div class="info">
+                        <div class="icon" style="background-image: url(../../assets/images/icon.png);"></div>
+                        <div class="details" id="userDetails">
+                            <!-- User details will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="details">
+        <div class="personal-info">
+            <p>ID NUMBER:</p>
+            <p id="id"></p>
+        </div>
+        <div class="personal-info">
+            <p>NAME SURNAME:</p>
+            <p id="name"></p>
+        </div>
+        <div class="personal-info">
+            <p>SPECIALITY NAME:</p>
+            <p id="speciality"></p>
+        </div>
+        <div class="personal-info">
+            <p>GENDER:</p>
+            <p id="gender"></p>
+        </div>
+        <div class="personal-info">
+            <p>EMAIL:</p>
+            <p id="email"></p>
+        </div>
+        <div class="personal-info">
+            <p>BIRTH DATE:</p>
+            <p id="birth-date"></p>
+        </div>
+        <div class="personal-info">
+            <p>LAST LOGIN DATE:</p>
+            <p id="login-date"></p>
+        </div>
+    </div>
+
+    <script>
+        (async function () {
+            try {
+                const response = await fetch('http://localhost:8080/api/person/current', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add authorization if needed
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('id').textContent = userData.login || ''; // Use login for ID or empty string if missing
+                    document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
+                    document.getElementById('email').textContent = userData.email || '';
+                    document.getElementById('login-date').textContent = userData.lastLogin || '';
+              
+                } else {
+                    console.error('Failed to fetch user details:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error during fetch operation:', error);
+            }
+        })();
+    </script>
+</body>
+</html> 
+
+

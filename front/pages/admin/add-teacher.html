@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
+    <link rel="stylesheet" href="../../assets/styles/add-style.css">
+    <title>Admin Page</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__wrapper">
+                <div class="logo">
+                </div>
+                <div class="admin">
+                    <div class="admin-details">
+                        <div class="admin-info">
+                            <p>NAME SURNAME:</p> 
+                            <p id="name">PALENSHEEVA PALENSHE</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>Status:</p> 
+                            <p id="status">Admin</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>LAST LOGIN DATE:</p> 
+                            <p id="login-date">08 FEB 2024</p>
+                        </div>
+                    </div>
+                    <div class="icon" style="background-image: url(../../assets/images/icon.png);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main__wrapper">
+                <div class="sidebar__wrapper">
+                    <nav class="menu">
+                        <a href="./admin-page.html">HOME PAGE</a>
+                        <a href="./student-page.html">ALL STUDENTS</a>
+                        <a href="./teachers-page.html">LIST OF TEACHERS</a>
+                        <a href="#">ATTENDANCE</a>
+                        <a href="./courses-page.html"">LIST OF COURSES</a>
+                        <form action="" class="logout">
+                            <button >Log out</button>
+                        </form>
+                    </nav>
+                </div>
+                <div class="main__content">
+                    <div class="page-name">
+                        <h1 style="visibility: hidden;">TEACHER LIST</h1>
+                    </div>
+                    <form class="add-teacher">
+                        <div class="inputs">
+                            <label for="name">Name</label>
+                            <input class="input" type="text" name="name" id="name">
+                        </div>
+                        <div class="inputs">
+                            <label for="surname">Surname</label>
+                            <input class="input" type="text" name="surname" id="surname">
+                        </div>
+                        <div class="inputs">
+                            <label for="midname">Middle name</label>
+                            <input class="input" type="text" name="midname" id="midname">
+                        </div>
+                        <div class="inputs">
+                            <label for="course">course name</label>
+                            <input class="input" type="text" name="course" id="course">
+                        </div>
+                        <div class="inputs">
+                            <label for="birth">Birth date</label>
+                            <input class="input" type="date" name="birth" id="birth">
+                        </div>
+                        <div class="inputs">
+                            <label for="gender">Gender</label>
+                            <div id="gender">
+                                <div class="type">
+                                    <input type="radio" name="gender" value="male" id="male" required="">
+                                    <label for="male">Male</label>
+                                </div>
+                                <div class="type">
+                                    <input type="radio" name="gender" value="female" id="female" required="">
+                                    <label for="female">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="button">
+                            <button class="btn" type="submit">Add</button>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

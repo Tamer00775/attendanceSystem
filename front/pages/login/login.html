@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/styles/login.css">
+    <title>Login</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__wrapper">
+                <div class="logo">
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main__wrapper">
+                <div class="login">
+                    <div class="title">
+                        <p>Login</p>
+                    </div>
+                    <div class="valid">
+                        <p id="em" style="display: none;">YOU HAVEN’T ENTERED A VALID EMAIL </p>
+                        <p id="pass" style="visibility: hidden;">PASSWORD IS INCORRECT</p>
+                    </div>
+                    <form action="#" class="form">
+                        <input type="text" placeholder="Email" id="email" name="email" required>
+                        <input type="password" placeholder="Password" id="password" name="password" required>
+                        <button type="submit">Enter</button>
+                    </form>
+                    <div class="links">
+                        <a href="../change/change-page.html">Forgot Password?</a>
+                        <a href="../register/register.html">Create New Account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.querySelector('.form');
+    
+            loginForm.addEventListener('submit', async function (event) {
+                event.preventDefault();
+    
+                const emailInput = document.getElementById('email');
+                const passwordInput = document.getElementById('password');
+    
+                // Get values from input fields
+                const login = emailInput.value;
+                const password = passwordInput.value;
+    
+                const headers = new Headers();
+                headers.append('Content-Type', 'application/json');
+    
+                // Make a POST request to the API
+                try {
+                    const response = await fetch('http://0.0.0.0:8080/open-api/auth/login', {
+                        method: 'POST',
+                        headers: headers, // Use the headers object here
+                        body: JSON.stringify({ login, password }),
+                    });
+                    console.log(response);
+
+
+                    // Create headers object and append the authorization header
+
+                    if (response.ok) {
+ 
+
+
+                        const data = await response.json();
+                        data.role = 'student';
+
+                        headers.append('Authorization', 'Bearer ' + data.token); // Replace 'data.token' with your actual token
+                        headers.append('Content-Type', 'application/json');
+                        localStorage.setItem('token', data.token);
+    
+                        // Check the role and redirect accordingly
+                        switch (data.role) {
+                            case 'admin':
+                                window.location.href = '../admin/admin-page.html';
+                                break;
+                            case 'student':
+                                window.location.href = '../student/home-page.html';
+                                break;
+                            // Add more cases for other roles if needed
+                            default:
+                                console.error('Unknown role:', data.role);
+                        }
+                    } else {
+                        // Handle authentication error
+                        console.error('Authentication failed');
+                        // You can display an error message to the user if needed
+                    }
+                } catch (error) {
+                    console.error('Error during the fetch operation:', error);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // CORS headers using vanilla JavaScript
+        document.addEventListener('DOMContentLoaded', function () {
+            const corsHeaders = new Headers();
+            corsHeaders.append('Access-Control-Allow-Origin', '*');
+            corsHeaders.append('Access-Control-Allow-Methods', 'DELETE, POST, GET, OPTIONS');
+            corsHeaders.append('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    
+            // Make a dummy OPTIONS request to the server to pre-flight the CORS headers
+            fetch('http://0.0.0.0:8080/open-api/auth/login', {
+                method: 'OPTIONS',
+                headers: corsHeaders,
+            });
+        });
+    </script>
+</body>
+</html> 
+ 
+

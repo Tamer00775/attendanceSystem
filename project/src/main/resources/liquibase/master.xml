@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <include file="/liquibase/changelog/20240210163300_add_all_entities.sql" relativeToChangelogFile="false"/>
+    <include file="/liquibase/changelog/20240225151400_add_speciality.sql" relativeToChangelogFile="false"/>
+    <include file="/liquibase/changelog/20240228173000_add_class_room.sql" relativeToChangelogFile="false"/>
+    <include file="/liquibase/changelog/20240228174000_add_course.sql" relativeToChangelogFile="false"/>
+    <include file="/liquibase/changelog/20240228181000_add_section.sql" relativeToChangelogFile="false"/>
+    <include file="/liquibase/changelog/20240228181500_add_schedule.sql" relativeToChangelogFile="false"/>
+    <include file="/liquibase/changelog/20240303111500_add_role.sql" relativeToChangelogFile="false"/>
+    <include file="/liquibase/changelog/20240303131500_add_admin.sql" relativeToChangelogFile="false"/>
+</databaseChangeLog>

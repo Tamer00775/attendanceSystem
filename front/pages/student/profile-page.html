@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
+    <link rel="stylesheet" href="../../assets/styles/stu-profile-style.css">
+    <title>Admin Page</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__wrapper">
+                <div class="logo">
+                </div>
+                <div class="admin">
+                    <div class="admin-details">
+                        <div class="admin-info">
+                            <p>NAME SURNAME:</p> 
+                            <p id="name">PALENSHEEVA PALENSHE</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>LAST LOGIN DATE:</p> 
+                            <p id="login-date">08 FEB 2024</p>
+                        </div>
+                    </div>
+                    <div class="icon">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main__wrapper">
+                <div class="sidebar__wrapper">
+                    <nav class="menu">
+                        <a href="./home-page.html">HOME PAGE</a>
+                        <a href="./schedule-page.html">Course schedule</a>
+                        <a href="./attendence-page.html">ATTENDANCE</a>
+                        <a href="./profile-page.html" id="selected">my profile</a>
+                        <a href="./absences-page.html">absence</a>
+                        <form action="" class="logout">
+                            <button >Log out</button>
+                        </form>
+                    </nav>
+                </div>
+                <div class="main__content">
+                    <div class="page-name">
+                        <h1>MY PROFILE</h1>
+                    </div>
+                    <form class="change" action="#">
+                        <button class="btn select" id="info">MY INFO</button>
+                        <button class="btn" id="edit">PHOTO EDITING</button>
+                    </form>
+                    <div class="info">
+                        <div class="details">
+                            <div class="personal-info">
+                                <p >NAME SURNAME:</p> 
+                                <p id="name"">PALENSHEEVA PALENSHE</p>
+                            </div>
+                            <div class="personal-info">
+                                <p >SPECIALITY NAME::</p> 
+                                <p id="gender">COMPUTER SCIENCE</p>
+                            </div>
+                            <div class="personal-info">
+                                <p >GENDER:</p> 
+                                <p id="gender">FEMALE</p>
+                            </div>
+                            <div class="personal-info">
+                                <p>EMAIL:</p> 
+                                <p id="email">palensheeva.palenshe@gmail.com</p>
+                            </div>
+                            <div class="personal-info">
+                                <p>BIRTH DATE:</p>
+                                <p id="birth-date">09-FEB-04</p> 
+                            </div>
+                            <div class="personal-info">
+                                <p>TELEPHONE:</p> 
+                                <p id="login-date">8 705 915 0429</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image" style="display: none;">
+                        <p>Change Image</p>
+                        <form action="#" class="choose">
+                            <input type="file" id="inputFile" accept=".jpeg, .jpg, .png">
+                            <button id="save">Save</button>
+                        </form>
+                    </div>
+                    <div class="notif" style="display: none;">
+                        <p style="color: green;">PHOTO UPLOADED SUCCESSFULLY!</p>
+                        <p style="color: red;">SIZE OF PHOTO DOESN’T MATCH!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        const url = 'url(../../assets/images/icon.png)';
+        const icon = document.querySelector('.icon');
+        icon.style.backgroundImage= url;
+
+        const info = document.querySelector('#info');
+        const edit = document.querySelector('#edit');
+        const infoClass = document.querySelector('.info');
+        const imageClass = document.querySelector('.image');
+        info.addEventListener("click", () => {
+            infoClass.style.display = 'block';
+            imageClass.style.display = 'none';
+        });
+        edit.addEventListener("click", () => {
+            infoClass.style.display = 'none';
+            imageClass.style.display = 'block';
+        });
+        
+        const save = document.querySelector('#save');
+        save.addEventListener("click", ()=>{
+            const fileUrl = URL.createObjectURL(inputFile.files[0]);
+            icon.style.backgroundImage = 'url(' + fileUrl + ')';
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest"></script>
+    <link rel="stylesheet" href="../../assets/styles/stu-attendence-style.css">
+    <title>Admin Page</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__wrapper">
+                <div class="logo">
+                </div>
+                <div class="admin">
+                    <div class="admin-details">
+                        <div class="admin-info">
+                            <p>NAME SURNAME:</p> 
+                            <p id="name">PALENSHEEVA PALENSHE</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>SPECIALITY NAME:</p> 
+                            <p id="name">COMPUTER SCIENCE</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>LAST LOGIN DATE:</p> 
+                            <p id="login-date">08 FEB 2024</p>
+                        </div>
+                    </div>
+                    <div class="icon" style="background-image: url(../../assets/images/icon.png);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main__wrapper">
+                <div class="sidebar__wrapper">
+                    <nav class="menu">
+                        <a href="./home-page.html">HOME PAGE</a>
+                        <a href="./schedule-page.html">Course schedule</a>
+                        <a href="#" id="selected">ATTENDANCE</a>
+                        <a href="./profile-page.html">my profile</a>
+                        <a href="./absences-page.html">absence</a>
+                        <form action="" class="logout">
+                            <button >Log out</button>
+                        </form>
+                    </nav>
+                </div>
+                <div class="main__content">
+                    <div class="page-name">
+                        <h1>ATTENDANCE</h1>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <td class="id">№</td>
+                                <td class="code">Code</td>
+                                <td class="name">Course Name</td>
+                                <td class="hours">Hours</td>
+                                <td class="tick">✓</td>
+                                <td class="tick">✗</td>
+                                <td class="tick">P</td>
+                                <td class="">Absence % (Limit 30%)</td>
+                            </tr>
+                            <tr>
+                                <td class="id" onclick="showPage(1)">></td>
+                                <td class="code">CSS 228</td>
+                                <td class="name" id="byCode">ADVANCED ALGORITHM</td>
+                                <td class="hours">30</td>
+                                <td class="tick">10</td>
+                                <td class="tick">1</td>
+                                <td class="tick">1</td>
+                                <td class="absence">
+                                    <div class="slider-container" style="display: flex; align-items: center; gap: 5px;">
+                                        <input type="range" id="slider" class="slider" min="0" max="100" value="2"  disabled>
+                                        <div id="slider-value">2%</div>
+                                    </div>
+                                </td>
+                                <div id="abb" style="display: none;">
+                                    <div id="Attendance" class="tabcontent" style="width: 300px; height: 300px;">
+                                        <canvas id="attendence" width="300x" height="300px"></canvas>
+                                    </div>
+                                </div>    
+                            </tr>
+                        </table>
+                        <table class="attendance-table" style="display: none; margin-top: 50px;">
+                            <div style="position: relative; left: 820px;top: 50px;  color: white; display: none;"  class="first">
+                                <span class="pagination" onclick="showPage(2)" id="first">1-8-></span>
+                            </div>
+                            <div style="position: relative; left: 820px;top: 50px; color: white; display: none;" class="second">
+                                <span class="pagination" onclick="showPage(1)" id="second"><-9-16</span>
+                            </div>
+                            <thead>
+                                <tr style="display: flex; flex-direction: column; ;">
+                                    <th onclick="hide()">^</th>
+                                    <th>Date</th>
+                                    <th>Hour</th>
+                                    <th>Attendance</th>
+                                    <th>Place</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendance-body" style="display: flex; align-items: flex-start;">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="att-set" style="display: none;">
+                        <form action="#" class="info-buttons">
+                            <button class="btn"id="back">Back</button>
+                            <p class="course-name">CSS 228 - Advanced Algorithmic Design and Analysis</p>
+                        </form>
+                        <div style="display: flex; flex-direction: column; gap: 30px;">
+                            <div class="left">
+                                <h2>MohammedAlaaFadhil Al-Hadeethi</h2>
+                            </div>
+                            <form action="#" style="display: flex; color: white;">
+                                <label for="code">
+                                    Enter the code for attendance:
+                                    <input type="text" name="code" id="code">
+                                </label>
+                                <button class="btn">Enter</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="../../assets/scripts/stud.js"></script>
+</body>
+</html>
