@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    username: admin
+    password: 123456
+    url: jdbc:postgresql://db:5432/postgres
+  jpa:
+    open-in-view: false
+  jwt:
+    secret: secret
+
