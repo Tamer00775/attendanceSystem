@@ -54,7 +54,7 @@ public class AttendanceInfo {
         return "AttendanceInfo{" +
                 "attendanceInfoId=" + attendance_info_id +
                 ", percent=" + percent +
-                ", fullTime=" + full_time +
+//                ", fullTime=" + full_time +
                 ", reasonTime=" + reason_time +
                 '}';
     }
