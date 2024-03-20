@@ -65,18 +65,24 @@
 
                     if (response.ok) {
                         const data = await response.json();
-                        data.role = 'student';
                         headers.append('Authorization', 'Bearer ' + data.token);
                         headers.append('Content-Type', 'application/json');
                         localStorage.setItem('token', data.token);
 
+
+                        console.log(data)
                         switch (data.role) {
-                            case 'admin':
+                            
+                            case 'ADMIN':
                                 window.location.href = '../admin/admin-page.html';
                                 break;
-                            case 'student':
+                            case 'STUDENT':
                                 window.location.href = '../student/home-page.html';
                                 break;
+                            case 'TEACHER':
+                                window.location.href = '../teacher/home-page.html';
+                                break;
+
                             default:
                                 console.error('Unknown role:', data.role);
                         }

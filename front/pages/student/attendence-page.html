@@ -55,7 +55,7 @@
                         <h1>ATTENDANCE</h1>
                     </div>
                     <div class="table-container">
-                        <table>
+                        <!-- <table>
                             <tr>
                                 <td class="id">№</td>
                                 <td class="code">Code</td>
@@ -86,7 +86,9 @@
                                     </div>
                                 </div>    
                             </tr>
-                        </table>
+                        </table> -->
+
+<!-- 
                         <table class="attendance-table" style="display: none; margin-top: 50px;">
                             <div style="position: relative; left: 820px;top: 50px;  color: white; display: none;"  class="first">
                                 <span class="pagination" onclick="showPage(2)" id="first">1-8-></span>
@@ -105,7 +107,9 @@
                             </thead>
                             <tbody id="attendance-body" style="display: flex; align-items: flex-start;">
                             </tbody>
-                        </table>
+                        </table> -->
+
+
                     </div>
                     <div class="att-set" style="display: none;">
                         <form action="#" class="info-buttons">
@@ -138,5 +142,60 @@
         localStorage.removeItem('token'); // Удаляем токен из локального хранилища
         window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
     });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() { 
+        fetchAttendanceData(); 
+    }); 
+
+    function fetchAttendanceData() { 
+        const apiUrl = 'http://localhost:8081/api/student/attStatus'; 
+        const token = localStorage.getItem('token');
+
+
+        const requestData = { 
+            "login": "210107038" 
+        }; 
+
+        fetch(apiUrl, { 
+            method: 'POST', 
+            headers: { 
+                'Content-Type': 'application/json', 
+                'Authorization': 'Bearer ' + token 
+            }, 
+            body: JSON.stringify(requestData) 
+        }) 
+        .then(response => response.json()) 
+        .then(data => { 
+            displayAttendanceData(data); 
+        }) 
+        .catch(error => { 
+            console.error('Error fetching attendance data:', error); 
+            document.querySelector('.table-container').innerHTML = '<p>Error loading attendance data.</p>'; 
+        }); 
+    } 
+
+    function displayAttendanceData(data) { 
+        const container = document.querySelector('.table-container'); 
+        let table = '<table>'; 
+        table += '<tr><th>Course Code</th><th>Course Name</th><th>Hours</th><th>Present Hours</th><th>Absent Hours</th><th>Reason Hours</th><th>Absence Limit</th></tr>'; 
+
+        for (const key in data) { 
+            const course = data[key]; 
+            table += `<tr> 
+                        <td>${course.code}</td> 
+                        <td>${course.courseName}</td> 
+                        <td>${course.hours}</td> 
+                        <td>${course.presentHours}</td> 
+                        <td>${course.absentHours}</td> 
+                        <td>${course.reasonHours}</td> 
+                        <td>${course.absenceLimit+'%'}</td> 
+                      </tr>`; 
+        } 
+
+        table += '</table>'; 
+        container.innerHTML = table; 
+    }
 </script>
 </html>

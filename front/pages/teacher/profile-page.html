@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,7 +35,7 @@
             <div class="main__wrapper">
                 <div class="sidebar__wrapper">
                     <nav class="menu">
-                        <a href="./home-page.html">HOME PAGE</a>
+                        <a href="./home-page.html">my profile</a>
                         <a href="./schedule-page.html">Course schedule</a>
                         <a href="./course-page.html">start course</a>
                         <a href="./attendence-page.html">set ATTENDANCE</a>
@@ -48,48 +48,51 @@
                     <div class="page-name">
                         <h1>MY PROFILE</h1>
                     </div>
-                    <form class="change" action="#">
-                        <button class="btn select" id="info">MY INFO</button>
-                        <button class="btn" id="edit">PHOTO EDITING</button>
-                    </form>
                     <div class="info">
-                        <div class="details">
-                            <div class="personal-info">
-                                <p >NAME SURNAME:</p> 
-                                <p id="name"">PALENSHEEVA PALENSHE</p>
-                            </div>
-                            <div class="personal-info">
-                                <p >GENDER:</p> 
-                                <p id="gender">FEMALE</p>
-                            </div>
-                            <div class="personal-info">
-                                <p>EMAIL:</p> 
-                                <p id="email">palensheeva.palenshe@gmail.com</p>
-                            </div>
-                            <div class="personal-info">
-                                <p>BIRTH DATE:</p>
-                                <p id="birth-date">09-FEB-04</p> 
-                            </div>
-                            <div class="personal-info">
-                                <p>TELEPHONE:</p> 
-                                <p id="login-date">8 705 915 0429</p>
+                        <div class="icon" style="background-image: url(../../assets/images/icon.png);"></div>
+                        <div class="details" id="userDetails">
+                            <div class="details">
+                                <div class="personal-info">
+                                    <p>LOGIN:</p>
+                                    <p id="id"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>NAME SURNAME:</p>
+                                    <p id="name"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>SPECIALITY NAME:</p>
+                                    <p id="speciality"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>GENDER:</p>
+                                    <p id="gender"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>EMAIL:</p>
+                                    <p id="email"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>Telephone:</p>
+                                    <p id="telephone"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>LAST LOGIN DATE:</p>
+                                    <p id="login-date"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>STATUS:</p>
+                                    <p id="rolePerson"></p>
+                                </div>
+                                
                             </div>
                         </div>
-                    </div>
-                    <div class="image" style="display: none;">
-                        <p>Change Image</p>
-                        <form action="#" class="choose">
-                            <input type="file" id="inputFile" accept=".jpeg, .jpg, .png">
-                            <button id="save">Save</button>
-                        </form>
-                    </div>
-                    <div class="notif" style="display: none;">
-                        <p style="color: green;">PHOTO UPLOADED SUCCESSFULLY!</p>
-                        <p style="color: red;">SIZE OF PHOTO DOESN’T MATCH!</p>
                     </div>
                 </div>
             </div>
         </div>
+
+
     </main>
     <script>
         const url = 'url(../../assets/images/icon.png)';
@@ -115,5 +118,47 @@
             icon.style.backgroundImage = 'url(' + fileUrl + ')';
         })
     </script>
+
+
+    <script>
+        (async function () {
+            try {
+                const response = await fetch('http://localhost:8081/api/person/v1/current', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add authorization if needed
+                        'Content-Type': 'application/json',
+                    },
+                });
+    
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('id').textContent = userData.login || ''; // Use login for ID or empty string if missing
+                    document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
+                    document.getElementById('email').textContent = userData.email || '';
+                    document.getElementById('login-date').textContent = userData.lastLogin || '';
+                    document.getElementById('speciality').textContent = userData.courseCode || '';
+                    document.getElementById('telephone').textContent = userData.telephone || '';
+                    document.getElementById('gender').textContent = userData.gender || '';
+                    document.getElementById('rolePerson').textContent = userData.rolePerson || '';
+                    
+    
+                } else {
+                    console.error('Failed to fetch user details:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error during fetch operation:', error);
+            }
+        })();
+    </script>
+    
+    <script>
+        // Обработчик события для кнопки "Log out"
+        document.querySelector('.logout button').addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+            localStorage.removeItem('token'); // Удаляем токен из локального хранилища
+            window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
+        });
+    </script>
 </body>
-</html>
+</html> -->
