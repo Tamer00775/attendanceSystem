@@ -21,23 +21,23 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/student/attStatus")
 @Slf4j
-public class StudentAttStatusSeeAndCheckInResource {
+public class AttStatusInfoResource {
 
     private final StudentAttStatusService studentAttStatusService;
 
     @Autowired
-    public StudentAttStatusSeeAndCheckInResource(StudentAttStatusService studentAttStatusService) {
+    public AttStatusInfoResource(StudentAttStatusService studentAttStatusService) {
         this.studentAttStatusService = studentAttStatusService;
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, AttendanceStatusDto>> attStatusByAll(@RequestBody @Valid RequestBodyDTO requestBodyDTO) {
+    public ResponseEntity<Map<String, AttendanceStatusDto>> getAllAttendanceStatuses(@RequestBody @Valid RequestBodyDTO requestBodyDTO) {
         log.info("Process Getting AttendanceStatusAll by {}" , requestBodyDTO);
         return ResponseEntity.ok(studentAttStatusService.attStatusByAll(requestBodyDTO));
     }
-
+    
     @PostMapping("/bySection")
-    public ResponseEntity<Map<String, List<AttendanceStatusDetailDto>>> attStatusBySection(@RequestBody @Valid RequestBody2DTO requestBodyDTO) {
+    public ResponseEntity<Map<String, List<AttendanceStatusDetailDto>>> getAttendanceStatusBySection(@RequestBody @Valid RequestBody2DTO requestBodyDTO) {
         log.info("Process Getting AttendanceStatusAllBySection by {}" , requestBodyDTO);
         return ResponseEntity.ok(studentAttStatusService.attStatusBySection(requestBodyDTO));
     }

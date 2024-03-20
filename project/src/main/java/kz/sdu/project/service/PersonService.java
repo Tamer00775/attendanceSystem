@@ -41,6 +41,7 @@ public class PersonService {
         return personRepo.findAll();
     }
 
+    @Transactional
     public Person save(Person person) {
         return personRepo.save(person);
     }

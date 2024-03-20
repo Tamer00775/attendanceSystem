@@ -13,7 +13,7 @@ public class ScheduleDTO {
 
     private Integer scheduleId;
     private Integer dayOfWeek;
-    private String startTime;
+    private Integer startTime;
     private Integer totalHours;
     private Integer sectionId;
     private Integer classRoomId;

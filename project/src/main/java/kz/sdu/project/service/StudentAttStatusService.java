@@ -6,8 +6,10 @@ import kz.sdu.project.dto.RequestBody2DTO;
 import kz.sdu.project.dto.RequestBodyDTO;
 import kz.sdu.project.entity.*;
 import kz.sdu.project.ex_handler.EntityNotFoundException;
+import kz.sdu.project.utils.CompletedAttributeValidation;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -19,73 +21,121 @@ import static kz.sdu.project.domain.ActionStatus.*;
 import static kz.sdu.project.domain.Constants.*;
 @Service
 @Slf4j
+@AllArgsConstructor
 public class StudentAttStatusService {
 
     private final PersonService personService;
     private final AttendanceInfoService attendanceInfoService;
     private final AttendanceRecordService attendanceRecordService;
     private final SectionService sectionService;
-
-    @Autowired
-    public StudentAttStatusService(PersonService personService, AttendanceInfoService attendanceInfoService, AttendanceRecordService attendanceRecordService, SectionService sectionService) {
-        this.personService = personService;
-        this.attendanceInfoService = attendanceInfoService;
-        this.attendanceRecordService = attendanceRecordService;
-        this.sectionService = sectionService;
-    }
+    private final CompletedAttributeValidation val;
 
     public Map<String, AttendanceStatusDto> attStatusByAll(RequestBodyDTO requestBodyDTO) {
 
         String login = requestBodyDTO.getLogin();
-        Person student = personService.findByLogin(login)
+        Person student = personService.findByLoginAndLoadRoles(login)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Student with username %s not found", login)));
-        Map<String, AttendanceStatusDto> finalAttMapList = new HashMap<>();
+        if (!val.isStudent(student))
+            throw new EntityNotFoundException(String.format("User is not student with login %s", login));
 
         List<AttendanceInfo> attList = attendanceInfoService.findByPersonId(student.getId());
-        if (attList == null || attList.isEmpty()) {
-            log.info("No attendance information found for the student with ID {}", student.getId());
-            return finalAttMapList;
-        }
 
-        attList.forEach(attendanceInfo -> updateAttendanceStatus(finalAttMapList, attendanceInfo));
-
-        log.info("Completed AttendanceStatusAll for {}" , student);
-        return finalAttMapList;
+        return returnAllAtt(attList);
     }
+
+    private Map<String, AttendanceStatusDto> returnAllAtt(List<AttendanceInfo> attList) {
+        Map<String, AttendanceStatusDto> finalAttMap = new HashMap<>();
+        attList.forEach(attendanceInfo -> updateAttendanceStatus(finalAttMap,attendanceInfo));
+
+        log.info("Completed process AttStatusForAll...");
+        return finalAttMap;
+    }
+
+    private void updateAttendanceStatus(Map<String, AttendanceStatusDto> attMapList, AttendanceInfo attendanceInfo) {
+
+        if (val.oneOfParamIsNull(attendanceInfo))
+                 throw new NullPointerException("AttendanceInfo is not clear...");
+
+        String sectionName = attendanceInfo.getSection_att_info().getName();
+        AttendanceNumbers attendanceNumbers = calculateAttendanceNumbers(attendanceInfo);
+
+        findMatchingPrefixInSectionName(attMapList.keySet(), sectionName).ifPresentOrElse(
+                prevSectionName ->
+                        updateExistingAttendanceRecord(attMapList, prevSectionName, sectionName, attendanceNumbers),
+                () -> addNewAttendanceRecord(attMapList, sectionName, attendanceInfo, attendanceNumbers)
+        );
+    }
+
+    private AttendanceNumbers calculateAttendanceNumbers(AttendanceInfo attendanceInfo) {
+        int hours = attendanceInfo.getFull_time();
+        int absentHours = attendanceInfo.getPercent();
+        int reasonHours = attendanceInfo.getReason_time();
+        int presentHours = hours - absentHours - reasonHours;
+        return new AttendanceNumbers(hours, presentHours, absentHours, reasonHours);
+    }
+
+    private void updateExistingAttendanceRecord(Map<String, AttendanceStatusDto> attendanceMap, String prevSectionName, String sectionName, AttendanceNumbers numbers) {
+        AttendanceStatusDto attDto = attendanceMap.remove(prevSectionName);
+        attDto.setHours(attDto.getHours() + numbers.getHours());
+        attDto.setPresentHours(attDto.getPresentHours() + numbers.getPresentHours());
+        attDto.setAbsentHours(attDto.getAbsentHours() + numbers.getAbsentHours());
+        attDto.setReasonHours(attDto.getReasonHours() + numbers.getReasonHours());
+        attDto.setAbsenceLimit(attDto.getAbsenceLimit() + numbers.getAbsentHours() * ABSENCE_COEFFICIENT);
+        attendanceMap.put(prevSectionName + "," + sectionName, attDto);
+    }
+
+    private void addNewAttendanceRecord(Map<String, AttendanceStatusDto> attendanceMap, String sectionName, AttendanceInfo attendanceInfo, AttendanceNumbers numbers) {
+        Course course = attendanceInfo.getSection_att_info().getCourse_section();
+        attendanceMap.put(sectionName, AttendanceStatusDto.builder()
+                .code(course.getCode())
+                .courseName(course.getName())
+                .hours(numbers.getHours())
+                .presentHours(numbers.getPresentHours())
+                .absentHours(numbers.getAbsentHours())
+                .reasonHours(numbers.getReasonHours())
+                .absenceLimit(numbers.getAbsentHours() * ABSENCE_COEFFICIENT)
+                .build());
+    }
+
 
     public Map<String, List<AttendanceStatusDetailDto>> attStatusBySection(RequestBody2DTO requestBodyDTO) {
 
         String login = requestBodyDTO.getLogin();
-        Person student = personService.findByLogin(login)
+        Person student = personService.findByLoginAndLoadRoles(login)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Student with username %s not found", login)));
-        String[] sections = requestBodyDTO.getSectionNames().split("[:;]");
-        Map<String, List<AttendanceStatusDetailDto>> attMap = new HashMap<>();
-        System.out.println("sections.length" + sections.length);
-        for(String section : sections) {
-            System.out.println("Before Sections are " + section);
-            if (section.isEmpty()) continue;
-            updateAttendanceDetailStatus(attMap, section, student);
-            System.out.println("Sections are " + section);
+        if (!val.isStudent(student))
+            throw new EntityNotFoundException(String.format("User is not student with login %s", login));
+        String[] sections = requestBodyDTO.getSectionNames().split(SEPARATE_BY_COMMA);
+
+        return returnSectionAtt(student,sections);
+    }
+
+    private Map<String, List<AttendanceStatusDetailDto>> returnSectionAtt(Person student, String[] sections) {
+
+        Map<String, List<AttendanceStatusDetailDto>> finalAttDetMap = new HashMap<>();
+        for (String section : sections) {
+            updateAttendanceDetailStatus(finalAttDetMap,section,student);
         }
 
-
-        log.info("Completed AttendanceStatusAllBySection for {}" , student);
-        return attMap;
+        return finalAttDetMap;
     }
+
 
     private void updateAttendanceDetailStatus(Map<String, List<AttendanceStatusDetailDto>> attMap, String sectionName, Person student) {
 
         Section section = sectionService.findByName(sectionName)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Section with name %s not found", sectionName)));
         Schedule schedule = section.getSchedule();
+        if (section.getSchedule() == null)
+            throw new EntityNotFoundException(String.format("Schedule with section name %s not found", section));
         String lecType = section.getType();
+        List<AttendanceStatusDetailDto> finalAttDetList = new ArrayList<>();
 
         List<AttendanceRecord> attRecords = attendanceRecordService
                 .findByPersonIdAndScheduleId(student.getId(), schedule.getScheduleId());
-        List<AttendanceStatusDetailDto> attDetList = new ArrayList<>();
-        attRecords.forEach(attendanceRecord -> updateAttDetList(attDetList,attendanceRecord,schedule));
+        attRecords.forEach(attendanceRecord -> updateAttDetList(finalAttDetList,attendanceRecord,schedule));
 
-        attMap.put(lecType, attDetList);
+        attMap.put(lecType, finalAttDetList);
     }
 
     private void updateAttDetList(List<AttendanceStatusDetailDto> attDetList, AttendanceRecord attendanceRecord, Schedule schedule) {
@@ -100,20 +150,21 @@ public class StudentAttStatusService {
             String time = formatHour(schedule.getStartTime(), hour);
             addAttendanceDetailDto(attDetList, date, place, attStatus, time);
         }
+
+        log.info("Completed process AttStatusBySection...");
     }
 
     private String determineAttendanceStatus(int presentHours, boolean isWithReason) {
-        if (isWithReason) {
-            return WITH_REASON_STATUS.toString();
-        } else if (presentHours > 0) {
+        if (presentHours > 0) {
             return PRESENT_STATUS.toString();
+        } else if (isWithReason) {
+            return WITH_REASON_STATUS.toString();
         } else {
             return ABSENT_STATUS.toString();
         }
     }
 
-    private String formatHour(String startTime, int hourIncrement) {
-        int startsAt = Integer.parseInt(startTime.split("[.;:]")[0]);
+    private String formatHour(int startsAt, int hourIncrement) {
         return (startsAt + hourIncrement) + ":00";
     }
 
@@ -133,40 +184,6 @@ public class StudentAttStatusService {
         return startDate.plusWeeks(currentWeek - 1).plusDays(dayOfWeek - 1);
     }
 
-    private void updateAttendanceStatus(Map<String, AttendanceStatusDto> attMapList, AttendanceInfo attendanceInfo) {
-
-        String sectionName = attendanceInfo.getSection_att_info().getName();
-        Integer hours = attendanceInfo.getFull_time(),
-                absentHours = attendanceInfo.getPercent(),
-                reasonHours = attendanceInfo.getReason_time(),
-                presentHours = hours - absentHours - reasonHours;
-
-        Optional<String> matchingPrefix = findMatchingPrefixInSectionName(attMapList.keySet(), sectionName);
-        matchingPrefix.ifPresentOrElse(
-                prevSectionName -> {
-                    AttendanceStatusDto attDto = attMapList.remove(prevSectionName);
-                    attDto.setHours(attDto.getHours() + hours);
-                    attDto.setPresentHours(attDto.getPresentHours() + presentHours);
-                    attDto.setAbsentHours(attDto.getAbsentHours() + absentHours);
-                    attDto.setReasonHours(attDto.getReasonHours() + reasonHours);
-                    attDto.setAbsenceLimit(attDto.getAbsenceLimit() + absentHours * 2);
-                    attMapList.put(prevSectionName + ":" + sectionName, attDto);
-                },
-                () -> {
-                    Course course = attendanceInfo.getSection_att_info().getCourse_section();
-                    attMapList.put(sectionName, AttendanceStatusDto.builder()
-                            .code(course.getCode())
-                            .courseName(course.getName())
-                            .hours(hours)
-                            .presentHours(presentHours)
-                            .absentHours(absentHours)
-                            .reasonHours(reasonHours)
-                            .absenceLimit(absentHours * 2)
-                            .build());
-                }
-        );
-    }
-
     private Optional<String> findMatchingPrefixInSectionName(Set<String> sectionNames, String sectionName) {
         return sectionNames.stream()
                 .filter(prevSectionName -> shareSamePrefixName(prevSectionName,sectionName))
@@ -180,7 +197,18 @@ public class StudentAttStatusService {
     }
 
     private String extractPrefix(String name) {
-        int dotIndex = name.indexOf(".");
+        int dotIndex = name.indexOf(SEPARATE_BY_POINT);
         return dotIndex != -1 ? name.substring(0, dotIndex) : name;
     }
+
+    @Data
+    private static class AttendanceNumbers {
+        private final int hours;
+        private final int presentHours;
+        private final int absentHours;
+        private final int reasonHours;
+    }
 }
+
+
+
