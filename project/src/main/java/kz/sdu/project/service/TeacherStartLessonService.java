@@ -8,14 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static kz.sdu.project.Main.dateTime;
 import static kz.sdu.project.domain.ActionStatus.MANUALLY;
 import static kz.sdu.project.domain.Constants.*;
 
@@ -46,6 +44,7 @@ public class TeacherStartLessonService {
         if (schedule == null)
             throw new EntityNotFoundException(String.format("Schedule not created for section %s ", section));
 
+
         initializeAttInfoAndRecord(section, teacher);
         initializeSecretCode(schedule);
 
@@ -63,13 +62,11 @@ public class TeacherStartLessonService {
         String generateSecretCode = RandomStringUtils
                 .random(SIX_SIZED_SECRET_CODE, USE_LETTERS_IN_SECRET_CODE, USE_NUMBERS_IN_SECRET_CODE);
         LocalDateTime now = LocalDateTime.now();
-        ZoneOffset offset = ZoneOffset.ofHours(5);
-        OffsetDateTime nowAtUtcPlus5 = now.atOffset(offset);
 
         if (secretCodeForCheckInOptional.isPresent()) {
             SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInOptional.get();
             secretCodeForCheckIn.setSecret_code(generateSecretCode);
-            secretCodeForCheckIn.setCreated(nowAtUtcPlus5.toLocalDateTime());
+            secretCodeForCheckIn.setCreated(now);
             secretCodeForCheckInService.save(secretCodeForCheckIn);
             return;
         }
@@ -77,7 +74,7 @@ public class TeacherStartLessonService {
         SecretCodeForCheckIn secretCodeForCheckIn = new SecretCodeForCheckIn();
         secretCodeForCheckIn.setSchedule_checkin(schedule);
         secretCodeForCheckIn.setSecret_code(generateSecretCode);
-        secretCodeForCheckIn.setCreated(nowAtUtcPlus5.toLocalDateTime());
+        secretCodeForCheckIn.setCreated(now);
         secretCodeForCheckInService.save(secretCodeForCheckIn);
     }
 
