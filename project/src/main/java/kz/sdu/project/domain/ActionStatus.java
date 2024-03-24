@@ -6,7 +6,6 @@ public enum ActionStatus {
     WITH_REASON_STATUS("WITH_REASON"),
     MANUALLY("MANUALLY");
     private final String status;
-
     ActionStatus(String status) {
         this.status = status;
     }
@@ -15,4 +14,3 @@ public enum ActionStatus {
         return this.status;
     }
 }
-
