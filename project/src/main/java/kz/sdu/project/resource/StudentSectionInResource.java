@@ -24,4 +24,5 @@ public class StudentSectionInResource {
     ) {
         return ResponseEntity.ok().body(studentSectionInService.studentInProcess(sectionInRequest));
     }
+
 }
