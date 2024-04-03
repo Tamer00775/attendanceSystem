@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@latest"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@latest"></script> -->
     <link rel="stylesheet" href="../../assets/styles/stu-attendence-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Admin Page</title>
 </head>
 <body>
@@ -55,6 +56,7 @@
                         <h1>ATTENDANCE</h1>
                     </div>
                     <div class="table-container">
+<<<<<<< Updated upstream
                         <table>
                             <tr>
                                 <td class="id">№</td>
@@ -106,6 +108,9 @@
                             <tbody id="attendance-body" style="display: flex; align-items: flex-start;">
                             </tbody>
                         </table>
+=======
+                        <!-- Fetch from Back Table Container -->
+>>>>>>> Stashed changes
                     </div>
                     <div class="att-set" style="display: none;">
                         <form action="#" class="info-buttons">
@@ -131,4 +136,147 @@
     </main>
     <script src="../../assets/scripts/stud.js"></script>
 </body>
+<<<<<<< Updated upstream
 </html>
+=======
+
+<script>
+    // Обработчик события для кнопки "Log out"
+    document.querySelector('.logout button').addEventListener('click', function(event) {
+        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+        localStorage.removeItem('token'); // Удаляем токен из локального хранилища
+        window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchAttendanceData();
+    });
+
+    function fetchAttendanceData() {
+        const apiUrl = 'http://localhost:8081/api/student/attStatus';
+        const token = localStorage.getItem('token');
+
+        const requestData = {
+            "login": "210107038"
+        };
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            fetchCourseDetail(data);
+            console.log(data)
+        })
+        .catch(error => {
+            console.error('Error fetching attendance data:', error);
+            document.querySelector('.table-container').innerHTML = '<p>Error loading attendance data.</p>';
+        });
+    }
+
+    function fetchCourseDetail(data) {
+        const apiUrl = 'http://localhost:8081/api/student/attStatus/bySection';
+        const token = localStorage.getItem('token');
+    
+        const requestData = {
+            "login": "210107038",
+            "sectionNames": 'C0002.01,C0002.02' /* data.sectionNames */
+        };
+    
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(courseDetailData => {
+            displayAttendanceData(data, courseDetailData);
+            console.log(data, courseDetailData);
+        })
+        .catch(error => {
+            console.error('Error fetching attendance data:', error);
+            document.querySelector('.table-container').innerHTML = '<p>Error loading attendance data.</p>';
+        });
+    }
+    
+    function displayAttendanceData(data, courseDetailData) {
+        const container = document.querySelector('.table-container');
+        let table = '<table>';
+        table += '<tr><th>Course Code</th><th>Course Name</th><th>Hours</th><th>Present Hours</th><th>Absent Hours</th><th>Reason Hours</th><th>Absence Limit</th></tr>';
+    
+        for (const key in data) {
+            const course = data[key];
+            let week = [];
+            let courseDetailTable = '';
+    
+            for (let i = 1; i <= 15; i++) {
+                week.push(i);
+            }
+    
+            table += `<tr>
+                        <td>${course.code}</td>
+                        <td>${course.courseName}</td>
+                        <td>${course.hours}</td>
+                        <td>${course.presentHours}</td>
+                        <td>${course.absentHours}</td>
+                        <td>${course.reasonHours}</td>
+                        <td>${course.absenceLimit + '%'}</td>
+                      </tr>`;
+    
+            for (const courseDetailKey in courseDetailData) {
+                const courseDetail = courseDetailData[courseDetailKey];
+    
+                courseDetailTable += `
+                    <tr>
+                        <table class="course-detail">
+                            <tr>
+                                <th></th>
+                                <th>9</th>
+                                <th>10</th>
+                                <th>11</th>
+                                <th>12</th>
+                                <th>13</th>
+                                <th>14</th>
+                                <th>15</th>
+                            </tr>
+                            <tr class="course-detail__date">
+                                <td>Date</td>
+                                <td>${courseDetail.date}</td>
+                            </tr>
+                            <tr class="course-detail__hour">
+                                <td>Hour</td>
+                                <td>${courseDetail.hours}</td>
+                            </tr>
+                            <tr class="course-detail__attendance-status">
+                                <td>Attendance</td>
+                                <td>+</td>
+                            </tr>
+                            <tr class="course-detail__room">
+                                <td>Place</td>
+                                <td>${courseDetail.place}</td>
+                            </tr>
+                        </table>
+                    </tr>`;
+            }
+        }
+    
+        table += '</table>';
+        container.innerHTML = table;
+    }
+    
+</script>
+
+
+</html> 
+
+>>>>>>> Stashed changes
