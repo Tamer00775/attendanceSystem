@@ -4,7 +4,8 @@ public enum ActionStatus {
     ABSENT_STATUS("ABSENT"),
     PRESENT_STATUS("PRESENT"),
     WITH_REASON_STATUS("WITH_REASON"),
-    MANUALLY("MANUALLY");
+    MANUALLY("MANUALLY"),
+    CARD("CARD");
     private final String status;
     ActionStatus(String status) {
         this.status = status;
