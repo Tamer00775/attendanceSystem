@@ -3,7 +3,6 @@ package kz.sdu.project.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;

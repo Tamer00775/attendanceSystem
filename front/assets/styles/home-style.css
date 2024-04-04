@@ -71,11 +71,14 @@ body{
 .page-name h1{
     text-transform: uppercase;
     color: #DFBC5F;
+    font-weight: 400;
+    margin-left: 50px;
 }
 .info{
-    margin-top: 45px;
+    margin-top: 30px;
     display: flex;
     gap: 30px;
+    margin-left: 50px;
 }
 .icon{
     background-size: cover;
@@ -97,9 +100,12 @@ body{
 .personal-info p{
     color: white;
     text-align: left;
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: 200;
     flex-basis: 100%;
+    margin-left: 20px;
+    line-height: 1.5;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .logout{
     width: 100%;

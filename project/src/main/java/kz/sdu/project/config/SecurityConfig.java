@@ -16,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -27,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().and() // Enable CORS and integrate with the below configuration
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/open-api/**").permitAll()
@@ -40,6 +44,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        // Adjust the below configurations according to your requirements
+      // config.addAllowedOrigin("http://35.172.227.184:8081:8080"); // Or use addAllowedOriginPattern for patterns
+        config.addAllowedOrigin("http://127.0.0.1:5500");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
+
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(personDetailsService)
                 .passwordEncoder(getPasswordEncoder());
@@ -47,6 +65,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean

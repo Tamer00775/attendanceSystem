@@ -101,56 +101,60 @@ body{
 .page-name h1{
     text-transform: uppercase;
     color: #DFBC5F;
+    font-weight: 400;
+    font-size: 27px;
+    margin-top: -15px;
+    margin-bottom: 35px;
 }
 
 table, tr, td{
-    border: 2px solid white;
+    border: 1px solid white;
     border-collapse: collapse;
     color: white;
     align-items: center;
+    margin-left: 20px;
 }
 .id{
     min-width: 50px;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
     padding: 5px 10px;
 }
 .code{
     min-width: 100px;
-    text-align: left;
-    font-size: 16px;
+    text-align: center;
+    font-size: 14px;
     padding: 5px 10px;
 }
 .course-name{
-    min-width: 300px;
-    text-align: left;
-    font-size: 16px;
+    min-width: 100px;
+    text-align: center;
+    font-size: 14px;
     padding: 5px 10px;
 }
 .group{
     min-width: 50px;
-    text-align: left;
-    font-size: 16px;
+    text-align: center;
+    font-size: 14px;
     padding: 5px 10px;
     cursor: pointer;
 }
 .reason{
     min-width: 50px;
-    text-align: left;
-    font-size: 16px;
+    text-align: center;
+    font-size: 14px;
     padding: 5px 10px;
-
 }
 .date{
     min-width: 50px;
-    text-align: left;
+    text-align: center;
     font-size: 16px;
     padding: 5px 10px;
 }
 .status{
     min-width: 50px;
-    text-align: left;
-    font-size: 16px;
+    text-align: center;
+    font-size: 14px;
     padding: 5px 10px;
     cursor: pointer;
 }
@@ -202,9 +206,12 @@ table, tr, td{
 .doc{
     min-width: 100px;
     text-align: left;
-    font-size: 16px;
+    font-size: 14px;
     padding: 5px 10px;
 }
 .doc a{
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

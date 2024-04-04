@@ -1,18 +1,13 @@
 package kz.sdu.project.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-public enum AttendanceStatus {
+public enum ActionStatus {
     ABSENT_STATUS("ABSENT"),
     PRESENT_STATUS("PRESENT"),
-    WITH_REASON_STATUS("WITH_REASON");
-
+    WITH_REASON_STATUS("WITH_REASON"),
+    MANUALLY("MANUALLY"),
+    CARD("CARD");
     private final String status;
-
-    AttendanceStatus(String status) {
+    ActionStatus(String status) {
         this.status = status;
     }
     @Override
@@ -20,4 +15,3 @@ public enum AttendanceStatus {
         return this.status;
     }
 }
-

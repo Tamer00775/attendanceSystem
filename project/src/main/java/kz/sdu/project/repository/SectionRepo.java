@@ -13,8 +13,7 @@ import java.util.Set;
 @Repository
 public interface SectionRepo extends JpaRepository<Section, Integer> {
 
-    @Query("select s from Section s join fetch s.persons " +
-            "where s.name like ?1")
+    @Query("select s from Section s join fetch s.persons where s.name like ?1")
     Optional<Section> findByName(String name);
 
     @Query("SELECT s FROM Section s JOIN s.persons p WHERE p.id = ?1")

@@ -14,6 +14,7 @@ public class RegistrationDto {
 
     @NotBlank(message = "Password must not be blank")
     @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "Password policy : (Uppercases, lowercases, digits)")
     private String password;
 
     @NotBlank(message = "Password must not be blank")
@@ -34,6 +35,6 @@ public class RegistrationDto {
     @Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", message = "Telephone must be a valid phone number")
     private String telephone;
 
-    @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Birthdate must be in the ISO format: YYYY-MM-DD")
+    @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Birthdate must be in the ISO format: dd.MM.yyyy")
     private String birthDate;
 }

@@ -17,4 +17,6 @@ public class AttendanceStatusDetailDto {
     private String hour;
     private String attStatus;
     private String place;
+    private String type;
+    private Integer week;
 }

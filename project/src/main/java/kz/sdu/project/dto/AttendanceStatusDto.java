@@ -10,12 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AttendanceStatusDto {
-    private Integer id;
     private String code;
     private String courseName;
+    private String sectionNames;
     private Integer hours;
     private Integer presentHours;
     private Integer absentHours;
     private Integer reasonHours;
     private Integer absenceLimit;
+
 }

@@ -28,6 +28,11 @@ public class PersonService {
         return personRepo.findByLogin(login);
     }
 
+    @Transactional
+    public Optional<Person> findByLoginAndLoadRoles(String login) {
+        return personRepo.findByLoginAndLoadRoles(login);
+    }
+
     public Optional<Person> findByEmail(String email) {
         return personRepo.findPersonByEmail(email);
     }
@@ -36,6 +41,7 @@ public class PersonService {
         return personRepo.findAll();
     }
 
+    @Transactional
     public Person save(Person person) {
         return personRepo.save(person);
     }

@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface AttendanceInfoRepo extends JpaRepository<AttendanceInfo, Integer> {
 
-    @Query("select a from AttendanceInfo a where a.person_attendanceInfo.id = ?1" +
+    @Query("select a from AttendanceInfo a where a.person_attendanceInfo.id = ?1 " +
             "and a.section_att_info.sectionId = ?2")
     Optional<AttendanceInfo> findByPersonIdAndSectionId(Integer id, Integer id2);
 

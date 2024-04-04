@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/teacherStartLesson")
+@RequestMapping("/api/teacher")
 @Slf4j
 public class TeacherStartLessonResource {
 
@@ -22,11 +22,17 @@ public class TeacherStartLessonResource {
         this.teacherStartLessonService = teacherStartLessonService;
     }
 
-    @PostMapping
-    public ResponseEntity<Map<String, String>> startByManually(@RequestBody @Valid RequestBody3DTO requestBody3DTO) { {
+    @PostMapping("/start")
+    public ResponseEntity<Map<String, String>> startByManually
+            (@RequestBody @Valid RequestBody3DTO requestBody3DTO) {
         log.info("Lesson Start by Teacher process... with {}", requestBody3DTO);
         return ResponseEntity.ok().body(teacherStartLessonService.start(requestBody3DTO));
     }
 
+    @PostMapping("/end")
+    public ResponseEntity<Map<String, String>> endByManually
+            (@RequestBody @Valid RequestBody3DTO requestBody3DTO) {
+        log.info("Lesson end by Teacher process... with {}", requestBody3DTO);
+        return ResponseEntity.ok().body(teacherStartLessonService.end(requestBody3DTO));
     }
 }

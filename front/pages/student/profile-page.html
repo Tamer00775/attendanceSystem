@@ -38,7 +38,7 @@
                         <a href="./home-page.html">HOME PAGE</a>
                         <a href="./schedule-page.html">Course schedule</a>
                         <a href="./attendence-page.html">ATTENDANCE</a>
-                        <a href="./profile-page.html" id="selected">my profile</a>
+                        <a href="./profile-page.html" id="selected">set profile</a>
                         <a href="./absences-page.html">absence</a>
                         <form action="" class="logout">
                             <button >Log out</button>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="main__content">
                     <div class="page-name">
-                        <h1>MY PROFILE</h1>
+                        <h1>SET PROFILE</h1>
                     </div>
                     <form class="change" action="#">
                         <button class="btn select" id="info">MY INFO</button>
@@ -120,5 +120,14 @@
             icon.style.backgroundImage = 'url(' + fileUrl + ')';
         })
     </script>
+    <script>
+        // Обработчик события для кнопки "Log out"
+        document.querySelector('.logout button').addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+            localStorage.removeItem('token'); // Удаляем токен из локального хранилища
+            window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
+        });
+    </script>
+
 </body>
 </html>

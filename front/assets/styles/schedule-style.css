@@ -39,7 +39,7 @@ body{
     color: white;
     flex-basis: 100%;
     text-align: left;
-    font-size: 14px;
+    font-size: 13px;
 }
 .logo{
     background: url("../images/logo.jpg");
@@ -101,6 +101,10 @@ body{
 .page-name h1{
     text-transform: uppercase;
     color: #DFBC5F;
+    font-weight: 400;
+    font-size: 27px;
+    margin-top: -15px;
+    margin-bottom: 35px;
 }
 table{
     margin-top: 20px;
@@ -115,8 +119,14 @@ tr{
 }
 thead td{
     background: #E5D5AC;
-    border-radius: 5px;
-    padding: 2px 5px;
+    border-radius: 30px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 3px;
+    margin-bottom: 20px;
     min-width: 100px;
 }
 tbody{
@@ -126,10 +136,21 @@ tbody{
 }
 tbody td{
     background: white;
-    border-radius: 5px;
-    padding: 2px 5px;
-    min-height: 40px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: medium;
+    margin-bottom: 10px;
+    min-height: 25px;
     min-width: 100px;
+}
+tbody p{
+    font-size: 10px;
+    padding-right: 5px;
+    font-weight: 600;
+    text-align: center;
 }
 
 .logout{

@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd06002b-4e7a-460e-b1de-161fcc04efd5" name="Changes" comment="TASK-1 remove todo" />
+    <list default="true" id="fd06002b-4e7a-460e-b1de-161fcc04efd5" name="Changes" comment="completed login in front">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/pages/login/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/pages/login/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/pages/student/absences-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/pages/student/absences-page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/pages/student/attendence-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/pages/student/attendence-page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/pages/student/page.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/pages/student/page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/pages/student/profile-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/pages/student/profile-page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/pages/student/schedule-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/pages/student/schedule-page.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,9 +77,9 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main__cop&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;add__main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/tamerlankartaev/Desktop/Attendance System&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/hamza/attendanceSystem&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -100,7 +108,7 @@
       <command value="gradle build --refresh-dependencies" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.project [build]">
+  <component name="RunManager">
     <configuration name="project [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -174,18 +182,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.project [build]" />
-        <item itemvalue="Gradle.project [install]" />
-        <item itemvalue="Gradle.project [clean]" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.9-temurin-17.0.9-4caba194b151-0a678b09" />
+        <option value="bundled-python-sdk-d68999036c7f-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.14475.56" />
       </set>
     </attachedChunks>
   </component>
@@ -216,7 +217,23 @@
       <option name="project" value="LOCAL" />
       <updated>1707562340155</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="completed login in front">
+      <option name="closed" value="true" />
+      <created>1710273056619</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1710273056619</updated>
+    </task>
+    <task id="LOCAL-00004" summary="completed login in front">
+      <option name="closed" value="true" />
+      <created>1710273163952</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1710273163952</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,6 +253,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="TASK-1 add liquibase configuration and initialize entities to database" />
     <MESSAGE value="TASK-1 remove todo" />
-    <option name="LAST_COMMIT_MESSAGE" value="TASK-1 remove todo" />
+    <MESSAGE value="completed login in front" />
+    <option name="LAST_COMMIT_MESSAGE" value="completed login in front" />
   </component>
 </project>

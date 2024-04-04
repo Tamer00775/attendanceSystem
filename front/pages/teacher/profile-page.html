@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
     <link rel="stylesheet" href="../../assets/styles/profile-style.css">
-    <title>Admin Page</title>
+    <title>Teacher Profile Page</title>
 </head>
 <body>
     <header class="header">
@@ -22,6 +22,10 @@
                         <div class="admin-info">
                             <p>LAST LOGIN DATE:</p> 
                             <p id="login-date">08 FEB 2024</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>STATUS:</p> 
+                            <p id="statusName">TEACHER</p>
                         </div>
                     </div>
                     <div class="icon">
@@ -79,8 +83,8 @@
                     <div class="image" style="display: none;">
                         <p>Change Image</p>
                         <form action="#" class="choose">
-                            <input type="file" id="inputFile" accept=".jpeg, .jpg, .png">
-                            <button id="save">Save</button>
+                            <input type="file" id="inputFile" class="upload-label" accept=".jpeg, .jpg, .png">
+                            <button id="save" class="save">Save</button>
                         </form>
                     </div>
                     <div class="notif" style="display: none;">
@@ -92,28 +96,46 @@
         </div>
     </main>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
         const url = 'url(../../assets/images/icon.png)';
         const icon = document.querySelector('.icon');
-        icon.style.backgroundImage= url;
+        icon.style.backgroundImage = url;
 
         const info = document.querySelector('#info');
         const edit = document.querySelector('#edit');
+        const saveButton = document.getElementById('save');
         const infoClass = document.querySelector('.info');
         const imageClass = document.querySelector('.image');
+        const notifClass = document.querySelector('.notif'); 
+
+        // Event listener for MY INFO button
         info.addEventListener("click", () => {
-            infoClass.style.display = 'block';
-            imageClass.style.display = 'none';
+            info.classList.add('select'); 
+            edit.classList.remove('select'); 
+            infoClass.style.display = 'block'; 
+            imageClass.style.display = 'none'; 
+            notifClass.style.display = 'none';
         });
+
+        // Event listener for PHOTO EDITING button
         edit.addEventListener("click", () => {
-            infoClass.style.display = 'none';
-            imageClass.style.display = 'block';
+            edit.classList.add('select'); 
+            info.classList.remove('select'); 
+            infoClass.style.display = 'none'; 
+            imageClass.style.display = 'block'; 
+            notifClass.style.display = 'none'; 
         });
-        
-        const save = document.querySelector('#save');
-        save.addEventListener("click", ()=>{
+
+        //Save button functionality
+        const save = document.querySelector('.save');
+        saveButton.addEventListener("click", (e) => {
+            e.preventDefault(); 
+            const inputFile = document.querySelector('#inputFile');
             const fileUrl = URL.createObjectURL(inputFile.files[0]);
             icon.style.backgroundImage = 'url(' + fileUrl + ')';
-        })
+            save.style.display = 'block';
+        });
+    });
     </script>
 </body>
-</html>
+</html> -->

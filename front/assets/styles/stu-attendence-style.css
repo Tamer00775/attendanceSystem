@@ -224,63 +224,155 @@ table, tr, td{
     display: flex;
     flex-direction: column;
 }
-.set-att{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-.left{
-    display: flex;
-    gap: 50px;
-    color: white;
-    flex-direction: column;
-}
 
-.slider-container {
-    width: 200px;
-    gap: 5px;
-    align-items: center;
-}
-
-.slider {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 2px;
-    background: #d3d3d3;
-    outline: none;
-    opacity: 0.7;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
-}
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: red;
-    cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: red;
-    cursor: pointer;
-}
-#abb{
-    position: absolute;
-    right: 450px;
-    z-index: 1;
-}
-
-
-.attendance-table th, td{
-    border: 1px solid white;
-    border-collapse: collapse;
-    height: 40px;
-}
-.attendance-table th,td{
-    padding: 5px 5px;
-    width: 100%;
-}
+    /* Resets and General Styles */ 
+    * { 
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box; 
+        font-family: Arial, sans-serif; /* Updated to Arial as specified */ 
+    } 
+ 
+    body { 
+        background-color: #204066; 
+        width: 100%; 
+        overflow: hidden; 
+        font-family: 'Abyssinica SIL', sans-serif; /* Specific font for the body */ 
+        color: #fff; /* Default text color updated to white for visibility */ 
+        line-height: 1.6; 
+    } 
+ 
+    .container { 
+        padding: 10px 10%; 
+    } 
+ 
+    /* Header Styles */ 
+    .header__wrapper { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+    } 
+ 
+    .admin { 
+        display: flex; 
+        align-items: center; 
+        gap: 5px; 
+    } 
+ 
+    .admin-details { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 15px; 
+    } 
+ 
+    .admin-info { 
+        display: flex; 
+        gap: 10px; 
+        justify-content: space-between; 
+        width: 400px; 
+        align-items: center; 
+    } 
+ 
+    .logo, .icon { 
+        background-size: cover; 
+        background-repeat: no-repeat; 
+        background-position: center; 
+    } 
+ 
+    .logo { 
+        height: 150px; 
+        width: 325px; /* Assuming you have your logo image */ 
+    } 
+ 
+    .icon { 
+        height: 125px; 
+        width: 100px; /* Assuming you have your icon image */ 
+    } 
+ 
+    /* Main and Menu Styles */ 
+    .main__wrapper, .menu { 
+        display: flex; 
+        gap: 30px; 
+    } 
+ 
+    .menu { 
+        flex-direction: column; 
+        padding: 40px 15px; 
+        width: 275px; 
+    } 
+ 
+    .menu a, .logout button { 
+        background-color: #ffffff; 
+        color: #000000; 
+        padding: 5px 20px; 
+        text-align: center; 
+        text-decoration: none; 
+        font-size: 16px; 
+        border-radius: 20px; 
+        transition: background-color 0.5s, color 0.5s; 
+    } 
+ 
+    .menu a:hover, .logout button:hover { 
+        background: #727272; 
+    } 
+ 
+    #selected { 
+        background: #DFBC5F; 
+        color: #204066; 
+    } 
+ 
+    /* Table and Button Styles */ 
+    table, tr, td, th { 
+        border: 2px solid white; 
+        border-collapse: collapse; 
+    } 
+ 
+    .btn, .buttons button { 
+        background: gray; 
+        color: white; 
+        border-radius: 15px; 
+        padding: 5px 10px; 
+        border: 1px solid white; 
+        cursor: pointer; 
+    } 
+ 
+    .btn:hover, .buttons button:hover { 
+        color: #DFBC5F; 
+    } 
+ 
+    /* Additional Components and Layout Adjustments */ 
+    .page-name h1 { 
+        text-transform: uppercase; 
+        color: #DFBC5F; 
+    } 
+ 
+    .attendance-table th, td { 
+        padding: 5px; 
+        text-align: left; 
+    } 
+ 
+    /* Responsive Design Adjustments */ 
+    @media (max-width: 768px) { 
+        .header__wrapper, .admin { 
+            flex-direction: column; 
+        } 
+ 
+        .main__wrapper { 
+            flex-direction: column; 
+        } 
+    }
+    /* Adjust the size of the attendance table container */
+    .attendance-data-container {
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: 100%; /* Set width to match the displayAttendanceData container */
+        overflow-x: auto; /* Add horizontal scroll if needed */
+        max-height: 500px; /* Limit the maximum height to prevent excessive scrolling */
+        overflow-y: auto; /* Add vertical scroll if needed */
+    }
+    
+    
+    
+    

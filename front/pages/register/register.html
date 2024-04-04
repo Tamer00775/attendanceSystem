@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,13 +18,14 @@
                     firstname: document.getElementById('first-name').value,
                     lastname: document.getElementById('last-name').value,
                     courseYear: document.getElementById('course').value,
+                    gender: true,
                     specialityCode: document.getElementById('code').value,
                     telephone: document.getElementById('telephone').value,
                     birthDate: document.getElementById('birthdate').value
                 };
 
                 // Make an AJAX request
-                fetch('http://0.0.0.0:8080/open-api/auth/register', {
+                fetch('http://0.0.0.0:8081/open-api/auth/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -44,6 +45,7 @@
                     .catch(error => {
                         // Handle errors
                         console.error('There was a problem with the fetch operation:', error);
+                        error.body.data.Error
                     });
             });
         });
@@ -72,7 +74,7 @@
                     <input type="text" placeholder="First Name" id="first-name" name="first-name" required>
                     <input type="text" placeholder="Last Name" id="last-name" name="last-name" required>
                     <input type="email" placeholder="Email" id="email" name="email" required>
-                    <!-- <div class="gender">
+                    <div class="gender">
                         <label for="male">
                             <input type="radio" name="gender" value="male" id="male" required>
                             Male
@@ -81,11 +83,11 @@
                             <input type="radio" name="gender" value="female" id="female" required>
                             Female
                         </label>
-                    </div> -->
+                    </div>
                     <input type="number" placeholder="Telephone" id="telephone" name="telephone" required>
                     <input type="text" placeholder="Speciality code" id="code" name="code" required>
                     <input type="text" placeholder="Course Year" id="course" name="course" required>
-                    <input type="date" placeholder="Birthdate" id="birthdate" name="birthdate" required>
+                    <input type="text" placeholder="Birthdate" id="birthdate" name="birthdate" required>
                     <input type="password" placeholder="Password" id="password" name="password" required>
                     <input type="password" placeholder="Repeat Password" id="repeat" name="repeat" required>
                     <button type="submit">Enter</button>
@@ -98,4 +100,167 @@
     </div>
 </main>
 </body>
-</html>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/styles/register.css">
+    <title>Document</title>
+    <script> 
+        document.addEventListener('DOMContentLoaded', function() { 
+            const form = document.querySelector('.form'); 
+     
+            form.addEventListener('submit', function(event) { 
+                event.preventDefault(); 
+                const password = document.getElementById('password').value; 
+                const repeatPassword = document.getElementById('repeat').value; 
+                const passwordMatchMessage = document.getElementById('pass'); 
+     
+                // Client-side password matching validation 
+                if (password !== repeatPassword) { 
+                    passwordMatchMessage.style.visibility = 'visible'; 
+                    displayMessage('Passwords do not match.', 'red'); 
+                    return; 
+                } else { 
+                    passwordMatchMessage.style.visibility = 'hidden'; 
+                } 
+     
+                // Form data assembly 
+                const formData = {
+                    email: document.getElementById('email').value,
+
+                    password: document.getElementById('password').value,
+
+                    firstname: document.getElementById('firstname').value,
+
+                    middlename: document.getElementById('middlename').value,
+
+                    lastname: document.getElementById('lastname').value,
+
+
+                    gender: true,
+
+                    specialityCode: document.getElementById('code').value,
+
+                    telephone: document.getElementById('telephone').value,
+
+                    birthDate: document.getElementById('birthDate').value
+                };               
+     
+                // Fetch request to backend 
+                fetch('http://0.0.0.0:8081/open-api/auth/register', { 
+                    method: 'POST', 
+                    headers: { 
+                        'Content-Type': 'application/json', 
+                    }, 
+                    body: JSON.stringify(formData), 
+                }) 
+                .then(response => response.json().then(data => ({ 
+                    status: response.status, 
+                    data 
+                }))) 
+                .then(obj => { 
+                    if (obj.status === 200) { 
+                        displayMessage('You have successfully registered!', 'green'); 
+                        setTimeout(function() { 
+                            window.location.href = '../login/login.html'; 
+                        }, 3000); 
+                    } else if (obj.data.errorMessage) { // Check if message exists in the response 
+                        console.log('log 0') 
+                        displayMessage(obj.data.errorMessage + '', 'red')
+                        
+                    } else { 
+                        console.log('log 1')         
+                    }
+                }) 
+                .catch(error => { 
+                    console.log('log 2')
+                    displayMessage('You have successfully registered!', 'green'); 
+                        setTimeout(function() { 
+                            window.location.href = '../login/login.html'; 
+                        }, 3000);
+                }); 
+            }); 
+     
+            // Function to display messages 
+            function displayMessage(message, color) { 
+                let messageElement = document.getElementById('message'); 
+                if (!messageElement) { 
+                    messageElement = document.createElement('p'); 
+                    messageElement.id = 'message'; 
+                    form.appendChild(messageElement); 
+                } 
+                messageElement.innerText = message; 
+                messageElement.style.color = color;
+            } 
+        }); 
+    </script>
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <div class="header__wrapper">
+            <div class="logo">
+            </div>
+        </div>
+    </div>
+</header>
+<main class="main">
+    <div class="container">
+        <div class="main__wrapper">
+            <div class="login">
+                <div class="title">
+                    <p>Register</p>
+                </div>
+                <div class="valid">
+                    <p id="pass" style="visibility: hidden;"></p>
+                </div>
+                <form action="#" class="form">
+                    <input type="text" placeholder="First Name" id="firstname" name="firstname" required>
+                    <input type="text" placeholder="middlename" id="middlename" name="middlename" required>
+                    <input type="text" placeholder="lastname" id="lastname" name="lastname" required>
+                    <input type="email" placeholder="email" id="email" name="email" required>
+                    <div class="gender">
+                        <label for="male">
+                            <input type="radio" name="gender" value="male" id="male" required>
+                            Male
+                        </label>
+                        <label for="female">
+                            <input type="radio" name="gender" value="female" id="female" required>
+                            Female
+                        </label>
+                    </div>
+                    <input type="text" placeholder="Telephone" id="telephone" name="telephone" required>
+                    <input type="text" placeholder="Speciality code" id="code" name="code" required>
+                    <input type="text" placeholder="Birthdate" id="birthDate" name="birthDate" required>
+                    <input type="password" placeholder="Password" id="password" name="password" required>
+                    <input type="password" placeholder="Repeat Password" id="repeat" name="repeat" required>
+                    <button type="submit">Enter</button>
+                </form>
+                <div class="links">
+                    <a href="../login/login.html">ALREADY HAVE ACCOUNT? LOGIN</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html> 
