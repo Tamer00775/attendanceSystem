@@ -53,8 +53,8 @@
                     <div class="page-name">
                         <h1>START OF COURSES</h1>
                     </div>
-                    <div class="courses">
-                        <div class="course">
+                    <!-- <div class="courses"> -->
+                        <!-- <div class="course">
                             <div class="course-name">
                                 <p><span class="code">CSS 228.01P</span> - ADVANCED ALGORITHM</p>
                             </div>
@@ -62,8 +62,10 @@
                                 <button id="startLessonButton" style="background-color: #F3C997" class="btn">START</button>
                                 <button id="endLessonButton" disabled style="background-color: #FED66D;" class="btn">END</button>
                             </form>
-                        </div>
-                    </div>
+                        </div> -->
+                    <!-- </div> -->
+                    <div class="courses" 
+                    id="coursesContainer"></div>
                     <div>
                         <p class="start" style="display: none; background-color: green;">LESSON HAS BEGUN! ATTENDANCE CODE: 123456</p>
                         <p class="end" style="display: none; background-color: red;">LESSON IS OVER!</p>
@@ -73,6 +75,46 @@
         </div>
     </main>
     <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('http://localhost:8081/api/teacherLessonList')
+    .then(response => response.json())
+    .then(data => {
+        const coursesContainer = document.getElementById('coursesContainer');
+        data.forEach(course => {
+            const courseElement = document.createElement('div');
+            courseElement.className = 'course';
+            courseElement.innerHTML = `
+                <div class="course-name">
+                    <p><span class="code">${course.sectionName}</span> - ${course.courseName}</p>
+                </div>
+                <form action="">
+                    <button onclick="startClicked(this)" style="background-color: #F3C997" class="btn">START</button>
+                    <button onclick="endClicked(this)" disabled style="background-color: #FED66D;" class="btn">END</button>
+                </form>
+            `;
+            coursesContainer.appendChild(courseElement);
+        });
+    })
+    .catch(error => console.error('Error fetching the courses:', error));
+});
+
+function startClicked(buttonElement) {
+    buttonElement.disabled = true;
+    buttonElement.nextElementSibling.disabled = false;
+    const startMessage = buttonElement.closest('.course').querySelector('.start');
+    startMessage.style.display = 'block';
+    // Set timeout or any other logic needed for the 'start' state
+}
+
+function endClicked(buttonElement) {
+    buttonElement.disabled = true;
+    buttonElement.previousElementSibling.disabled = false;
+    const endMessage = buttonElement.closest('.course').querySelector('.end');
+    endMessage.style.display = 'block';
+    // Set timeout or any other logic needed for the 'end' state
+}
+
         // document.addEventListener('DOMContentLoaded', () => {
         //     const startLessonButton = document.getElementById('startLessonButton');
         //     const endLessonButton = document.getElementById('endLessonButton');

@@ -57,7 +57,7 @@
                 headers.append('Content-Type', 'application/json');
 
                 try {
-                    const response = await fetch('http://35.172.227.184:8081/open-api/auth/login', {
+                    const response = await fetch('http://54.82.10.92:8081/open-api/auth/login', {
                         method: 'POST',
                         headers: headers,
                         body: JSON.stringify({ login, password }),
@@ -65,18 +65,23 @@
 
                     if (response.ok) {
                         const data = await response.json();
-                        data.role = 'student';
                         headers.append('Authorization', 'Bearer ' + data.token);
                         headers.append('Content-Type', 'application/json');
                         localStorage.setItem('token', data.token);
 
+
+                        console.log(data)
                         switch (data.role) {
-                            case 'admin':
+                            case 'ADMIN':
                                 window.location.href = '../admin/admin-page.html';
                                 break;
-                            case 'student':
+                            case 'STUDENT':
                                 window.location.href = '../student/home-page.html';
                                 break;
+                            case 'TEACHER':
+                                window.location.href = '../teacher/home-page.html';
+                                break;
+
                             default:
                                 console.error('Unknown role:', data.role);
                         }
@@ -93,7 +98,6 @@
     </script>
 </body>
 </html> 
-
 
 
 
