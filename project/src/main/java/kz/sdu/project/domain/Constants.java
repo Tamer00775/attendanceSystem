@@ -14,6 +14,7 @@ public class Constants {
     public static final Integer SIX_SIZED_SECRET_CODE = 6;
     public static final Integer EIGHT_SIZED_SECRET_CODE = 8;
     public static final Integer ABSENCE_COEFFICIENT = 2;
+    public static final Integer TIME_INTERVAL_BETWEEN_SECRET_CODE = 2;
     public static final Integer LESSON_START_TIME = 8;
     public static final Integer LESSON_END_TIME = 20;
     public static final int MONDAY = 1;

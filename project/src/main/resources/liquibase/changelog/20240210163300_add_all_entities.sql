@@ -121,6 +121,7 @@ CREATE TABLE attendance_record (
                                    current_week INT,
                                    record_type VARCHAR(255) NOT NULL,
                                    is_with_reason BOOLEAN NOT NULL,
+                                   is_interpreted BOOLEAN DEFAULT FALSE,
                                    FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE,
                                    FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id) ON DELETE CASCADE
 );

@@ -38,7 +38,6 @@ public class AuthResource {
         return ResponseEntity.ok(emailSenderService.sendMail(emailDto));
     }
 
-
     @GetMapping("/message")
     public ResponseEntity<String> message() {
         return ResponseEntity.ok().body("message");

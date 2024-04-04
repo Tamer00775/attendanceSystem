@@ -7,6 +7,7 @@ import kz.sdu.project.entity.Schedule;
 import kz.sdu.project.entity.ScheduleTable;
 import kz.sdu.project.entity.Section;
 import kz.sdu.project.ex_handler.EntityNotFoundException;
+import kz.sdu.project.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -30,11 +31,8 @@ public class ScheduleTableShowService {
     private final ScheduleTableService scheduleTableService;
 
 
-    public List<ScheduleTableFormatDto> schedule(RequestBodyDTO requestBodyDTO) {
-
-        String login = requestBodyDTO.getLogin();
-        Person person = personService.findByLogin(login)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("User with username %s not found", login)));
+    public List<ScheduleTableFormatDto> schedule() {
+        Person person = SecurityUtils.getCurrentPerson();
         List<Integer> scheduleIds = sectionService.findByPersonId(person.getId())
                 .stream().map(Section::getSchedule)
                 .map(Schedule::getScheduleId)

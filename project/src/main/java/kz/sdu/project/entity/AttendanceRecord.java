@@ -33,6 +33,9 @@ public class AttendanceRecord {
     @Column(name = "is_with_reason")
     private Boolean is_with_reason;
 
+    @Column(name = "is_interpreted")
+    private Boolean is_interpreted;
+
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person_att_record;

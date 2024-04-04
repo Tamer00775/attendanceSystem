@@ -9,10 +9,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -30,18 +27,16 @@ public class AttStatusInfoResource {
         this.studentAttStatusService = studentAttStatusService;
     }
 
-    @PostMapping
-    public ResponseEntity<Map<String, AttendanceStatusDto>> getAllAttendanceStatuses(@RequestBody @Valid RequestBodyDTO requestBodyDTO) {
-        log.info("Process Getting AttendanceStatusAll by {}" , requestBodyDTO);
-        return ResponseEntity.ok(studentAttStatusService.attStatusByAll(requestBodyDTO));
+    @GetMapping
+    public ResponseEntity<Map<String, AttendanceStatusDto>> getAllAttendanceStatuses() {
+        log.info("Process Getting AttendanceStatusAll ");
+        return ResponseEntity.ok(studentAttStatusService.attStatusByAll());
     }
     
-    @PostMapping("/bySection")
-    public ResponseEntity<Map<String, List<AttendanceStatusDetailDto>>> getAttendanceStatusBySection(@RequestBody @Valid RequestBody2DTO requestBodyDTO) {
-        log.info("Process Getting AttendanceStatusAllBySection by {}" , requestBodyDTO);
-        return ResponseEntity.ok(studentAttStatusService.attStatusBySection(requestBodyDTO));
+    @GetMapping("/bySection/{sectionNames}")
+    public ResponseEntity<List<AttendanceStatusDetailDto>> getAttendanceStatusBySection(@PathVariable("sectionNames") String sectionNames) {
+        log.info("Process Getting AttendanceStatusAllBySection by {}" , sectionNames);
+        return ResponseEntity.ok(studentAttStatusService.attStatusBySection(sectionNames));
     }
 
 }
-
-

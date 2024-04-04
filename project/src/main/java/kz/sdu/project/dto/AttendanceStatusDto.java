@@ -12,9 +12,11 @@ import lombok.NoArgsConstructor;
 public class AttendanceStatusDto {
     private String code;
     private String courseName;
+    private String sectionNames;
     private Integer hours;
     private Integer presentHours;
     private Integer absentHours;
     private Integer reasonHours;
     private Integer absenceLimit;
+
 }

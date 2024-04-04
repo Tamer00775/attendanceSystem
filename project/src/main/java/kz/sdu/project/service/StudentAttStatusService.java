@@ -7,6 +7,7 @@ import kz.sdu.project.dto.RequestBodyDTO;
 import kz.sdu.project.entity.*;
 import kz.sdu.project.ex_handler.EntityNotFoundException;
 import kz.sdu.project.utils.CompletedAttributeValidation;
+import kz.sdu.project.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -30,13 +31,10 @@ public class StudentAttStatusService {
     private final SectionService sectionService;
     private final CompletedAttributeValidation val;
 
-    public Map<String, AttendanceStatusDto> attStatusByAll(RequestBodyDTO requestBodyDTO) {
-
-        String login = requestBodyDTO.getLogin();
-        Person student = personService.findByLoginAndLoadRoles(login)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("Student with username %s not found", login)));
+    public Map<String, AttendanceStatusDto> attStatusByAll() {
+        Person student = SecurityUtils.getCurrentPerson();
         if (!val.isStudent(student))
-            throw new EntityNotFoundException(String.format("User is not student with login %s", login));
+            throw new EntityNotFoundException("User is not student with login");
 
         List<AttendanceInfo> attList = attendanceInfoService.findByPersonId(student.getId());
 
@@ -81,6 +79,7 @@ public class StudentAttStatusService {
         attDto.setAbsentHours(attDto.getAbsentHours() + numbers.getAbsentHours());
         attDto.setReasonHours(attDto.getReasonHours() + numbers.getReasonHours());
         attDto.setAbsenceLimit(attDto.getAbsenceLimit() + numbers.getAbsentHours() * ABSENCE_COEFFICIENT);
+        attDto.setSectionNames(prevSectionName + "," + sectionName);
         attendanceMap.put(prevSectionName + "," + sectionName, attDto);
     }
 
@@ -94,34 +93,32 @@ public class StudentAttStatusService {
                 .absentHours(numbers.getAbsentHours())
                 .reasonHours(numbers.getReasonHours())
                 .absenceLimit(numbers.getAbsentHours() * ABSENCE_COEFFICIENT)
+                .sectionNames(sectionName)
                 .build());
     }
 
 
-    public Map<String, List<AttendanceStatusDetailDto>> attStatusBySection(RequestBody2DTO requestBodyDTO) {
-
-        String login = requestBodyDTO.getLogin();
-        Person student = personService.findByLoginAndLoadRoles(login)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("Student with username %s not found", login)));
+    public List<AttendanceStatusDetailDto> attStatusBySection(String sectionNames) {
+        Person student = SecurityUtils.getCurrentPerson();
         if (!val.isStudent(student))
-            throw new EntityNotFoundException(String.format("User is not student with login %s", login));
-        String[] sections = requestBodyDTO.getSectionNames().split(SEPARATE_BY_COMMA);
+            throw new EntityNotFoundException("User is not student with login");
+        String[] sections = sectionNames.split(SEPARATE_BY_COMMA);
 
         return returnSectionAtt(student,sections);
     }
 
-    private Map<String, List<AttendanceStatusDetailDto>> returnSectionAtt(Person student, String[] sections) {
+    private List<AttendanceStatusDetailDto> returnSectionAtt(Person student, String[] sections) {
 
-        Map<String, List<AttendanceStatusDetailDto>> finalAttDetMap = new HashMap<>();
+        List<AttendanceStatusDetailDto> finalAttDetList = new ArrayList<>();
         for (String section : sections) {
-            updateAttendanceDetailStatus(finalAttDetMap,section,student);
+            updateAttendanceDetailStatus(finalAttDetList,section,student);
         }
 
-        return finalAttDetMap;
+        return finalAttDetList;
     }
 
 
-    private void updateAttendanceDetailStatus(Map<String, List<AttendanceStatusDetailDto>> attMap, String sectionName, Person student) {
+    private void updateAttendanceDetailStatus(List<AttendanceStatusDetailDto> attList, String sectionName, Person student) {
 
         Section section = sectionService.findByName(sectionName)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Section with name %s not found", sectionName)));
@@ -129,16 +126,14 @@ public class StudentAttStatusService {
         if (section.getSchedule() == null)
             throw new EntityNotFoundException(String.format("Schedule with section name %s not found", section));
         String lecType = section.getType();
-        List<AttendanceStatusDetailDto> finalAttDetList = new ArrayList<>();
+
 
         List<AttendanceRecord> attRecords = attendanceRecordService
                 .findByPersonIdAndScheduleId(student.getId(), schedule.getScheduleId());
-        attRecords.forEach(attendanceRecord -> updateAttDetList(finalAttDetList,attendanceRecord,schedule));
-
-        attMap.put(lecType, finalAttDetList);
+        attRecords.forEach(attendanceRecord -> updateAttDetList(attList,attendanceRecord,schedule, lecType));
     }
 
-    private void updateAttDetList(List<AttendanceStatusDetailDto> attDetList, AttendanceRecord attendanceRecord, Schedule schedule) {
+    private void updateAttDetList(List<AttendanceStatusDetailDto> attDetList, AttendanceRecord attendanceRecord, Schedule schedule, String lecType) {
         int totalHours = attendanceRecord.getTotal_hours(),
                 presentHours = attendanceRecord.getTotal_present_hours();
         boolean isWithReason = attendanceRecord.getIs_with_reason();
@@ -148,7 +143,7 @@ public class StudentAttStatusService {
         for (int hour = 0; hour < totalHours; hour++) {
             String attStatus = determineAttendanceStatus(presentHours--,isWithReason);
             String time = formatHour(schedule.getStartTime(), hour);
-            addAttendanceDetailDto(attDetList, date, place, attStatus, time);
+            addAttendanceDetailDto(attDetList, date, place, attStatus, time,attendanceRecord.getCurrentWeek(),lecType);
         }
 
         log.info("Completed process AttStatusBySection...");
@@ -168,12 +163,14 @@ public class StudentAttStatusService {
         return (startsAt + hourIncrement) + ":00";
     }
 
-    private void addAttendanceDetailDto(List<AttendanceStatusDetailDto> list, LocalDate date, String place, String status, String time) {
+    private void addAttendanceDetailDto(List<AttendanceStatusDetailDto> list, LocalDate date, String place, String status, String time, Integer currentWeek, String lecType) {
         list.add(AttendanceStatusDetailDto.builder()
                 .date(date)
                 .place(place)
                 .attStatus(status)
                 .hour(time)
+                .week(currentWeek)
+                .type(lecType)
                 .build());
     }
 

@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         // Adjust the below configurations according to your requirements
-        config.addAllowedOrigin("http://127.0.0.1:5500"); // Or use addAllowedOriginPattern for patterns
+        config.addAllowedOrigin("http://35.172.227.184:8081:8080"); // Or use addAllowedOriginPattern for patterns
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
