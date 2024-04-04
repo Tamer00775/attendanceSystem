@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @AllArgsConstructor
-@RequestMapping("/api/studentIn")
+@RequestMapping("/api/student/lesson")
 public class StudentSectionInResource {
 
     private final StudentSectionInService studentSectionInService;
-    @PostMapping
+    @PostMapping("/in")
     public ResponseEntity<String> studentInProcess(
             @RequestBody @Validated SectionInRequest sectionInRequest
     ) {
