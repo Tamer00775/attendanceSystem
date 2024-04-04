@@ -4,6 +4,7 @@ import kz.sdu.project.dto.RequestBody3DTO;
 import kz.sdu.project.entity.*;
 import kz.sdu.project.ex_handler.EntityNotFoundException;
 import kz.sdu.project.utils.SecurityUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +19,7 @@ import static kz.sdu.project.domain.ActionStatus.MANUALLY;
 import static kz.sdu.project.domain.Constants.*;
 
 @Service
+@Slf4j
 public class TeacherStartLessonService {
     private final PersonService personService;
     private final SectionService sectionService;
@@ -49,6 +51,7 @@ public class TeacherStartLessonService {
                 .findByScheduleId(schedule.getScheduleId())
                         .orElse(null);
         if (secretCodeForCheckIn != null && isTheSameDay(secretCodeForCheckIn.getCreated())) {
+            secretCodeForCheckIn = updateSecretCodeIfNeeded(secretCodeForCheckIn);
             return Map.of("secretCode", secretCodeForCheckIn.getSecret_code());
         }
         initializeAttInfoAndRecord(section, teacher);
@@ -60,6 +63,22 @@ public class TeacherStartLessonService {
         String secretCode = secretCodeForCheckIn.getSecret_code();
 
         return Map.of("secretCode", secretCode);
+    }
+
+    private SecretCodeForCheckIn updateSecretCodeIfNeeded(SecretCodeForCheckIn secretCodeForCheckIn) {
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime request = secretCodeForCheckIn.getCreated();
+        long minutesDiff = Math.abs(Duration.between(now, request).toMinutes());
+        log.info("minutesDiff ; {}", minutesDiff);
+        if (minutesDiff > TIME_INTERVAL_BETWEEN_SECRET_CODE) {
+            String generateSecretCode = RandomStringUtils
+                    .random(SIX_SIZED_SECRET_CODE, USE_LETTERS_IN_SECRET_CODE, USE_NUMBERS_IN_SECRET_CODE);
+            secretCodeForCheckIn.setSecret_code(generateSecretCode);
+            secretCodeForCheckIn.setCreated(now);
+            log.info("SecretCodeForCheckIn is changed...");
+        }
+        return secretCodeForCheckInService.save(secretCodeForCheckIn);
     }
 
     private boolean canStartLesson(Schedule schedule) {
@@ -80,7 +99,7 @@ public class TeacherStartLessonService {
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         DayOfWeek dayOfWeek2 = DayOfWeek.of(schedule.getDayOfWeek());
-        return now.getMinute() > 15 &&
+        return now.getMinute() > 5 &&
                 now.getHour() >= startHour &&
                 now.getHour() < endHour &&
                 dayOfWeek == dayOfWeek2;
@@ -104,6 +123,7 @@ public class TeacherStartLessonService {
             SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInOptional.get();
             secretCodeForCheckIn.setSecret_code(generateSecretCode);
             secretCodeForCheckIn.setCreated(now);
+            secretCodeForCheckIn.setIs_interpreted(false);
             secretCodeForCheckInService.save(secretCodeForCheckIn);
             return;
         }
@@ -112,6 +132,7 @@ public class TeacherStartLessonService {
         secretCodeForCheckIn.setSchedule_checkin(schedule);
         secretCodeForCheckIn.setSecret_code(generateSecretCode);
         secretCodeForCheckIn.setCreated(now);
+        secretCodeForCheckIn.setIs_interpreted(false);
         secretCodeForCheckInService.save(secretCodeForCheckIn);
     }
 
@@ -185,9 +206,15 @@ public class TeacherStartLessonService {
         if (schedule == null)
             throw new EntityNotFoundException(String.format("Schedule not created for section %s ", section));
 
-        if(!canEndLesson(schedule))
-            return Map.of("status", "FAILED");
+        SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInService
+                .findByScheduleId(schedule.getScheduleId())
+                .orElse(null);
+        if(canEndLesson(schedule) && secretCodeForCheckIn != null) {
+            secretCodeForCheckIn.setIs_interpreted(true);
+            secretCodeForCheckInService.save(secretCodeForCheckIn);
+            return Map.of("status", "SUCCESSFULLY");
+        }
 
-        return Map.of("status", "SUCCESSFULLY");
+        return Map.of("status", "FAILED");
     }
 }

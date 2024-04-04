@@ -31,6 +31,9 @@ public class SecretCodeForCheckIn {
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
+    @Column(name = "is_interpreted", nullable = false)
+    private Boolean is_interpreted;
+
     @ManyToOne
     @JoinColumn(name = "schedule_id", referencedColumnName = "schedule_id")
     private Schedule schedule_checkin;
