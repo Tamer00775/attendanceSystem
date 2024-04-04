@@ -63,9 +63,14 @@ public class StudentSectionInService {
             return "UNEXPECTED_ISSUE_FROM_SYSTEM_DURING_JOIN_SESSION";
         }
 
+
         AttendanceRecord attendanceRecord = attendanceRecordOptional.get();
         AttendanceInfo attendanceInfo = attendanceInfoOptional.get();
         SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInOptional.get();
+
+        if (secretCodeForCheckIn.getIs_interpreted()) {
+            return "SESSION_IS_CLOSED_BY_TEACHER";
+        }
         secretCodeForCheckIn = updateSecretCodeIfNeeded(secretCodeForCheckIn);
 
         if (!secretCodeForCheckIn.getSecret_code().equals(code))

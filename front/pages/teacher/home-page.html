@@ -21,11 +21,12 @@
             <div class="main__wrapper">
                 <div class="sidebar__wrapper">
                     <nav class="menu">
-                        <a href="#" id="selected">HOME PAGE</a>
+                        <a href="#" id="selected">my profile</a>
                         <a href="./schedule-page.html">Course schedule</a>
                         <a href="./course-page.html">start course</a>
-                        <a href="./attendence-page.html">ATTENDANCE</a>
-                        <a href="./profile-page.html">my profile</a>
+                        <a href="./attendence-page.html">set ATTENDANCE</a>
+                        <a href="./absences-page.html">absence reasons</a>
+                        <!-- <a href="./profile-page.html">my profile</a> -->
                         <form action="" class="logout">
                             <button >Log out</button>
                         </form>
@@ -36,32 +37,38 @@
                         <h1>Home page</h1>
                     </div>
                     <div class="info">
-                        <div class="icon" style="background-image: url(../../assets/images/icon.png);">
-                        </div>
-                        <div class="details">
-                            <div class="personal-info">
-                                <p >ID NUMBER:</p> 
-                                <p id="id"">210107045</p>
-                            </div>
-                            <div class="personal-info">
-                                <p >NAME SURNAME:</p> 
-                                <p id="name"">PALENSHEEVA PALENSHE</p>
-                            </div>
-                            <div class="personal-info">
-                                <p >GENDER:</p> 
-                                <p id="gender">FEMALE</p>
-                            </div>
-                            <div class="personal-info">
-                                <p>EMAIL:</p> 
-                                <p id="email">palensheeva.palenshe@gmail.com</p>
-                            </div>
-                            <div class="personal-info">
-                                <p>BIRTH DATE:</p>
-                                <p id="birth-date">09-FEB-04</p> 
-                            </div>
-                            <div class="personal-info">
-                                <p>LAST LOGIN DATE:</p> 
-                                <p id="login-date">08 FEB 2024</p>
+                        <div class="icon" style="background-image: url(../../assets/images/icon.png);"></div>
+                        <div class="details" id="userDetails">
+                            <div class="details">
+                                <div class="personal-info">
+                                    <p>LOGIN:</p>
+                                    <p id="id"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>NAME SURNAME:</p>
+                                    <p id="name"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>GENDER:</p>
+                                    <p id="gender"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>EMAIL:</p>
+                                    <p id="email"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>Telephone:</p>
+                                    <p id="telephone"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>LAST LOGIN DATE:</p>
+                                    <p id="login-date"></p>
+                                </div>
+                                <div class="personal-info">
+                                    <p>STATUS:</p>
+                                    <p id="rolePerson"></p>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -69,5 +76,45 @@
             </div>
         </div>
     </main>
+
+    <script>
+        (async function () {
+            try {
+                const response = await fetch('http://localhost:8081/api/person/v1/current', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add authorization if needed
+                        'Content-Type': 'application/json',
+                    },
+                });
+    
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('id').textContent = userData.login || ''; // Use login for ID or empty string if missing
+                    document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
+                    document.getElementById('email').textContent = userData.email || '';
+                    document.getElementById('login-date').textContent = userData.lastLogin || '';
+                    document.getElementById('telephone').textContent = userData.telephone || '';
+                    document.getElementById('gender').textContent = userData.gender || '';
+                    document.getElementById('rolePerson').textContent = userData.rolePerson || '';
+                    
+    
+                } else {
+                    console.error('Failed to fetch user details:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error during fetch operation:', error);
+            }
+        })();
+    </script>
+    
+    <script>
+        // Обработчик события для кнопки "Log out"
+        document.querySelector('.logout button').addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+            localStorage.removeItem('token'); // Удаляем токен из локального хранилища
+            window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
+        });
+    </script>
 </body>
 </html>

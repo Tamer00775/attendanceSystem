@@ -143,6 +143,7 @@ CREATE TABLE secret_code_for_check_in (
                                           secret_code_for_check_in_id serial PRIMARY KEY,
                                           schedule_id INT NOT NULL,
                                           secret_code VARCHAR(255) NOT NULL,
+                                              is_interpreted BOOLEAN NOT NULL,
                                           created timestamp NOT NULL,
                                           FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id) ON DELETE CASCADE
 );

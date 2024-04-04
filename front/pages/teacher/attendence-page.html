@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
     <link rel="stylesheet" href="../../assets/styles/teach-att.css">
-    <title>Teacher Attendance Page</title>
+    <title>Admin Page</title>
 </head>
 <body>
     <header class="header">
@@ -23,10 +23,6 @@
                             <p>LAST LOGIN DATE:</p> 
                             <p id="login-date">08 FEB 2024</p>
                         </div>
-                        <div class="admin-info">
-                            <p>STATUS:</p> 
-                            <p id="statusName">TEACHER</p>
-                        </div>
                     </div>
                     <div class="icon" style="background-image: url(../../assets/images/icon.png);">
                     </div>
@@ -39,10 +35,11 @@
             <div class="main__wrapper">
                 <div class="sidebar__wrapper">
                     <nav class="menu">
-                        <a href="#">HOME PAGE</a>
+                        <a href="./home-page.html">HOME PAGE</a>
                         <a href="./schedule-page.html">Course schedule</a>
                         <a href="./course-page.html">start course</a>
-                        <a href="./attendence-page.html", id="selected">ATTENDANCE</a>
+                        <a href="#" id="selected">set ATTENDANCE</a>
+                        <a href="./absences-page.html">absence reasons</a>
                         <a href="./profile-page.html">my profile</a>
                         <form action="" class="logout">
                             <button >Log out</button>
@@ -51,64 +48,81 @@
                 </div>
                 <div class="main__content">
                     <div class="page-name">
-                        <h1>ATTENDANCE</h1>
-                        <nav aria-label="Breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#">ATTENDANCE</a></li>
-                            </ol>
-                        </nav>
-                        <button class="set" id="addBreadcrumbButton">SET ATTENDANCE</button>
+                        <h1>SET ATTENDANCE</h1>
                     </div>
                     <div class="table-container">
-                        <table class="groupTable">
-                            <thead>
-                                <tr>
-                                    <th class="id">No</th>
-                                    <th class="name">Name</th>
-                                    <th class="day">13 Feb</th>
-                                    <th class="day">14 Feb</th>
-                                    <th class="day">15 Feb</th>
-                                    <th class="day">16 Feb</th>
-                                    <th class="day">17 Feb</th>
-                                    <th class="day">18 Feb</th>
-                                    <th class="day">19 Feb</th>
-                                    <th class="day">20 Feb</th>
-                                    <th class="day">21 Feb</th>
-                                    <th class="day">22 Feb</th>
-                                    <th class="day">23 Feb</th>
-                                    <th class="day">24 Feb</th>
-                                    <th class="day">25 Feb</th>
-                                    <th class="day">26 Feb</th>
-                                    <th class="day">27 Feb</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="id">1</td>
-                                    <td class="name">Palensheeva Palenshe</td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                    <td class="day"><input type="checkbox" disabled></td>
-                                </tr>
-                            </tbody>
+                        <table>
+                            <tr>
+                                <td class="id">№</td>
+                                <td class="code">Code</td>
+                                <td class="name">Course Name</td>
+                                <td style="padding-left: 5px;">GROUP NUMBER</td>
+                            </tr>
+                            <tr>
+                                <td class="id">1</td>
+                                <td class="code id="groupButton"">CSS 228</td>
+                                <td class="name">ADVANCED ALGORITHM</td>
+                                <td class="groupButton">03-P</td>
+                            </tr>
+                            <tr>
+                                <td class="id">2</td>
+                                <td class="code" id="groupButton"></td>
+                                <td class="name"></td>
+                                <td class="groupButton"></td>
+                            </tr>
+                            <tr>
+                                <td class="id">3</td>
+                                <td class="code" id="groupButton"></td>
+                                <td class="name"></td>
+                                <td class="groupButton"></td>
+                            </tr>
+                            <tr>
+                                <td class="id">4</td>
+                                <td class="code" id="groupButton"></td>
+                                <td class="name"></td>
+                                <td class="groupButton"></td>
+                            </tr>
+                            <tr>
+                                <td class="id">5</td>
+                                <td class="code" id="groupButton"></td>
+                                <td class="name"></td>
+                                <td class="groupButton"></td>
+                            </tr>
+                            <tr>
+                                <td class="id">6</td>
+                                <td class="code" id="groupButton"></td>
+                                <td class="name"></td>
+                                <td class="groupButton"></td>
+                            </tr>
                         </table>
                     </div>
-                    <form action="" class="buttons">
-                        <button type="button" id="saveButton">Save</button>
-                        <button type="button" id="clearButton">Clear</button>
-                    </form>
+                    <div class="table" style="display: none;">
+                        <button class="btn">Back</button>
+                        <table class="groupTable">
+                            <tr>
+                                <td class="id">№</td>
+                                <td class="name">Name</td>
+                                <td class="day">13 Feb</td>
+                                <td class="day">14 Feb</td>
+                                <td class="day">15 Feb</td>
+                                <td class="day">16 Feb</td>
+                                <td class="day">17 Feb</td>
+                            </tr>
+                            <tr>
+                                <td class="id">1</td>
+                                <td class="name">Palensheeva Palenshe</td>
+                                <td class="day"><input type="checkbox"></td>
+                                <td class="day"><input type="checkbox"></td>
+                                <td class="day"><input type="checkbox"></td>
+                                <td class="day"><input type="checkbox"></td>
+                                <td class="day"><input type="checkbox"></td>
+                            </tr>
+                        </table>
+                        <form action="" class="buttons">
+                            <button>Save</button>
+                            <button>Clear</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -117,116 +131,25 @@
         <path fill="#4caf50" d="M9,17l-5-5l1.41-1.41L9,14.17l8.59-8.59 L19,8l-10,10L9,17z"/>
     </svg>
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const editableTable = document.querySelector(".groupTable");
-            const setAttendanceButton = document.getElementById('addBreadcrumbButton');
-            const breadcrumbContainer = document.querySelector(".breadcrumb");
-            const attendanceBreadcrumb = breadcrumbContainer.querySelector(".breadcrumb-item a");
-            const saveButton = document.getElementById('saveButton');
-            const clearButton = document.getElementById('clearButton');
-            const attendanceCheckboxes = document.querySelectorAll(".groupTable input[type='checkbox']");
-            const attendanceIcons = document.querySelectorAll(".attendance-button");
+        const table = document.querySelector(".table-container");
+        const buttons = document.querySelectorAll(".groupButton");
+        const tables = document.querySelectorAll(".table");
+        const back = document.querySelector(".btn");
 
-            attendanceCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', (event) => {
-                    const studentId = event.target.getAttribute('data-student-id');
-                    const date = event.target.getAttribute('data-date');
-                    // Assuming you have a function to save the attendance state, e.g.:
-                    // saveAttendance(studentId, date, checkbox.checked);
-
-                    // Find the corresponding icon button in the non-editable view
-                    const iconButton = document.querySelector(`.attendance-button[data-student-id="${studentId}"][data-date="${date}"]`);
-                    if (checkbox.checked) {
-                        iconButton.classList.add('present');
-                        iconButton.classList.remove('absent');
-                        iconButton.innerHTML = '&#10004;'; // Checkmark icon
-                    } else {
-                        iconButton.classList.remove('present');
-                        iconButton.classList.add('absent');
-                        iconButton.innerHTML = '&#10006;'; // Cross icon
-                    }
-                });
+        buttons.forEach((button, index) => {
+            button.addEventListener("click", () => {
+                table.style.display = 'none';
+                tables[index].style.display = 'block';
             });
-
-            function saveAttendance(studentId, date, isPresent) {
-                // Simulate saving to a backend by updating the icon in the non-editable view
-                const icon = document.querySelector(`button[data-student-id="${studentId}"][data-date="${date}"]`);
-                if (icon) {
-                    icon.className = isPresent ? 'attendance-button present' : 'attendance-button absent';
-                    icon.innerHTML = isPresent ? '&#10004;' : '&#10006;';
-                }
-            }
-
-            // Initialize icons based on checkboxes at page load
-            attendanceCheckboxes.forEach(checkbox => {
-                const studentId = checkbox.getAttribute('data-student-id');
-                const date = checkbox.getAttribute('data-date');
-                saveAttendance(studentId, date, checkbox.checked);
-            });
-    
-            // Function to toggle the editable view
-            function toggleEditable(editable) {
-                const checkboxes = editableTable.querySelectorAll("input[type='checkbox']");
-                checkboxes.forEach((checkbox) => {
-                    checkbox.disabled = !editable; // Toggle the disabled state based on the parameter
-                });
-                // Toggle visibility of save and clear buttons
-                const buttonDisplay = editable ? 'block' : 'none';
-                saveButton.style.display = buttonDisplay;
-                clearButton.style.display = buttonDisplay;
-            }
-    
-           // Function to add or remove the "SET ATTENDANCE" breadcrumb
-            function manageSetAttendanceBreadcrumb(editable) {
-                const setAttendanceBreadcrumb = document.querySelector(".breadcrumb .set-attendance");
-                if (editable && !setAttendanceBreadcrumb) {
-                    var breadcrumb = document.createElement("li");
-                    breadcrumb.className = "breadcrumb-item set-attendance";
-                    breadcrumb.innerHTML = '<a href="#">SET ATTENDANCE</a>';
-                    breadcrumbContainer.appendChild(breadcrumb);
-
-                    breadcrumb.addEventListener('click', () => {
-                        toggleEditable(false);
-                        removeSetAttendanceBreadcrumb();
-                    });
-                } else if (!editable && setAttendanceBreadcrumb) {
-                    breadcrumbContainer.removeChild(setAttendanceBreadcrumb);
-                }
-            }
-
-            function removeSetAttendanceBreadcrumb() {
-                const setAttendanceBreadcrumb = document.querySelector(".breadcrumb .set-attendance");
-                if (setAttendanceBreadcrumb) {
-                    breadcrumbContainer.removeChild(setAttendanceBreadcrumb);
-                }
-            }
-
-            // Click event for "SET ATTENDANCE" button to toggle editable view
-            setAttendanceButton.addEventListener('click', () => {
-                toggleEditable(true);
-                manageSetAttendanceBreadcrumb(true);
-            });
-    
-            // Click event for save button to save the state and toggle non-editable view
-            saveButton.addEventListener('click', () => {
-                // TODO: Implement functionality to save the state
-                toggleEditable(false);
-                manageSetAttendanceBreadcrumb(false);
-            });
-    
-            // Click event for clear button to clear checkboxes
-            clearButton.addEventListener('click', () => {
-                const checkboxes = editableTable.querySelectorAll("input[type='checkbox']");
-                checkboxes.forEach((checkbox) => {
-                    checkbox.checked = false;
-                });
-                toggleEditable(false);
-                manageSetAttendanceBreadcrumb(false);
-            });
-    
-            // Start in non-editable view
-            toggleEditable(false);
         });
+        
+        back.addEventListener("click", ()=>{
+            table.style.display = 'flex';
+            for (let i = 0; i < tables.length; i++){
+                tables[i].style.display = 'none';
+            }
+        })
+
     </script>
 </body>
 </html>

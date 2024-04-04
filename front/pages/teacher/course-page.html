@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
     <link rel="stylesheet" href="../../assets/styles/teach-cou.css">
-    <title>Teacher Course Page</title>
+    <title>Admin Page</title>
 </head>
 <body>
     <header class="header">
@@ -23,10 +23,6 @@
                             <p>LAST LOGIN DATE:</p> 
                             <p id="login-date">08 FEB 2024</p>
                         </div>
-                        <div class="admin-info">
-                            <p>STATUS:</p> 
-                            <p id="statusName">TEACHER</p>
-                        </div>
                     </div>
                     <div class="icon" style="background-image: url(../../assets/images/icon.png);">
                     </div>
@@ -42,7 +38,8 @@
                         <a href="./home-page.html">HOME PAGE</a>
                         <a href="./schedule-page.html">Course schedule</a>
                         <a href="#" id="selected">start course</a>
-                        <a href="./attendence-page.html">ATTENDANCE</a>
+                        <a href="./attendence-page.html">set ATTENDANCE</a>
+                        <a href="./absences-page.html">absence reasons</a>
                         <a href="./profile-page.html">my profile</a>
                         <form action="" class="logout">
                             <button >Log out</button>
@@ -56,11 +53,11 @@
                     <!-- <div class="courses"> -->
                         <!-- <div class="course">
                             <div class="course-name">
-                                <p><span class="code">CSS 228.01P</span> - ADVANCED ALGORITHM</p>
+                                <p><span class="code">CSS 228.01P</span> - Advanced ALGORITHM</p>
                             </div>
                             <form action="">
-                                <button id="startLessonButton" style="background-color: #F3C997" class="btn">START</button>
-                                <button id="endLessonButton" disabled style="background-color: #FED66D;" class="btn">END</button>
+                                <button class="btn">START</button>
+                                <button class="btn">END</button>
                             </form>
                         </div> -->
                     <!-- </div> -->
@@ -112,33 +109,6 @@ function endClicked(buttonElement) {
     buttonElement.previousElementSibling.disabled = false;
     const endMessage = buttonElement.closest('.course').querySelector('.end');
     endMessage.style.display = 'block';
-    // Set timeout or any other logic needed for the 'end' state
-}
-
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     const startLessonButton = document.getElementById('startLessonButton');
-        //     const endLessonButton = document.getElementById('endLessonButton');
-        //     const startMessage = document.querySelector('.start');
-        //     const endMessage = document.querySelector('.end');
-
-        //     startLessonButton.addEventListener('click', (e) => {
-        //         e.preventDefault();
-        //         startMessage.style.display = 'block';
-        //         endMessage.style.display = 'none';
-        //     });
-
-        //     setTimeout(() => {
-        //         startMessage.style.display = 'none';}, 3000000);
-
-        //     endLessonButton.addEventListener('click', (e) => {
-        //         e.preventDefault();
-        //         startMessage.style.display = 'none';
-        //         endMessage.style.display = 'block'; 
-        //     });
-
-        //     setTimeout(() => {
-        //         endMessage.style.display = 'none';}, 600000);
-        // });
         function startClicked() {
             document.getElementById('startLessonButton').disabled = true;
             document.getElementById('endLessonButton').disabled = false;
