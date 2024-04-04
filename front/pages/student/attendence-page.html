@@ -83,7 +83,7 @@
     <script src="../../assets/scripts/stud.js"></script>
     <div id="attendanceModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <!-- <span class="close">&times;</span> -->
             <div id="attendanceData"></div>
         </div>
     </div>
@@ -220,7 +220,7 @@
     }
     
     function displayAttendanceDataForSections(data) {
-        const container = document.querySelector('.attendance-data-container .table-container');
+        const container = document.querySelector('.attendance-data-container ');
         let table = '<table>';
         table += '<tr><th>Date</th><th>Hour</th><th>Attendance Status</th><th>Place</th><th>Type</th><th>Week</th></tr>';
     
@@ -241,8 +241,31 @@
         // Show the attendance data container
         document.querySelector('.attendance-data-container').style.display = 'block';
     }
+
+
+    // Function to display attendance data for selected sections
+function displayAttendanceDataForSections(data) {
+    const container = document.querySelector('.table-container');
+    let table = '<table>';
+    table += '<tr><th>Date</th><th>Hour</th><th>Attendance Status</th><th>Place</th><th>Type</th><th>Week</th></tr>';
+
+    data.forEach(entry => {
+        table += `<tr>
+                    <td>${entry.date}</td>
+                    <td>${entry.hour}</td>
+                    <td>${entry.attStatus}</td>
+                    <td>${entry.place}</td>
+                    <td>${entry.type}</td>
+                    <td>${entry.week}</td>
+                  </tr>`;
+    });
     
-</script>
+
+    table += '</table>';
+    container.innerHTML = table;
+} 
+    
+</script> 
 </html> 
 </html>
 
@@ -278,3 +301,31 @@ function displayAttendanceDataForSections(data) {
     table += '</table>';
     container.innerHTML = table;
 }   -->
+
+
+
+
+
+<!-- 
+function displayAttendanceDataForSections(data) {
+    const container = document.querySelector('.attendance-data-container ');
+    let table = '<table>';
+    table += '<tr><th>Date</th><th>Hour</th><th>Attendance Status</th><th>Place</th><th>Type</th><th>Week</th></tr>';
+
+    data.forEach(entry => {
+        table += `<tr>
+                    <td>${entry.date}</td>
+                    <td>${entry.hour}</td>
+                    <td>${entry.attStatus}</td>
+                    <td>${entry.place}</td>
+                    <td>${entry.type}</td>
+                    <td>${entry.week}</td>
+                  </tr>`;
+    });
+
+    table += '</table>';
+    container.innerHTML = table;
+
+    // Show the attendance data container
+    document.querySelector('.attendance-data-container').style.display = 'block';
+} -->

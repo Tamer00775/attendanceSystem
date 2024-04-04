@@ -119,7 +119,7 @@ table, tr, td{
     margin-left: 20px;
 }
 .id{
-    min-width: 50px;
+    min-width: 40px;
     text-align: center;
     font-size: 16px;
     padding: 5px 10px;
@@ -131,20 +131,19 @@ table, tr, td{
     padding: 5px 10px;
 }
 .name{
-    min-width: 400px;
+    min-width: 300px;
     text-align: left;
     font-size: 16px;
     padding: 5px 10px;
 }
 .table-container{
-    margin-top: 50px;
+    margin-top: 20px;
 }
 .groupButton{
     min-width: 150px;
     text-align: left;
     font-size: 16px;
     padding: 5px 10px;
-    cursor: pointer;
     transition: color 0.5s;
 }
 .groupButton:hover{
@@ -196,3 +195,54 @@ table, tr, td{
     border-bottom: 1px solid #DFBC5F;
     box-shadow: #000000;
 }
+.set{
+    font-size: 11px;
+    color: #000000;
+    background: #FFF2D2;
+    border-radius: 15px;
+    width: 110px;
+    height: 15px;
+    border: 1px solid white;
+    margin-left: 780px;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+.breadcrumb {
+    list-style: none;
+    display: flex;
+    padding: 0;
+  }
+  
+  .breadcrumb-item {
+    margin-right: 0.5em;
+  }
+  
+  .breadcrumb-item a {
+    color: white;
+    text-decoration: none;
+    font-size: 10px;
+  }
+  
+  .breadcrumb-item a:hover {
+    text-decoration: underline;
+  }
+  
+  .breadcrumb-item::after {
+    content: '-';
+    color: white;
+    margin: 0 0.5em;
+  }
+  
+  .breadcrumb-item:last-child::after {
+    content: none;
+  }
+
+  .attendance-button.present {
+    color: green;
+}
+
+.attendance-button.absent {
+    color: red;
+}
+  
+  

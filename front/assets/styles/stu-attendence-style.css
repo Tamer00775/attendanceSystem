@@ -5,11 +5,16 @@
     box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
-body{
+body {
     background-color: #204066;
     width: 100%;
+    height: 1000px; /* Set the height to 1000px */
     overflow: hidden;
+    font-family: 'Abyssinica SIL', sans-serif;
+    color: #fff;
+    line-height: 1.6;
 }
+
 .container{
     padding: 10px 10%;
 }
@@ -362,17 +367,36 @@ table, tr, td{
         } 
     }
     /* Adjust the size of the attendance table container */
-    .attendance-data-container {
-        margin-top: 50px;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        width: 100%; /* Set width to match the displayAttendanceData container */
-        overflow-x: auto; /* Add horizontal scroll if needed */
-        max-height: 500px; /* Limit the maximum height to prevent excessive scrolling */
-        overflow-y: auto; /* Add vertical scroll if needed */
-    }
-    
-    
-    
-    
+
+
+/* Стили для контейнера table-container */
+.table-container {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 800px; /* Устанавливаем ширину в 100% */
+    max-height: 400px; /* Ограничиваем максимальную высоту, чтобы предотвратить избыточную прокрутку */
+}
+
+/* Стили для контейнера attendance-data-container */
+.attendance-data-container {
+    margin-left: 450px;
+    margin-bottom: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 1000px; /* Устанавливаем ширину в 100% */
+    max-height: 400px; /* Ограничиваем максимальную высоту, чтобы предотвратить избыточную прокрутку */
+}
+
+/* Стили для контейнера displayAttendanceDataForSections */
+/* .displayAttendanceDataForSections {
+    margin-top: 50px;
+    padding-left: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 800px;
+    max-height: 500px; 
+} */

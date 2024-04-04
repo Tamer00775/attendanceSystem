@@ -229,3 +229,42 @@ table, tr, td{
     top: 190px;
     color: green;
 }
+
+.table-container {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 800px; /* Устанавливаем ширину в 100% */
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку при необходимости */
+    max-height: 500px; /* Ограничиваем максимальную высоту, чтобы предотвратить избыточную прокрутку */
+    overflow-y: auto; /* Добавляем вертикальную прокрутку при необходимости */
+}
+
+/* Стили для контейнера attendance-data-container */
+.attendance-data-container {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 800px; /* Устанавливаем ширину в 100% */
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку при необходимости */
+    max-height: 500px; /* Ограничиваем максимальную высоту, чтобы предотвратить избыточную прокрутку */
+    overflow-y: auto; /* Добавляем вертикальную прокрутку при необходимости */
+}
+
+/* Стили для контейнера displayAttendanceDataForSections */
+.displayAttendanceDataForSections {
+    margin-top: 50px;
+    margin-left: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 800px; /* Устанавливаем ширину в 100% */
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку при необходимости */
+    max-height: 500px; /* Ограничиваем максимальную высоту, чтобы предотвратить избыточную прокрутку */
+    overflow-y: auto; /* Добавляем вертикальную прокрутку при необходимости */
+}
+
+
+    
