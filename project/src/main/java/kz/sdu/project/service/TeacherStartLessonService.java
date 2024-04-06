@@ -4,10 +4,9 @@ import kz.sdu.project.dto.RequestBody3DTO;
 import kz.sdu.project.entity.*;
 import kz.sdu.project.ex_handler.EntityNotFoundException;
 import kz.sdu.project.utils.SecurityUtils;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
@@ -16,27 +15,20 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static kz.sdu.project.domain.ActionStatus.MANUALLY;
-import static kz.sdu.project.domain.Constants.*;
+import static kz.sdu.project.utils.Constants.*;
+import static kz.sdu.project.utils.enums.LessonStatus.*;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class TeacherStartLessonService {
-    private final PersonService personService;
     private final SectionService sectionService;
     private final AttendanceRecordService attendanceRecordService;
     private final AttendanceInfoService attendanceInfoService;
     private final SecretCodeForCheckInService secretCodeForCheckInService;
-    @Autowired
-    public TeacherStartLessonService(PersonService personService, SectionService sectionService, AttendanceRecordService attendanceRecordService, AttendanceInfoService attendanceInfoService, SecretCodeForCheckInService secretCodeForCheckInService) {
-        this.personService = personService;
-        this.sectionService = sectionService;
-        this.attendanceRecordService = attendanceRecordService;
-        this.attendanceInfoService = attendanceInfoService;
-        this.secretCodeForCheckInService = secretCodeForCheckInService;
-    }
     public Map<String, String> start(RequestBody3DTO requestBody3DTO) {
 
-        Person teacher = SecurityUtils.getCurrentPerson();
+        Person teacher = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
         String sectionName = requestBody3DTO.getSectionName();
         Section section = sectionService.findByName(sectionName)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Section with name %s not found", sectionName)));
@@ -45,14 +37,15 @@ public class TeacherStartLessonService {
             throw new EntityNotFoundException(String.format("Schedule not created for section %s ", section));
 
         if (!canStartLesson(schedule)) {
-            throw new EntityNotFoundException("You're out of starting lesson...");
+            return Map.of("status",START_LESSON_PROCESS_IS_FAILED.toString());
         }
         SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInService
                 .findByScheduleId(schedule.getScheduleId())
                         .orElse(null);
         if (secretCodeForCheckIn != null && isTheSameDay(secretCodeForCheckIn.getCreated())) {
             secretCodeForCheckIn = updateSecretCodeIfNeeded(secretCodeForCheckIn);
-            return Map.of("secretCode", secretCodeForCheckIn.getSecret_code());
+            return Map.of("secretCode", secretCodeForCheckIn.getSecret_code(),
+                    "status",START_LESSON_PROCESS_IS_SUCCESSFULLY.name());
         }
         initializeAttInfoAndRecord(section, teacher);
         initializeSecretCode(schedule);
@@ -62,7 +55,8 @@ public class TeacherStartLessonService {
                 .orElseThrow(() -> new EntityNotFoundException("SecretCode not generated \nTry again..."));
         String secretCode = secretCodeForCheckIn.getSecret_code();
 
-        return Map.of("secretCode", secretCode);
+        return Map.of("secretCode", secretCode,
+                "status",START_LESSON_PROCESS_IS_SUCCESSFULLY.name());
     }
 
     private SecretCodeForCheckIn updateSecretCodeIfNeeded(SecretCodeForCheckIn secretCodeForCheckIn) {
@@ -87,7 +81,7 @@ public class TeacherStartLessonService {
              endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         DayOfWeek dayOfWeek2 = DayOfWeek.of(schedule.getDayOfWeek());
-        return now.getMinute() <= 15 &&
+        return now.getMinute() <= TEACHER_START_LESSON_TIME_IS_UNTIL &&
                 now.getHour() >= startHour &&
                 now.getHour() < endHour &&
                 dayOfWeek == dayOfWeek2;
@@ -99,7 +93,7 @@ public class TeacherStartLessonService {
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         DayOfWeek dayOfWeek2 = DayOfWeek.of(schedule.getDayOfWeek());
-        return now.getMinute() > 10 &&
+        return now.getMinute() >= TEACHER_END_LESSON_TIME_STARTS_FROM &&
                 now.getHour() >= startHour &&
                 now.getHour() < endHour &&
                 dayOfWeek == dayOfWeek2;
@@ -198,7 +192,6 @@ public class TeacherStartLessonService {
     }
 
     public Map<String, String> end(RequestBody3DTO requestBody3DTO) {
-        Person teacher = SecurityUtils.getCurrentPerson();
         String sectionName = requestBody3DTO.getSectionName();
         Section section = sectionService.findByName(sectionName)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Section with name %s not found", sectionName)));
@@ -212,9 +205,9 @@ public class TeacherStartLessonService {
         if(canEndLesson(schedule) && secretCodeForCheckIn != null) {
             secretCodeForCheckIn.setIs_interpreted(true);
             secretCodeForCheckInService.save(secretCodeForCheckIn);
-            return Map.of("status", "SUCCESSFULLY");
+            return Map.of("status", END_LESSON_PROCESS_IS_SUCCESSFULLY.name());
         }
 
-        return Map.of("status", "FAILED");
+        return Map.of("status", END_LESSON_PROCESS_IS_FAILED.name());
     }
 }

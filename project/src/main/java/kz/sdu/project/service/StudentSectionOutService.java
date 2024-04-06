@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+import static kz.sdu.project.utils.Constants.*;
+import static kz.sdu.project.utils.enums.LessonStatus.*;
+
 @Service
 @AllArgsConstructor
 public class StudentSectionOutService {
@@ -32,15 +35,15 @@ public class StudentSectionOutService {
                 .findByPersonIdAndScheduleId(student.getId(), schedule.getScheduleId())
                 .orElseThrow(() -> new EntityNotFoundException("Unexpected error from system..."));
 
-        if (user_did_get_left_before(checkInForSession)) return "LEAVING_SESSION_IS_DONE_ALREADY";
-        if (!canLeftSession(schedule)) return "U_CAN_LEAVE_AFTER_15_MIN";
+        if (user_did_get_left_before(checkInForSession)) return LEAVING_SESSION_IS_DONE_ALREADY.name();
+        if (!canLeftSession(schedule)) return U_CAN_LEAVE_AFTER_15_MIN.name();
         long min_diff_between_session = min_diff_between(checkInForSession.getGet_passed());
-        if (min_diff_between_session > 45) return "INITIALLY_YOU_SHOULD_ENTER_TO_SESSION";
+        if (min_diff_between_session > JOIN_SESSION_RANGE) return INITIALLY_YOU_SHOULD_ENTER_TO_SESSION.name();
 
         updateAttIfNeeded(min_diff_between_session, student, section, schedule);
         updateCheckIn(checkInForSession);
 
-        return "LEAVING_SESSION_IS_DONE";
+        return LEAVING_SESSION_IS_DONE.name();
     }
 
     private void updateCheckIn(CheckInForSession checkInForSession) {
@@ -53,11 +56,11 @@ public class StudentSectionOutService {
         LocalDateTime get_left = checkInForSession.getGet_left();
         if (get_left == null) return false;
         long min_diff = Math.abs(Duration.between(now, get_left).toMinutes());
-        return min_diff < 60;
+        return min_diff < LEFT_SESSION_RANGE;
     }
 
     public void updateAttIfNeeded(long min_diff_between_session, Person student, Section section, Schedule schedule) {
-        if (min_diff_between_session < 30) {
+        if (min_diff_between_session < ACTIVE_SESSION_TIME_TO_BE_COUNTED) {
             AttendanceInfo attendanceInfo = attendanceInfoService
                     .findByPersonIdAndSectionId(student.getId(), section.getSectionId())
                     .orElseThrow(() -> new EntityNotFoundException("Unexpected error from system..."));

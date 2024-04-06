@@ -6,13 +6,12 @@ import kz.sdu.project.entity.PersonAuthority;
 import kz.sdu.project.ex_handler.EntityNotFoundException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static kz.sdu.project.domain.Constants.*;
+import static kz.sdu.project.utils.Constants.*;
 
 @Service
 public class EmailSenderService {

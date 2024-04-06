@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @AllArgsConstructor
 @RequestMapping("/api/student/lesson")
-public class StudentSectionInResource {
+public class StudentSectionResource {
 
     private final StudentSectionInService studentSectionInService;
     private final StudentSectionOutService studentOutProcess;

@@ -2,8 +2,6 @@ package kz.sdu.project.service;
 
 import kz.sdu.project.dto.AttendanceStatusDetailDto;
 import kz.sdu.project.dto.AttendanceStatusDto;
-import kz.sdu.project.dto.RequestBody2DTO;
-import kz.sdu.project.dto.RequestBodyDTO;
 import kz.sdu.project.entity.*;
 import kz.sdu.project.ex_handler.EntityNotFoundException;
 import kz.sdu.project.utils.CompletedAttributeValidation;
@@ -11,7 +9,6 @@ import kz.sdu.project.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static kz.sdu.project.domain.ActionStatus.*;
-import static kz.sdu.project.domain.Constants.*;
+import static kz.sdu.project.utils.Constants.*;
 @Service
 @Slf4j
 @AllArgsConstructor

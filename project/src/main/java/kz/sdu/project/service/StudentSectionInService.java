@@ -7,17 +7,18 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import java.util.Optional;
 
-import static kz.sdu.project.domain.Constants.*;
-import static kz.sdu.project.domain.Constants.USE_NUMBERS_IN_SECRET_CODE;
+import static kz.sdu.project.utils.Constants.*;
+import static kz.sdu.project.utils.Constants.USE_NUMBERS_IN_SECRET_CODE;
+import static kz.sdu.project.utils.enums.LessonStatus.*;
 
 @Service
 @AllArgsConstructor
@@ -30,22 +31,20 @@ public class StudentSectionInService {
     private final SecretCodeForCheckInService secretCodeForCheckInService;
 
     public String studentInProcess(SectionInRequest sectionInRequest) {
-        Optional<Person> personOptional = Optional.ofNullable(SecurityUtils.getCurrentPerson());
-        Person person = personOptional.get();
+        Person student = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
         Section section = sectionService.findByName(sectionInRequest.getSection())
                 .orElseThrow(EntityNotFoundException::new);
         Schedule schedule = section.getSchedule();
         Optional<CheckInForSession> checkInForSession = checkInForSessionService
-                .findByPersonIdAndScheduleId(person.getId(), schedule.getScheduleId());
+                .findByPersonIdAndScheduleId(student.getId(), schedule.getScheduleId());
         if (!canJoinSession(schedule)) {
-            return "JOIN_TO_SESSION_NOT_ON_TIME";
+            return JOIN_TO_SESSION_NOT_ON_TIME.name();
         }
         if (checkInForSession.isPresent() && joinedSessionAtThisHour(checkInForSession)) {
-            return "JOIN_TO_SESSION_IS_ALREADY_DONE";
+            return JOIN_TO_SESSION_IS_ALREADY_DONE.name();
         }
 
-
-        return joinSession(person, schedule, section,sectionInRequest.getCode());
+        return joinSession(student, schedule, section,sectionInRequest.getCode());
     }
 
     private String joinSession(Person person, Schedule schedule, Section section, String code) {
@@ -60,7 +59,7 @@ public class StudentSectionInService {
                 .findByPersonIdAndScheduleId(person.getId(), schedule.getScheduleId());
         if (attendanceRecordOptional.isEmpty() || attendanceInfoOptional.isEmpty()
             || secretCodeForCheckInOptional.isEmpty()) {
-            return "UNEXPECTED_ISSUE_FROM_SYSTEM_DURING_JOIN_SESSION";
+            return UNEXPECTED_ISSUE_FROM_SYSTEM_DURING_JOIN_SESSION.name();
         }
 
 
@@ -69,12 +68,12 @@ public class StudentSectionInService {
         SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInOptional.get();
 
         if (secretCodeForCheckIn.getIs_interpreted()) {
-            return "SESSION_IS_CLOSED_BY_TEACHER";
+            return SESSION_IS_CLOSED_BY_TEACHER.name();
         }
         secretCodeForCheckIn = updateSecretCodeIfNeeded(secretCodeForCheckIn);
 
         if (!secretCodeForCheckIn.getSecret_code().equals(code))
-            return "WRONG_SECRET_CODE_JOIN_SESSION";
+            return WRONG_SECRET_CODE_JOIN_SESSION.name();
 
         return joinedSession(attendanceInfo, attendanceRecord,checkInForSessionOptional, schedule, person);
     }
@@ -95,7 +94,7 @@ public class StudentSectionInService {
         }
         checkInForSession.setGet_passed(LocalDateTime.now());
         checkInForSessionService.save(checkInForSession);
-        return "JOIN_SESSION_IS_ACCEPTED";
+        return JOIN_SESSION_IS_ACCEPTED.name();
     }
 
     private SecretCodeForCheckIn updateSecretCodeIfNeeded(SecretCodeForCheckIn secretCodeForCheckIn) {
@@ -120,7 +119,7 @@ public class StudentSectionInService {
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         DayOfWeek dayOfWeek2 = DayOfWeek.of(schedule.getDayOfWeek());
-        return now.getMinute() <= 15 &&
+        return now.getMinute() <= STUDENT_CAN_JOIN_SESSION_UNTIL &&
                 now.getHour() >= startHour &&
                 now.getHour() < endHour &&
                 dayOfWeek == dayOfWeek2;
@@ -130,7 +129,7 @@ public class StudentSectionInService {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime request = checkInForSession.get().getGet_passed();
         long minutesDiff = Math.abs(Duration.between(now, request).toMinutes());
-        return minutesDiff < 45;
+        return minutesDiff < JOIN_SESSION_RANGE;
     }
 
     private Integer getCurrentWeek() {
