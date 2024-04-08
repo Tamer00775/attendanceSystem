@@ -2,6 +2,7 @@ package kz.sdu.project.resource;
 
 import kz.sdu.project.dto.SectionInRequest;
 import kz.sdu.project.dto.SectionOutRequest;
+import kz.sdu.project.dto.SectionResponseDto;
 import kz.sdu.project.service.StudentSectionInService;
 import kz.sdu.project.service.StudentSectionOutService;
 import lombok.AllArgsConstructor;
@@ -22,17 +23,18 @@ public class StudentSectionResource {
     private final StudentSectionInService studentSectionInService;
     private final StudentSectionOutService studentOutProcess;
     @PostMapping("/in")
-    public ResponseEntity<String> studentInProcess(
+    public ResponseEntity<SectionResponseDto> studentInProcess(
             @RequestBody @Validated SectionInRequest sectionInRequest
     ) {
-        return ResponseEntity.ok().body(studentSectionInService.studentInProcess(sectionInRequest));
+        return ResponseEntity.ok().body(
+                new SectionResponseDto(studentSectionInService.studentInProcess(sectionInRequest)));
     }
 
     @PostMapping("/out")
-    public ResponseEntity<String> studentInProcess(
+    public ResponseEntity<SectionResponseDto> studentInProcess(
             @RequestBody @Validated SectionOutRequest sectionOutRequest
     ) {
-        return ResponseEntity.ok().body(studentOutProcess.studentOutProcess(sectionOutRequest));
+        return ResponseEntity.ok().body(
+                new SectionResponseDto(studentOutProcess.studentOutProcess(sectionOutRequest)));
     }
-
 }
