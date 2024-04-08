@@ -1,6 +1,5 @@
 package kz.sdu.project.service;
 
-import kz.sdu.project.dto.RequestBodyDTO;
 import kz.sdu.project.dto.ScheduleTableFormatDto;
 import kz.sdu.project.entity.Person;
 import kz.sdu.project.entity.Schedule;
@@ -9,7 +8,6 @@ import kz.sdu.project.entity.Section;
 import kz.sdu.project.ex_handler.EntityNotFoundException;
 import kz.sdu.project.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -20,7 +18,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static kz.sdu.project.domain.Constants.*;
+import static kz.sdu.project.utils.Constants.*;
 
 @Service
 @AllArgsConstructor

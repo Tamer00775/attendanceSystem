@@ -27,6 +27,9 @@ public class CheckInForSession {
     @Column(name = "get_passed", nullable = false)
     private LocalDateTime get_passed;
 
+    @Column(name = "get_left")
+    private LocalDateTime get_left;
+
     @ManyToOne
     @JoinColumn(name = "person_id", nullable = false)
     private Person person_checkin;

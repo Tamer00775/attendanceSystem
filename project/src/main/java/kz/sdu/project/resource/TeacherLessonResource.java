@@ -2,6 +2,7 @@ package kz.sdu.project.resource;
 
 import kz.sdu.project.dto.RequestBody3DTO;
 import kz.sdu.project.service.TeacherStartLessonService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +14,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/teacher")
 @Slf4j
-public class TeacherStartLessonResource {
+@AllArgsConstructor
+public class TeacherLessonResource {
 
     private final TeacherStartLessonService teacherStartLessonService;
-
-    @Autowired
-    public TeacherStartLessonResource(TeacherStartLessonService teacherStartLessonService) {
-        this.teacherStartLessonService = teacherStartLessonService;
-    }
 
     @PostMapping("/start")
     public ResponseEntity<Map<String, String>> startByManually
