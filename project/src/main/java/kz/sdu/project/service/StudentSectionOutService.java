@@ -8,10 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -25,6 +22,7 @@ public class StudentSectionOutService {
     private final CheckInForSessionService checkInForSessionService;
     private final AttendanceInfoService attendanceInfoService;
     private final AttendanceRecordService attendanceRecordService;
+    private static Clock utcClock = Clock.fixed(Instant.now(), ZoneId.of("UTC"));
 
     public String studentOutProcess(SectionOutRequest sectionOutRequest) {
         Person student = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
@@ -47,12 +45,12 @@ public class StudentSectionOutService {
     }
 
     private void updateCheckIn(CheckInForSession checkInForSession) {
-        checkInForSession.setGet_left(LocalDateTime.now());
+        checkInForSession.setGet_left(LocalDateTime.now(utcClock));
         checkInForSessionService.save(checkInForSession);
     }
 
     private boolean user_did_get_left_before(CheckInForSession checkInForSession) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(utcClock);
         LocalDateTime get_left = checkInForSession.getGet_left();
         if (get_left == null) return false;
         long min_diff = Math.abs(Duration.between(now, get_left).toMinutes());
@@ -75,12 +73,12 @@ public class StudentSectionOutService {
     }
 
     private long min_diff_between(LocalDateTime getPassed) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(utcClock);
         return Math.abs(Duration.between(now, getPassed).toMinutes());
     }
 
     private boolean canLeftSession(Schedule schedule) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(utcClock);
         int startHour = schedule.getStartTime(),
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
