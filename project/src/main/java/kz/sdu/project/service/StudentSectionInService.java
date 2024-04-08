@@ -1,6 +1,7 @@
 package kz.sdu.project.service;
 
 import kz.sdu.project.dto.SectionInRequest;
+import kz.sdu.project.dto.SectionResponseDto;
 import kz.sdu.project.entity.*;
 import kz.sdu.project.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
@@ -29,7 +30,8 @@ public class StudentSectionInService {
     private final AttendanceInfoService attendanceInfoService;
     private final SecretCodeForCheckInService secretCodeForCheckInService;
 
-    public String studentInProcess(SectionInRequest sectionInRequest) {
+    public SectionResponseDto studentInProcess(SectionInRequest sectionInRequest) {
+        SectionResponseDto sectionResponseDto = new SectionResponseDto();
         Optional<Person> personOptional = Optional.ofNullable(SecurityUtils.getCurrentPerson());
         Person person = personOptional.get();
         Section section = sectionService.findByName(sectionInRequest.getSection())
@@ -38,14 +40,17 @@ public class StudentSectionInService {
         Optional<CheckInForSession> checkInForSession = checkInForSessionService
                 .findByPersonIdAndScheduleId(person.getId(), schedule.getScheduleId());
         if (!canJoinSession(schedule)) {
-            return "JOIN_TO_SESSION_NOT_ON_TIME";
+            sectionResponseDto.setCode("JOIN_TO_SESSION_NOT_ON_TIME");
+            return sectionResponseDto;
         }
         if (checkInForSession.isPresent() && joinedSessionAtThisHour(checkInForSession)) {
-            return "JOIN_TO_SESSION_IS_ALREADY_DONE";
+            sectionResponseDto.setCode("JOIN_TO_SESSION_IS_ALREADY_DONE");
+            return sectionResponseDto;
         }
 
+        return null;
 
-        return joinSession(person, schedule, section,sectionInRequest.getCode());
+        // return joinSession(person, schedule, section,sectionInRequest.getCode(), sectionResponseDto);
     }
 
     private String joinSession(Person person, Schedule schedule, Section section, String code) {

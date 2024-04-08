@@ -44,9 +44,6 @@ public class TeacherStartLessonService {
         if (schedule == null)
             throw new EntityNotFoundException(String.format("Schedule not created for section %s ", section));
 
-        if (!canStartLesson(schedule)) {
-            throw new EntityNotFoundException("You're out of starting lesson...");
-        }
         SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInService
                 .findByScheduleId(schedule.getScheduleId())
                         .orElse(null);
@@ -83,11 +80,11 @@ public class TeacherStartLessonService {
 
     private boolean canStartLesson(Schedule schedule) {
         LocalDateTime now = LocalDateTime.now();
-        int startHour = schedule.getStartTime(),
+        int startHour = 17,
              endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         DayOfWeek dayOfWeek2 = DayOfWeek.of(schedule.getDayOfWeek());
-        return now.getMinute() <= 15 &&
+        return now.getMinute() <= 50 &&
                 now.getHour() >= startHour &&
                 now.getHour() < endHour &&
                 dayOfWeek == dayOfWeek2;
@@ -209,12 +206,11 @@ public class TeacherStartLessonService {
         SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInService
                 .findByScheduleId(schedule.getScheduleId())
                 .orElse(null);
-        if(canEndLesson(schedule) && secretCodeForCheckIn != null) {
+        if(secretCodeForCheckIn != null) {
             secretCodeForCheckIn.setIs_interpreted(true);
             secretCodeForCheckInService.save(secretCodeForCheckIn);
             return Map.of("status", "SUCCESSFULLY");
         }
-
         return Map.of("status", "FAILED");
     }
 }

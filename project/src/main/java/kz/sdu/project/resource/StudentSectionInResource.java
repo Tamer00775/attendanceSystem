@@ -1,6 +1,7 @@
 package kz.sdu.project.resource;
 
 import kz.sdu.project.dto.SectionInRequest;
+import kz.sdu.project.dto.SectionResponseDto;
 import kz.sdu.project.service.StudentSectionInService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ public class StudentSectionInResource {
 
     private final StudentSectionInService studentSectionInService;
     @PostMapping("/in")
-    public ResponseEntity<String> studentInProcess(
+    public ResponseEntity<SectionResponseDto> studentInProcess(
             @RequestBody @Validated SectionInRequest sectionInRequest
     ) {
         return ResponseEntity.ok().body(studentSectionInService.studentInProcess(sectionInRequest));

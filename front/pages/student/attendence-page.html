@@ -60,23 +60,28 @@
                     </div>
                     <div class="att-set" style="display: none;">
                         <form action="#" class="info-buttons">
-                            <button class="btn"id="back">Back</button>
+                            <button class="Backbtn"id="back">Back</button>
                             <p class="course-name">CSS 228 - Advanced Algorithmic Design and Analysis</p>
                         </form>
                         <div style="display: flex; flex-direction: column; gap: 30px;">
                             <div class="left">
-                                <h2>MohammedAlaaFadhil Al-Hadeethi</h2>
+                                <!-- <h2>MohammedAlaaFadhil Al-Hadeethi</h2> -->
+                            </div>
+                            <div class="left">
+                                <!-- <p>Advanced Algorithmic</p> -->
                             </div>
                             <form action="#" style="display: flex; color: white;">
                                 <label for="code">
                                     Enter the code for attendance:
                                     <input type="text" name="code" id="code">
                                 </label>
-                                <button class="btn">Enter</button>
+                                <button id="Enterbtn">Enter</button>
                             </form>
                         </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
     </main>
@@ -88,9 +93,22 @@
         </div>
     </div>
 
+    <!-- <div class="date-selector">
+        <button id="prevDateBtn">Previous Date</button>
+        <span id="selectedDate">Selected Date: </span>
+        <button id="nextDateBtn">Next Date</button>
+    </div> -->
+
     <div class="attendance-data-container" style="display: none;">
         <div class="table-container">
             <!-- Attendance data will be displayed here -->
+        </div>
+    </div>
+
+
+    <div id="attendanceModal" class="modal">
+        <div class="modal-content">
+            <!-- Сюда будет добавлено содержимое модального окна -->
         </div>
     </div>
 
@@ -109,97 +127,43 @@
 </script>
 
 <script>
-        (async function () {
-            try {
-                const response = await fetch('http://localhost:8081/api/person/v1/current', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add authorization if needed
-                        'Content-Type': 'application/json',
-                    },
-                });
-    
-                if (response.ok) {
-                    const userData = await response.json();
-                    document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
-                    document.getElementById('login-date').textContent = userData.lastLogin || '';
-                    document.getElementById('speName').textContent = userData.courseCode || '';
-    
-                } else {
-                    console.error('Failed to fetch user details:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error during fetch operation:', error);
+    (async function () {
+        try {
+            const response = await fetch('http://localhost:8081/api/person/v1/current', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add authorization if needed
+                    'Content-Type': 'application/json',
+                },
+            });
+            
+            if (response.ok) {
+                const userData = await response.json();
+                document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
+                document.getElementById('login-date').textContent = userData.lastLogin || '';
+                document.getElementById('speName').textContent = userData.courseCode || '';
+
+            } else {
+                console.error('Failed to fetch user details:', response.statusText);
             }
-        })();
+        } catch (error) {
+            //console.error('Error during fetch operation:', error);
+        }
+    })();
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Fetch attendance data when the page loads
-        fetchAttendanceData();
-    });
-    
-    // Function to fetch attendance data from the API
-    function fetchAttendanceData() {
-        const apiUrl = 'http://localhost:8081/api/student/attStatus';
-        const token = localStorage.getItem('token');
-    
-        fetch(apiUrl, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                displayAttendanceData(data);
-                // Add event listener to course names after data is loaded
-                addEventListenerToCourseNames();
-            })
-            .catch(error => {
-                console.error('Error fetching attendance data:', error);
-                document.querySelector('.table-container').innerHTML = '<p>Error loading attendance data.</p>';
-            });
-    }
-    
-    // Function to display attendance data in the table
-    function displayAttendanceData(data) {
-        const container = document.querySelector('.table-container');
-        let table = '<table>';
-        table += '<tr><th>Course Code</th><th>Course Name</th><th>Hours</th><th>Present Hours</th><th>Absent Hours</th><th>Reason Hours</th><th>Absence Limit</th></tr>';
-    
-        for (const key in data) {
-            const course = data[key];
-            table += `<tr> 
-                            <td>${course.code}</td> 
-                            <td class="course-name" data-sections="${course.sectionNames}">${course.courseName}</td> 
-                            <td>${course.hours}</td> 
-                            <td>${course.presentHours}</td> 
-                            <td>${course.absentHours}</td> 
-                            <td>${course.reasonHours}</td> 
-                            <td>${course.absenceLimit}</td> 
-                          </tr>`;
-        }
-    
-        table += '</table>';
-        container.innerHTML = table;
-    }
-    
-    // Function to add event listener to course names
-    function addEventListenerToCourseNames() {
-        document.querySelectorAll('.course-name').forEach(courseName => {
-            courseName.addEventListener('click', function() {
-                // Retrieve the sections from the data-sections attribute
-                const sections = this.getAttribute('data-sections');
-                // Get token from localStorage
-                const token = localStorage.getItem('token');
-                // Form URL with sections
-                const apiUrl = `http://localhost:8081/api/student/attStatus/bySection/` + sections;
-    
-                // Fetch attendance data for the selected sections
-                fetch(apiUrl, {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch attendance data when the page loads
+            fetchAttendanceData();
+        });
+        
+        // Function to fetch attendance data from the API
+        function fetchAttendanceData() {
+            const apiUrl = 'http://localhost:8081/api/student/attStatus';
+            const token = localStorage.getItem('token');
+        
+            fetch(apiUrl, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -208,124 +172,244 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Display attendance data for the selected sections
-                    displayAttendanceDataForSections(data);
+                    displayAttendanceData(data);
+                    // Add event listener to course names after data is loaded
+                    addEventListenerToCourseNames();
                 })
                 .catch(error => {
-                    console.error('Error fetching attendance data for sections:', error);
-                    alert('Error fetching attendance data for sections. Please try again later.');
+                    console.error('Error fetching attendance data:', error);
+                    document.querySelector('.table-container').innerHTML = '<p>Error loading attendance data.</p>';
+                });
+        }
+        
+        // Function to display attendance data in the table
+        function displayAttendanceData(data) {
+            const container = document.querySelector('.table-container');
+            let table = '<table>';
+            table += '<tr><th>Course Code</th><th>Course Name</th><th>Hours</th><th>Present Hours</th><th>Absent Hours</th><th>Reason Hours</th><th>Absence Limit</th></tr>';
+        
+            for (const key in data) {
+                const course = data[key];
+                table += `<tr> 
+                                <td>${course.code}</td> 
+                                <td class="course-name" data-sections="${course.sectionNames}">${course.courseName}</td> 
+                                <td>${course.hours}</td> 
+                                <td>${course.presentHours}</td> 
+                                <td>${course.absentHours}</td> 
+                                <td>${course.reasonHours}</td> 
+                                <td>${course.absenceLimit}</td> 
+                              </tr>`;
+            }
+        
+            table += '</table>';
+            container.innerHTML = table;
+        }
+        
+        // Function to add event listener to course names
+        function addEventListenerToCourseNames() {
+            document.querySelectorAll('.course-name').forEach(courseName => {
+                courseName.addEventListener('click', function() {
+                    // Retrieve the sections from the data-sections attribute
+                    const sections = this.getAttribute('data-sections');
+                    // Get token from localStorage
+                    const token = localStorage.getItem('token');
+                    // Form URL with sections
+                    const apiUrl = `http://localhost:8081/api/student/attStatus/bySection/` + sections;
+        
+                    // Fetch attendance data for the selected sections
+                    fetch(apiUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + token
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Display attendance data for the selected sections
+                        displayAttendanceDataForSections(data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching attendance data for sections:', error);
+                        alert('Error fetching attendance data for sections. Please try again later.');
+                    });
                 });
             });
-        });
-    }
-    
-    function displayAttendanceDataForSections(data) {
-        const container = document.querySelector('.attendance-data-container ');
-        let table = '<table>';
-        table += '<tr><th>Date</th><th>Hour</th><th>Attendance Status</th><th>Place</th><th>Type</th><th>Week</th></tr>';
-    
-        data.forEach(entry => {
-            table += `<tr>
-                        <td>${entry.date}</td>
-                        <td>${entry.hour}</td>
-                        <td>${entry.attStatus}</td>
-                        <td>${entry.place}</td>
-                        <td>${entry.type}</td>
-                        <td>${entry.week}</td>
-                      </tr>`;
-        });
-    
-        table += '</table>';
-        container.innerHTML = table;
+        }
+        
+        // Function to display attendance data for selected sections
+ //       function displayAttendanceDataForSections(data) {
+ //           const container = document.querySelector('.table-container');
+ //           let table = '<table>';
+ //           table += '<tr><th>Date</th><th>Hour</th><th>Attendance Status</th><th>Place</th><th>Type</th><th>Week</th></tr>';
+ //       
+ //           data.forEach(entry => {
+ //               table += `<tr>
+ //                           <td>${entry.date}</td>
+ //                           <td>${entry.hour}</td>
+ //                           <td>${entry.attStatus}</td>
+ //                           <td>${entry.place}</td>
+ //                           <td>${entry.type}</td>
+ //                           <td>${entry.week}</td>
+ //                       </tr>`;
+ //           });
+ //           
+ //       
+ //           table += '</table>';
+ //           container.innerHTML = table;
+ //       
+ //           // Show the attendance data container
+ //           container.style.display = 'block';
+ //       
+ //           // Date navigation buttons
+ //           const dateSelectorDiv = document.createElement('div');
+ //           dateSelectorDiv.className = 'date-selector';
+ //       
+ //           const prevDateBtn = document.createElement('button');
+ //           prevDateBtn.textContent = 'Previous Date';
+ //           prevDateBtn.addEventListener('click', navigatePreviousDate);
+ //       
+ //           const selectedDateSpan = document.createElement('span');
+ //           selectedDateSpan.id = 'selectedDate';
+ //           selectedDateSpan.textContent = `${data[0].date}`;
+ //       
+ //           const nextDateBtn = document.createElement('button');
+ //           nextDateBtn.textContent = 'Next Date';
+ //           nextDateBtn.addEventListener('click', navigateNextDate);
+ //       
+ //           dateSelectorDiv.appendChild(prevDateBtn);
+ //           dateSelectorDiv.appendChild(selectedDateSpan);
+ //           dateSelectorDiv.appendChild(nextDateBtn);
+ //       
+ //           container.parentElement.insertBefore(dateSelectorDiv, container);
+ //       } 
+ //       
+ //       function displayAttendanceDataForDate(date) {
+ //           const container = document.querySelector('.attendance-data-container');
+ //           const filteredData = jsonData.filter(entry => entry.date === date);
+ //           displayAttendanceData(filteredData);
+ //       }
+ //       
+ //       function navigatePreviousDate() {
+ //           const currentDate = document.getElementById('selectedDate').innerText.split(": ")[1];
+ //           const currentDateIndex = jsonData.findIndex(entry => entry.date === currentDate);
+ //           if (currentDateIndex > 0) {
+ //               const prevDate = jsonData[currentDateIndex - 1].date;
+ //               document.getElementById('selectedDate').innerText = 'Selected Date: ' + prevDate;
+ //               displayAttendanceDataForDate(prevDate);
+ //           }
+ //       }
+ //       
+ //       function navigateNextDate() {
+ //           const currentDate = document.getElementById('selectedDate').innerText.split(": ")[1];
+ //           const currentDateIndex = jsonData.findIndex(entry => entry.date === currentDate);
+ //           if (currentDateIndex < jsonData.length - 1) {
+ //               const nextDate = jsonData[currentDateIndex + 1].date;
+ //               document.getElementById('selectedDate').innerText = 'Selected Date: ' + nextDate;
+ //               displayAttendanceDataForDate(nextDate);
+ //           }
+ //       }
 
-        // Show the attendance data container
-        document.querySelector('.attendance-data-container').style.display = 'block';
-    }
-
-
-    // Function to display attendance data for selected sections
+        // Function to display attendance data for selected sections
 function displayAttendanceDataForSections(data) {
     const container = document.querySelector('.table-container');
     let table = '<table>';
     table += '<tr><th>Date</th><th>Hour</th><th>Attendance Status</th><th>Place</th><th>Type</th><th>Week</th></tr>';
 
     data.forEach(entry => {
-        table += `<tr>
+        table += `<tr class="date-row" data-date="${entry.date}">
                     <td>${entry.date}</td>
                     <td>${entry.hour}</td>
                     <td>${entry.attStatus}</td>
                     <td>${entry.place}</td>
                     <td>${entry.type}</td>
                     <td>${entry.week}</td>
-                  </tr>`;
+                </tr>`;
     });
-    
 
     table += '</table>';
     container.innerHTML = table;
-} 
+
+    // Add event listeners to date rows
+    document.querySelectorAll('.date-row').forEach(row => {
+        row.addEventListener('click', function() {
+            // Show the attendance set section
+            const attSetSection = document.querySelector('.att-set');
+            attSetSection.style.display = 'block';
+            container.style.display = 'none'
+
+            // Populate the course name
+            const courseName = this.querySelector('td:first-child').textContent;
+            document.querySelector('.course-name').textContent = courseName;
+        });
+    });
+}
+</script>
+
+
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Находим кнопку "Enter"
+        const enterButton = document.getElementById('Enterbtn');
     
-</script> 
+        // Добавляем обработчик события для клика по кнопке "Enter"
+        enterButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
+    
+            // Получаем значение введенного кода для посещения
+            const code = document.getElementById('code').value;
+    
+            // Подтверждение отправки кода посещения
+            const isConfirmed = confirm(`Do you want to send the attendance code?`);
+    
+            // Если подтверждение не получено, прерываем выполнение функции
+            if (!isConfirmed) {
+                return;
+            }
+    
+            // Формируем объект с данными для отправки на сервер
+            const data = {
+                section: "C0002.02",  // Fill this with appropriate section name
+                code: code
+            };
+            
+    
+            // Отправляем данные на сервер
+            sendAttendanceCode(data);
+        });
+    });
+
+
+    // Функция для отправки кода посещения на сервер
+    async function sendAttendanceCode(data) {
+        // URL для отправки данных
+    
+        // Токен аутентификации, если требуется
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:8081/api/student/lesson/in', {
+                        method: 'POST',
+                        headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(data),
+        });
+            if (response.ok) {
+                console.log(response.body);
+                const data = await response.json();
+                console.log(data);
+                // Если запрос выполнен успешно, выводим алерт об успешной отправке
+                alert('Attendance code sent successfully ' + data.code);
+                // Добавьте код для обработки ожидаемого ответа, если необходимо
+            } else {
+                // Если возникла ошибка при отправке запроса, выводим алерт с сообщением об ошибке
+                alert('Failed to send attendance code: ' + response.statusText);
+            } 
+    }
+</script>
+
 </html> 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-    
-<!-- // Function to display attendance data for selected sections
-function displayAttendanceDataForSections(data) {
-    const container = document.querySelector('.table-container');
-    let table = '<table>';
-    table += '<tr><th>Date</th><th>Hour</th><th>Attendance Status</th><th>Place</th><th>Type</th><th>Week</th></tr>';
-
-    data.forEach(entry => {
-        table += `<tr>
-                    <td>${entry.date}</td>
-                    <td>${entry.hour}</td>
-                    <td>${entry.attStatus}</td>
-                    <td>${entry.place}</td>
-                    <td>${entry.type}</td>
-                    <td>${entry.week}</td>
-                  </tr>`;
-    });
-    
-
-    table += '</table>';
-    container.innerHTML = table;
-}   -->
-
-
-
-
-
-<!-- 
-function displayAttendanceDataForSections(data) {
-    const container = document.querySelector('.attendance-data-container ');
-    let table = '<table>';
-    table += '<tr><th>Date</th><th>Hour</th><th>Attendance Status</th><th>Place</th><th>Type</th><th>Week</th></tr>';
-
-    data.forEach(entry => {
-        table += `<tr>
-                    <td>${entry.date}</td>
-                    <td>${entry.hour}</td>
-                    <td>${entry.attStatus}</td>
-                    <td>${entry.place}</td>
-                    <td>${entry.type}</td>
-                    <td>${entry.week}</td>
-                  </tr>`;
-    });
-
-    table += '</table>';
-    container.innerHTML = table;
-
-    // Show the attendance data container
-    document.querySelector('.attendance-data-container').style.display = 'block';
-} -->
