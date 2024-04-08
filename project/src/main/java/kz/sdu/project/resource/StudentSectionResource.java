@@ -24,6 +24,7 @@ public class StudentSectionResource {
 
     private final StudentSectionInService studentSectionInService;
     private final StudentSectionOutService studentOutProcess;
+
     @PostMapping("/in")
     public ResponseEntity<SectionResponseDto> studentInProcess(
             @RequestBody @Validated SectionInRequest sectionInRequest
