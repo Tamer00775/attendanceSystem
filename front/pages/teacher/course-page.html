@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
     <link rel="stylesheet" href="../../assets/styles/teach-cou.css">
-    <title>Admin Page</title>
+    <title>Teacher Course Page</title>
 </head>
 <body>
     <header class="header">
@@ -23,6 +23,10 @@
                             <p>LAST LOGIN DATE:</p> 
                             <p id="login-date">08 FEB 2024</p>
                         </div>
+                        <div class="admin-info">
+                            <p>STATUS:</p> 
+                            <p id="statusName">TEACHER</p>
+                        </div>
                     </div>
                     <div class="icon" style="background-image: url(../../assets/images/icon.png);">
                     </div>
@@ -38,8 +42,7 @@
                         <a href="./home-page.html">HOME PAGE</a>
                         <a href="./schedule-page.html">Course schedule</a>
                         <a href="#" id="selected">start course</a>
-                        <a href="./attendence-page.html">set ATTENDANCE</a>
-                        <a href="./absences-page.html">absence reasons</a>
+                        <a href="./attendence-page.html">ATTENDANCE</a>
                         <a href="./profile-page.html">my profile</a>
                         <form action="" class="logout">
                             <button >Log out</button>
@@ -50,24 +53,236 @@
                     <div class="page-name">
                         <h1>START OF COURSES</h1>
                     </div>
-                    <div class="courses">
+                    <!-- <div class="courses">
                         <div class="course">
                             <div class="course-name">
-                                <p><span class="code">CSS 228.01P</span> - Advanced ALGORITHM</p>
+                                <p><span class="code">CSS 228.01P</span> - ADVANCED ALGORITHM</p>
                             </div>
                             <form action="">
-                                <button class="btn">START</button>
-                                <button class="btn">END</button>
+                                <button id="startLessonButton" style="background-color: #F3C997" class="btn">START</button>
+                                <button id="endLessonButton" disabled style="background-color: #FED66D;" class="btn">END</button>
                             </form>
                         </div>
+                    </div> -->
+                    <div class="courses" id="coursesContainer">
                     </div>
-                    <div class="notif" style="display: none;">
-                        <p style="color: aqua;">LESSON HAS BEGUN!</p>
-                        <p style="color: green;">LESSON IS OVER!</p>
+                    <div>
+                        <p class="startMessage" style="display: block;"></p>
+                        <!-- <p class="end" style="display: none; background-color: red;">LESSON IS OVER!</p> -->
                     </div>
                 </div>
             </div>
         </div>
     </main>
+    <script>
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const startLessonButton = document.getElementById('startLessonButton');
+        //     const endLessonButton = document.getElementById('endLessonButton');
+        //     const startMessage = document.querySelector('.start');
+        //     const endMessage = document.querySelector('.end');
+
+        //     startLessonButton.addEventListener('click', (e) => {
+        //         e.preventDefault();
+        //         startMessage.style.display = 'block';
+        //         endMessage.style.display = 'none';
+        //     });
+
+        //     setTimeout(() => {
+        //         startMessage.style.display = 'none';}, 3000000);
+
+        //     endLessonButton.addEventListener('click', (e) => {
+        //         e.preventDefault();
+        //         startMessage.style.display = 'none';
+        //         endMessage.style.display = 'block'; 
+        //     });
+
+        //     setTimeout(() => {
+        //         endMessage.style.display = 'none';}, 600000);
+        // });
+        document.addEventListener('DOMContentLoaded', function() {
+            const jwtToken = localStorage.getItem('token');
+            fetch('http://0.0.0.0:8081/api/teacherLessonList', {
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`
+                }
+            })
+            .then(response => {
+                if(response.status === 401) {
+                    alert('Session expired or unauthorized. Please login again.');
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                const coursesContainer = document.getElementById('coursesContainer');
+                data.forEach(course => {
+                    const courseElement = document.createElement('div');
+                    courseElement.className = 'course';
+                    courseElement.innerHTML = `
+                        <div class="course-name">
+                            <p><span class="code">${course.sectionName}</span> - ${course.courseName}</p>
+                        </div>
+                        <form action="">
+                            <button onclick="startClicked('${course.sectionName}')" style="background-color: #F3C997; margin-right:20px" class="btn">START</button>
+                            <button onclick="endClicked('${course.sectionName}')" style="background-color: #FED66D;" class="btn">END</button>
+                        </form>
+                    `;
+                    coursesContainer.appendChild(courseElement);
+                });
+            })
+            .catch(error => console.error('Error fetching the courses:', error));
+        });
+
+        // function startClicked(sectionName) {
+        //     const jwtToken = localStorage.getItem('token');
+        //     if (!jwtToken) {
+        //         alert('No JWT token found in localStorage.');
+        //         return;
+        //     }
+        //     console.log(sectionName);
+        //     try {
+        //         const response = fetch('http://localhost:8081/api/teacher/start', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': `Bearer ${localStorage.getItem('token')}`
+        //             },
+        //             body: JSON.stringify({ sectionName: sectionName })
+        //         });
+        //         console.log("Bla bla bla");
+        //         const data = response.json();
+        //         alert('Secret Code: ' + data.secretCode);
+        //     } catch (error) {
+        //         console.error('Fetch error:', error.message);
+        //         alert('Error in catch occurred');
+        //     }
+        // }
+
+        async function startClicked(sectionName) {
+            // Prompt the user to confirm starting the course
+            const isConfirmed = confirm(`Do you want to start the ${sectionName} Course?`);
+            if (!isConfirmed) {
+                return;
+            }
+
+            const jwtToken = localStorage.getItem('token');
+            if (!jwtToken) {
+                alert('No JWT token found in localStorage.');
+                return;
+            }
+
+            try {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:8081/api/teacher/start', false);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.setRequestHeader('Authorization', `Bearer ${jwtToken}`);
+                xhr.send(JSON.stringify({ sectionName: sectionName }));
+
+                if (xhr.status !== 200) {
+                    const errorData = JSON.parse(xhr.responseText);
+                    console.error('API Error:', errorData);
+                    alert('Error: ' + (errorData.errorMessage || xhr.statusText));
+                    return;
+                }
+
+                const data = JSON.parse(xhr.responseText);
+                var paragraph = document.querySelector('.startMessage');
+                
+                // Change the text content
+                paragraph.innerText = 'LESSON HAS BEGUN.ATTENDANCE CODE: ' + data.secretCode;
+                
+                // Change the color
+                paragraph.style.color = 'green'; 
+                paragraph.classList.add('visible');
+                paragraph.classList.remove('hidden');
+
+                // Schedule the paragraph to be hidden after 10 minutes
+                setTimeout(() => {
+                    paragraph.classList.remove('visible');
+                    paragraph.classList.add('hidden');
+                }, 600000); // 600,000 milliseconds = 10 minutes
+
+            } catch (error) {
+                console.error('Fetch error:', error.message);
+                alert('Error in catch occurred');
+            }
+        }
+
+        async function endClicked(sectionName) {
+            const isConfirmed = confirm(`Do you want to finish the ${sectionName} Course?`);
+            if (!isConfirmed) {
+                return;
+            }
+
+            const jwtToken = localStorage.getItem('token');
+            if (!jwtToken) {
+                alert('No JWT token found in localStorage.');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8081/api/teacher/end', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ sectionName })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('API Error:', errorData);
+                    alert('Error: ' + (errorData.errorMessage || response.statusText));
+                    return;
+                }
+
+                const data = await response.json();
+                const paragraph = document.querySelector('.endMessage');
+                if (data.status === 'SUCCESSFULLY') {
+                    paragraph.innerText = 'LESSON IS OVER';
+                    paragraph.style.color = 'red';
+                    // Assuming you want to hide the message after 10 minutes
+                    setTimeout(() => paragraph.style.display = 'none', 600000);
+                } else {
+                    paragraph.innerText = 'END LESSON FAILED';
+                    paragraph.style.color = 'red';
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // document.getElementById('endLessonButton').addEventListener('click', async function(e){
+        //     e.preventDefault();
+        //     const startMessage = document.querySelector('.start');
+        //     const endMessage = document.querySelector('.end');
+
+        //         startMessage.style.display = 'none';
+        //         endMessage.style.display = 'block';
+        //         await endClicked('CSS 228.01P'); // Pass the section name correctly
+        // });
+
+        
+        // function startClicked() {
+        //     document.getElementById('startLessonButton').disabled = true;
+        //     document.getElementById('endLessonButton').disabled = false;
+        // }
+
+        // function endClicked() {
+        //     document.getElementById('startLessonButton').disabled = false;
+        //     document.getElementById('endLessonButton').disabled = true;
+        // }
+    </script>
+
+<script>
+    // Обработчик события для кнопки "Log out"
+    document.querySelector('.logout button').addEventListener('click', function(event) {
+        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+        localStorage.removeItem('token'); // Удаляем токен из локального хранилища
+        window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
+    });
+</script>
 </body>
 </html>
