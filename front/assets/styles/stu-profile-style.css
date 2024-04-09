@@ -8,6 +8,7 @@
 body{
     background-color: #204066;
 }
+
 .container{
     padding: 10px 10%;
 }
@@ -100,6 +101,10 @@ body{
 .page-name h1{
     text-transform: uppercase;
     color: #DFBC5F;
+    font-weight: 400;
+    font-size: 27px;
+    margin-top: -15px;
+    margin-bottom: 15px;
 }
 .info{
     margin-top: 45px;
@@ -126,9 +131,11 @@ body{
 .personal-info p{
     color: white;
     text-align: left;
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 15px;
+    font-weight: 300;
     flex-basis: 100%;
+    line-height: 1.5;
+    margin-left: 10px;
 }
 .change{
     display: flex;
@@ -137,6 +144,12 @@ body{
 }
 .btn.select{
     color: #DFBC5F;
+    border: 1px solid;
+    background-color: #7d7f81;
+    border-radius: 20px;
+    margin-bottom: 4px;
+    margin-right: 3px;
+    margin-left: 3px;
 }
 .btn{
     background: none;
@@ -160,16 +173,34 @@ body{
     gap: 30px;
 }
 .image p{
-    font-size: 18px;
-    font-weight: 500;
     color: white;
+    margin: -10px 0px 10px 240px;
 }
 #save{
     padding: 5px 10px;
-    background: yellow;
+    width: 130px;
+    margin-left: 230px;
+    background: #E0C84B;
     color: black;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 14px;
+    border-radius: 40px;
+    border: none;
+    font-weight: 400;
+}
+.upload-label {
+    background-color: #BFC6C8; 
+    color: black;
+    margin-left: 100px;
+    font-size: 14px;
+    width: 400px;
+    height: 300px;
+    cursor: pointer;
+}
+.upload-notification{
+    position: absolute;
+    right: 550px;
+    top: 190px;
+    color: green;
 }
 .logout{
     width: 100%;
@@ -196,10 +227,28 @@ body{
     display: flex;
     flex-direction: column;
     gap: 30px;
+    width: 400px;
+    height: 400px;
 }
 .notif{
     position: absolute;
-    right: 550px;
-    top: 190px;
-    color: green;
+    right: 250px;
+    top: 200px;
+    border-radius: 40px;
+    border: none;
+    padding: 5px 10px;
+    width: 320px;
+    margin-left: 330px;
+    background: red;
+}
+.green{
+    background: green;
+    position: absolute;
+    right: 250px;
+    top: 200px;
+    border-radius: 40px;
+    border: none;
+    padding: 5px 10px;
+    width: 320px;
+    margin-left: 530px;
 }

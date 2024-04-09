@@ -101,9 +101,12 @@ body{
 .page-name h1{
     text-transform: uppercase;
     color: #DFBC5F;
+    font-weight: 400;
+    margin-left: 10px;
+    margin-top: -25px;
 }
 table{
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -115,8 +118,14 @@ tr{
 }
 thead td{
     background: #E5D5AC;
-    border-radius: 5px;
-    padding: 2px 5px;
+    border-radius: 30px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 3px;
+    margin-bottom: 20px;
     min-width: 100px;
 }
 tbody{
@@ -125,11 +134,27 @@ tbody{
     gap: 5px;
 }
 tbody td{
-    background: white;
-    border-radius: 5px;
-    padding: 2px 5px;
-    min-height: 40px;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: small;
+    margin-bottom: 10px;
+    min-height: 35px;
     min-width: 100px;
+}
+.only-time{
+    background: #DFBC5F;
+    min-height: 25px;
+    min-width: 100px;
+}
+tbody p{
+    font-size: 10px;
+    padding-right: 5px;
+    font-weight: 600;
+    text-align: center;
 }
 
 .logout{

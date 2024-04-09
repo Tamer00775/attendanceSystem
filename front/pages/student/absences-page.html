@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
     <link rel="stylesheet" href="../../assets/styles/stu-absence-style.css">
-    <title>Admin Page</title>
+    <title>Student Absence Page</title>
 </head>
 <body>
     <header class="header">
@@ -25,7 +25,11 @@
                         </div>
                         <div class="admin-info">
                             <p>LAST LOGIN DATE:</p> 
-                            <p id="login-date">08 FEB 2024</p>
+                            <p id="login-date"></p>
+                        </div>
+                        <div class="admin-info">
+                            <p>STATUS:</p> 
+                            <p id="status"></p>
                         </div>
                     </div>
                     <div class="icon" style="background-image: url(../../assets/images/icon.png);">
@@ -42,8 +46,7 @@
                         <a href="./home-page.html">HOME PAGE</a>
                         <a href="./schedule-page.html">Course schedule</a>
                         <a href="./attendence-page.html" >ATTENDANCE</a>
-                        <a href="./profile-page.html">set profile</a>
-                        <a href="#" id="selected">absence</a>
+                        <a href="./profile-page.html">my profile</a>
                         <form action="" class="logout">
                             <button >Log out</button>
                         </form>
@@ -91,5 +94,32 @@
             window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
         });
     </script>
+
+    <script>
+       (async function () {
+            try {
+                const response = await fetch('http://localhost:8081/api/person/v1/current', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add authorization if needed
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
+                    document.getElementById('login-date').textContent = userData.lastLogin || '';
+                    document.getElementById('status').textContent = userData.rolePerson || '';
+
+                } else {
+                    console.error('Failed to fetch user details:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error during fetch operation:', error);
+            }
+        })();
+    </script>
+    
 </body>
 </html>

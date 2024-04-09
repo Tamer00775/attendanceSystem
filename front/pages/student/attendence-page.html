@@ -43,8 +43,7 @@
                         <a href="./home-page.html">HOME PAGE</a>
                         <a href="./schedule-page.html">Course schedule</a>
                         <a href="#" id="selected">ATTENDANCE</a>
-                        <a href="./profile-page.html">set profile</a>
-                        <a href="./absences-page.html">absence</a>
+                        <a href="./profile-page.html">my profile</a>
                         <form action="" class="logout">
                             <button >Log out</button>
                         </form>
@@ -54,6 +53,11 @@
                     <div class="page-name">
                         <h1>ATTENDANCE</h1>
                     </div>
+                    <nav aria-label="Breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page"><a href="#">ATTENDANCE</a></li>
+                        </ol>
+                    </nav>
                     <div class="table-container">
 
 
@@ -111,6 +115,9 @@
             <!-- Сюда будет добавлено содержимое модального окна -->
         </div>
     </div>
+    <div>
+        <p id="not" style="color: aliceblue; margin-left: 480px; margin-top: 180px; font-family:Georgia, 'Times New Roman', Times, serif;"> * CLICK THE COURSE NAME FOR VIEWING YOUR ATTENDANCE LIST</p>
+    </div>
 
 </body>
 
@@ -127,29 +134,29 @@
 </script>
 
 <script>
-    (async function () {
-        try {
-            const response = await fetch('http://localhost:8081/api/person/v1/current', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add authorization if needed
-                    'Content-Type': 'application/json',
-                },
-            });
-            
-            if (response.ok) {
-                const userData = await response.json();
-                document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
-                document.getElementById('login-date').textContent = userData.lastLogin || '';
-                document.getElementById('speName').textContent = userData.courseCode || '';
-
-            } else {
-                console.error('Failed to fetch user details:', response.statusText);
+        (async function () {
+            try {
+                const response = await fetch('http://localhost:8081/api/person/v1/current', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add authorization if needed
+                        'Content-Type': 'application/json',
+                    },
+                });
+    
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
+                    document.getElementById('login-date').textContent = userData.lastLogin || '';
+                    document.getElementById('speName').textContent = userData.courseCode || '';
+    
+                } else {
+                    console.error('Failed to fetch user details:', response.statusText);
+                }
+            } catch (error) {
+                //console.error('Error during fetch operation:', error);
             }
-        } catch (error) {
-            //console.error('Error during fetch operation:', error);
-        }
-    })();
+        })();
 </script>
 
 <script>
@@ -186,11 +193,27 @@
         function displayAttendanceData(data) {
             const container = document.querySelector('.table-container');
             let table = '<table>';
-            table += '<tr><th>Course Code</th><th>Course Name</th><th>Hours</th><th>Present Hours</th><th>Absent Hours</th><th>Reason Hours</th><th>Absence Limit</th></tr>';
-        
+                table += `<tr>
+                            <th>№</th>
+                            <th>Course Code</th>
+                            <th>Course Name</th>
+                            <th>Hours</th>
+                            <th><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                            </svg></th>
+                            <th><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                            </svg></th>
+                            <th><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#71A4E1" class="bi bi-p-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002V12h1.283V9.164h1.668C10.033 9.164 11 8.08 11 6.586c0-1.482-.955-2.584-2.538-2.584zm2.77 4.072c.893 0 1.419-.545 1.419-1.488s-.526-1.482-1.42-1.482H6.778v2.97z"/>
+                            </svg></th>
+                            <th>Absence Limit</th>
+                        </tr>`;        
+            var cnt = 1;
             for (const key in data) {
                 const course = data[key];
                 table += `<tr> 
+                                <td>${cnt++}</td> 
                                 <td>${course.code}</td> 
                                 <td class="course-name" data-sections="${course.sectionNames}">${course.courseName}</td> 
                                 <td>${course.hours}</td> 
@@ -205,17 +228,18 @@
             container.innerHTML = table;
         }
         
-        // Function to add event listener to course names
+        const notif = document.getElementById("not");
         function addEventListenerToCourseNames() {
             document.querySelectorAll('.course-name').forEach(courseName => {
                 courseName.addEventListener('click', function() {
+                    notif.style.display = "none";
                     // Retrieve the sections from the data-sections attribute
                     const sections = this.getAttribute('data-sections');
                     // Get token from localStorage
                     const token = localStorage.getItem('token');
                     // Form URL with sections
                     const apiUrl = `http://localhost:8081/api/student/attStatus/bySection/` + sections;
-        
+
                     // Fetch attendance data for the selected sections
                     fetch(apiUrl, {
                         method: 'GET',
@@ -228,6 +252,8 @@
                     .then(data => {
                         // Display attendance data for the selected sections
                         displayAttendanceDataForSections(data);
+                        // Update the breadcrumb
+                        updateBreadcrumb(this.textContent);
                     })
                     .catch(error => {
                         console.error('Error fetching attendance data for sections:', error);
@@ -236,6 +262,14 @@
                 });
             });
         }
+
+        // Function to update the breadcrumb
+        function updateBreadcrumb(courseName) {
+            const breadcrumb = document.querySelector('.breadcrumb');
+            // Clear existing breadcrumb items if necessary or update accordingly
+            breadcrumb.innerHTML = `<li class="breadcrumb-item"><a href="#">ATTENDANCE</a></li><li class="breadcrumb-item" aria-current="page">${courseName}</li>`;
+        }
+
         
         // Function to display attendance data for selected sections
  //       function displayAttendanceDataForSections(data) {
@@ -314,15 +348,34 @@
 function displayAttendanceDataForSections(data) {
     const container = document.querySelector('.table-container');
     let table = '<table>';
-    table += '<tr><th>Date</th><th>Hour</th><th>Attendance Status</th><th>Place</th><th>Type</th><th>Week</th></tr>';
+    table += '<tr><th>Date</th><th>Hour</th><th>Status</th><th>Place</th><th>Week</th></tr>';
 
     data.forEach(entry => {
+    // Determine the cell content for attendance status
+        let attStatusContent = entry.attStatus;
+        if(entry.attStatus === "PRESENT") {
+            // Replace with your actual SVG code for the 'Present' status
+            attStatusContent = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                            </svg>`;
+        }
+        if(entry.attStatus === "ABSENT") {
+            // Replace with your actual SVG code for the 'Present' status
+            attStatusContent = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                            </svg>`;
+        }
+        if(entry.attStatus === "WITH_REASON") {
+            // Replace with your actual SVG code for the 'Present' status
+            attStatusContent = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#71A4E1" class="bi bi-p-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002V12h1.283V9.164h1.668C10.033 9.164 11 8.08 11 6.586c0-1.482-.955-2.584-2.538-2.584zm2.77 4.072c.893 0 1.419-.545 1.419-1.488s-.526-1.482-1.42-1.482H6.778v2.97z"/>
+                            </svg>`;
+        }
         table += `<tr class="date-row" data-date="${entry.date}">
                     <td>${entry.date}</td>
                     <td>${entry.hour}</td>
-                    <td>${entry.attStatus}</td>
+                    <td>${attStatusContent}</td> <!-- Use the determined content -->
                     <td>${entry.place}</td>
-                    <td>${entry.type}</td>
                     <td>${entry.week}</td>
                 </tr>`;
     });
@@ -343,12 +396,31 @@ function displayAttendanceDataForSections(data) {
             document.querySelector('.course-name').textContent = courseName;
         });
     });
+    function manageSetAttendanceBreadcrumb(editable) {
+        const setAttendanceBreadcrumb = document.querySelector(".breadcrumb .set-attendance");
+        if (editable && !setAttendanceBreadcrumb) {
+            var breadcrumb = document.createElement("li");
+            breadcrumb.className = "breadcrumb-item set-attendance";
+            breadcrumb.innerHTML = '<a href="#">SET ATTENDANCE</a>';
+            breadcrumbContainer.appendChild(breadcrumb);
+
+            breadcrumb.addEventListener('click', () => {
+                toggleEditable(false);
+                removeSetAttendanceBreadcrumb();
+            });
+        } else if (!editable && setAttendanceBreadcrumb) {
+            breadcrumbContainer.removeChild(setAttendanceBreadcrumb);
+        }
+    }
+
+    function removeSetAttendanceBreadcrumb() {
+        const setAttendanceBreadcrumb = document.querySelector(".breadcrumb .set-attendance");
+        if (setAttendanceBreadcrumb) {
+            breadcrumbContainer.removeChild(setAttendanceBreadcrumb);
+        }
+    }
 }
 </script>
-
-
-
-
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {
