@@ -1,5 +1,6 @@
 package kz.sdu.project.utils;
 
+import kz.sdu.project.entity.Role;
 import lombok.AllArgsConstructor;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.stereotype.Component;
@@ -36,5 +37,17 @@ public class ObjectValidator {
                 throw new IllegalArgumentException(String.format("field %s was not have current pattern: %s", fieldName, pattern));
             }
         });
+    }
+
+    public static boolean isStudent(Set<Role> rolePerson) {
+        return rolePerson
+                .stream()
+                .anyMatch(role -> role.getRole().equals("ROLE_STUDENT"));
+    }
+
+    public static boolean isTeacher(Set<Role> rolePerson) {
+        return rolePerson
+                .stream()
+                .anyMatch(role -> role.getRole().equals("ROLE_TEACHER"));
     }
 }
