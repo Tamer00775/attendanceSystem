@@ -22,4 +22,7 @@ public class AttendanceSystemApplication {
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("kz.sdu.project")).build();
 	}
+
+
+
 }
