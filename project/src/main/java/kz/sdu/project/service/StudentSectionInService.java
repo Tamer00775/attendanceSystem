@@ -116,6 +116,12 @@ public class StudentSectionInService {
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         DayOfWeek dayOfWeek2 = DayOfWeek.of(schedule.getDayOfWeek());
+
+        System.out.println("Current LocalDateTime: " + now);
+        System.out.println("Start Hour: " + startHour);
+        System.out.println("End Hour: " + endHour);
+        System.out.println("Current Day of Week: " + dayOfWeek);
+        System.out.println("Scheduled Day of Week: " + dayOfWeek2);
         return now.getMinute() <= STUDENT_CAN_JOIN_SESSION_UNTIL &&
                 now.getHour() >= startHour &&
                 now.getHour() < endHour &&

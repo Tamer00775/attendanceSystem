@@ -45,7 +45,7 @@ public class SectionInPreInfoService {
 
     private SectionInPreInfoDto returnSectionPreInfo(Schedule schedule, Person teacher, Course course, Section practiceSection) {
         LocalDate startDate = LocalDate.of(2024, 1, 22);
-        startDate = startDate.plusWeeks(getCurrentWeek());
+        startDate = startDate.plusWeeks(getCurrentWeek() - 1);
         startDate = startDate.plusDays(schedule.getDayOfWeek() - 1);
 
         SectionInPreInfoDto sectionInPreInfoDto = new SectionInPreInfoDto();

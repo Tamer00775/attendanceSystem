@@ -23,7 +23,6 @@ public class StudentSectionOutService {
     private final AttendanceInfoService attendanceInfoService;
     private final AttendanceRecordService attendanceRecordService;
     private static Clock utcClock = Clock.fixed(Instant.now(), ZoneId.of("UTC"));
-
     public String studentOutProcess(SectionOutRequest sectionOutRequest) {
         Person student = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
         Section section = sectionService.findByName(sectionOutRequest.getSection())

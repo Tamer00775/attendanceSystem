@@ -19,6 +19,7 @@ public class UserDTO implements Serializable {
     private String middleName;
     private String login;
     private String email;
+    private String speciality;
 
     public static UserDTO fromEntity(Person person) {
         UserDTO dto = new UserDTO();
@@ -28,6 +29,8 @@ public class UserDTO implements Serializable {
         dto.setMiddleName(person.getMiddleName());
         dto.setLogin(person.getLogin());
         dto.setEmail(person.getEmail());
+        if (person.getPersonInfo().getSpecialty_person_info() != null)
+           dto.setSpeciality(person.getPersonInfo().getSpecialty_person_info().getName());
         return dto;
     }
 
