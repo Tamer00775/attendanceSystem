@@ -26,7 +26,7 @@ body{
 .admin-details{
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px; /* Adjusted gap */
 }
 .admin-info{
     display: flex;
@@ -39,7 +39,7 @@ body{
     color: white;
     flex-basis: 100%;
     text-align: left;
-    font-size: 14px;
+    font-size: 12px; /* Smaller font size */
 }
 .logo{
     background: url("../images/logo.jpg");
@@ -70,7 +70,7 @@ body{
     text-align: center;
     text-transform: uppercase;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 14px; /* Smaller font size */
     border-radius: 20px;
     transition: background-color 0.5s, color 0.5s;
 }
@@ -101,6 +101,7 @@ body{
 .page-name h1{
     text-transform: uppercase;
     color: #DFBC5F;
+    font-size: 18px; /* Adjusted font size */
 }
 table{
     margin-top: 20px;
@@ -118,6 +119,7 @@ thead td{
     border-radius: 5px;
     padding: 2px 5px;
     min-width: 100px;
+    align-items: center;
 }
 tbody{
     display: flex;
@@ -130,6 +132,8 @@ tbody td{
     padding: 2px 5px;
     min-height: 40px;
     min-width: 100px;
+    font-size: 11px; /* Smaller font size */
+    align-items: center;
 }
 
 .logout{
@@ -143,7 +147,7 @@ tbody td{
     color: #000000;
     text-align: center;
     text-transform: uppercase;
-    font-size: 16px;
+    font-size: 14px; /* Smaller font size */
     border-radius: 20px;
     transition: background-color 0.5s, color 0.5s;
 }
@@ -152,3 +156,4 @@ tbody td{
     border-bottom: 1px solid #DFBC5F;
     box-shadow: #000000;
 }
+

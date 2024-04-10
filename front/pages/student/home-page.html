@@ -45,7 +45,7 @@
                             </div>
                             <div class="personal-info">
                                 <p>NAME SURNAME:</p>
-                                <p id="name"></p>
+                                <p id="namee"></p>
                             </div>
                             <div class="personal-info">
                                 <p>SPECIALITY NAME:</p>
@@ -124,7 +124,7 @@
             if (response.ok) {
                 const userData = await response.json();
                 document.getElementById('id').textContent = userData.login || ''; // Use login for ID or empty string if missing
-                document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
+                document.getElementById('namee').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
                 document.getElementById('email').textContent = userData.email || '';
                 document.getElementById('login-date').textContent = userData.lastLogin || '';
                 document.getElementById('speciality').textContent = userData.courseCode || '';

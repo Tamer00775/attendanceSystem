@@ -116,7 +116,6 @@ public class StudentSectionInService {
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         DayOfWeek dayOfWeek2 = DayOfWeek.of(schedule.getDayOfWeek());
-
         System.out.println("Current LocalDateTime: " + now);
         System.out.println("Start Hour: " + startHour);
         System.out.println("End Hour: " + endHour);
