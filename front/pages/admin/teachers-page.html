@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
-    <link rel="stylesheet" href="../../assets/styles/teachers-style.css">
+    <link rel="stylesheet" href="../../assets/styles/student-style.css">
     <title>Admin Page</title>
 </head>
 <body>
@@ -40,10 +40,10 @@
                 <div class="sidebar__wrapper">
                     <nav class="menu">
                         <a href="./admin-page.html">HOME PAGE</a>
-                        <a href="./student-page.html">ALL STUDENTS</a>
+                        <a href="./student-page.html" >ALL STUDENTS</a>
                         <a href="./teachers-page.html" id="selected">LIST OF TEACHERS</a>
                         <a href="./attendence.html">ATTENDANCE</a>
-                        <a href="./courses-page.html"">LIST OF COURSES</a>
+                        <a href="./courses-page.html">LIST OF COURSES</a>
                         <form action="" class="logout">
                             <button >Log out</button>
                         </form>
@@ -51,63 +51,69 @@
                 </div>
                 <div class="main__content">
                     <div class="page-name">
-                        <h1>TEACHER LIST</h1>
+                        <h1>Teacher LIST</h1>
                     </div>
                     <div class="table-container">
-                        <table>
+                        <table id="student-table">
                             <tr>
-                                <th>NAME SURNAME</th>
-                                <th>ID NUMBER </th>
-                                <th>SPECIALITY NAME</th>
-                            </tr>
-                            <tr>
-                                <td>PALENSHEEVA PALENSHE</td>
-                                <td>220107045</td>
-                                <td>COMPUTER SCIENCE</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <th>Full Name</th>
+                                <th>Email</th>
                             </tr>
                         </table>
                     </div>
                     <div class="button">
-                        <a class="btn" href="./add-teacher.html">Add</a>
+                        <a class="btn" href="./add-student.html">Add</a>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchStudentData();
+        });
+
+        function fetchStudentData() {
+            const apiUrl = 'http://localhost:8081/api/list/teacher';
+            const token = localStorage.getItem('token');
+
+            fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    displayStudentData(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching student data:', error);
+                    document.querySelector('.table-container').innerHTML = '<p>Error loading student data.</p>';
+                });
+        }
+
+        function displayStudentData(data) {
+            const studentTable = document.getElementById('student-table');
+
+            data.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.firstName}  ${student.lastName} ${student.middleName}</td>
+                    <td>${student.email}</td>
+                `;
+                studentTable.appendChild(row);
+            });
+        }
+
+        // Обработчик события для кнопки "Log out"
+        document.querySelector('.logout button').addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+            localStorage.removeItem('token'); // Удаляем токен из локального хранилища
+            window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
+        });
+    </script>
 </body>
 </html>
