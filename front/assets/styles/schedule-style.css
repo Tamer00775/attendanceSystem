@@ -107,7 +107,7 @@ body{
     margin-bottom: 35px;
 }
 table{
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -135,14 +135,19 @@ tbody{
     gap: 5px;
 }
 tbody td{
-    background: white;
-    border-radius: 30px;
+    background-color: white;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: medium;
+    font-size: small;
     margin-bottom: 10px;
+    min-height: 35px;
+    min-width: 100px;
+}
+.only-time{
+    background: #DFBC5F;
     min-height: 25px;
     min-width: 100px;
 }

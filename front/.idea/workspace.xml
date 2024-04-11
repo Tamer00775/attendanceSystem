@@ -5,14 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4701ed32-59ba-4505-ba0d-6953cf0d789b" name="Changes" comment="added status,">
-      <change beforePath="$PROJECT_DIR$/assets/scripts/stud.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/scripts/stud.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/student/attendence-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/pages/student/attendence-page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/teacher/absences-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/pages/teacher/absences-page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/teacher/attendence-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/pages/teacher/attendence-page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/teacher/course-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/pages/teacher/course-page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/teacher/home-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/pages/teacher/home-page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/teacher/schedule-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/pages/teacher/schedule-page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/src/main/resources/liquibase/changelog/20240309161500_add_teacher_all.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/resources/liquibase/changelog/20240309161500_add_teacher_all.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/dto/SectionOutRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/StudentSectionOutService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/utils/enums/LessonStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/domain/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/utils/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/entity/CheckInForSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/entity/CheckInForSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/resource/StudentSectionInResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/resource/TeacherStartLessonResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/resource/TeacherLessonResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/EmailSenderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/EmailSenderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/ScheduleTableShowService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/ScheduleTableShowService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/StudentAttStatusService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/StudentAttStatusService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project/src/main/resources/liquibase/changelog/20240210163300_add_all_entities.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/resources/liquibase/changelog/20240210163300_add_all_entities.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project/src/main/resources/liquibase/changelog/20240403161500_fill_up_att.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/resources/liquibase/changelog/20240403161500_fill_up_att.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +24,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectColorInfo">{
@@ -30,21 +39,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;spring1__done&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/hamza/attendanceSystem/front&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "blaBla",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/zhan/Desktop/attendanceSystem/front",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-python-sdk-d68999036c7f-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.14475.56" />
-      </set>
-    </attachedChunks>
-  </component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -53,6 +58,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1710320560140</updated>
+      <workItem from="1712595970632" duration="167000" />
     </task>
     <task id="LOCAL-00001" summary="logout is end">
       <option name="closed" value="true" />
@@ -72,6 +78,9 @@
     </task>
     <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="logout is end" />

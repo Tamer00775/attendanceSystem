@@ -71,6 +71,8 @@ body{
 .page-name h1{
     text-transform: uppercase;
     color: #DFBC5F;
+    font-weight: 400;
+    margin-left: 50px;
 }
 .info{
     margin-top: 45px;
@@ -83,16 +85,19 @@ body{
     background-position: center;
     height: 110px;
     width: 90px;
+    margin-left: 53px;
 }
 .details{
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 500px;
+    margin-left: 20px;
 }
 .personal-info{
     display: flex;
     justify-content: space-between;
+    
 }
 .personal-info p{
     color: white;

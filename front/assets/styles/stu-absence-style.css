@@ -101,6 +101,10 @@ body{
 .page-name h1{
     text-transform: uppercase;
     color: #DFBC5F;
+    font-weight: 400;
+    font-size: 27px;
+    margin-top: -15px;
+    margin-bottom: 15px;
 }
 
 table, tr, td{
@@ -206,10 +210,10 @@ table, tr, td{
     display: flex;
     flex-direction: column;
     gap: 30px;
+    margin-left: 30px;
 }
 
 .label{
-    
     display: flex;
     align-items: center;
     color: white;
