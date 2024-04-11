@@ -89,14 +89,14 @@ public class StudentSectionInService {
             checkInForSession.setSchedule(schedule);
             checkInForSession.setPerson_checkin(person);
         }
-        checkInForSession.setGet_passed(LocalDateTime.now(utcClock));
+        checkInForSession.setGet_passed(LocalDateTime.now(zoneId));
         checkInForSessionService.save(checkInForSession);
         return JOIN_SESSION_IS_ACCEPTED.name();
     }
 
     private SecretCodeForCheckIn updateSecretCodeIfNeeded(SecretCodeForCheckIn secretCodeForCheckIn) {
 
-        LocalDateTime now = LocalDateTime.now(utcClock);
+        LocalDateTime now = LocalDateTime.now(zoneId);
         LocalDateTime request = secretCodeForCheckIn.getCreated();
         long minutesDiff = Math.abs(Duration.between(now, request).toMinutes());
         log.info("minutesDiff ; {}", minutesDiff);
@@ -111,7 +111,7 @@ public class StudentSectionInService {
     }
 
     private boolean canJoinSession(Schedule schedule) {
-        LocalDateTime now = LocalDateTime.now(utcClock);
+        LocalDateTime now = LocalDateTime.now(zoneId);
         int startHour = schedule.getStartTime(),
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
@@ -128,7 +128,7 @@ public class StudentSectionInService {
     }
 
     private boolean joinedSessionAtThisHour(Optional<CheckInForSession> checkInForSession) {
-        LocalDateTime now = LocalDateTime.now(utcClock);
+        LocalDateTime now = LocalDateTime.now(zoneId);
         LocalDateTime request = checkInForSession.get().getGet_passed();
         long minutesDiff = Math.abs(Duration.between(now, request).toMinutes());
         return minutesDiff < JOIN_SESSION_RANGE;

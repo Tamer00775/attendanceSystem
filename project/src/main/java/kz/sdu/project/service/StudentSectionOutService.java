@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.Optional;
 
 import static kz.sdu.project.utils.Constants.*;
 import static kz.sdu.project.utils.enums.LessonStatus.*;
@@ -22,6 +23,7 @@ public class StudentSectionOutService {
     private final CheckInForSessionService checkInForSessionService;
     private final AttendanceInfoService attendanceInfoService;
     private final AttendanceRecordService attendanceRecordService;
+    private final SecretCodeForCheckInService secretCodeForCheckInService;
     private static Clock utcClock = Clock.fixed(Instant.now(), ZoneId.of("UTC"));
     public String studentOutProcess(SectionOutRequest sectionOutRequest) {
         Person student = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
@@ -44,12 +46,12 @@ public class StudentSectionOutService {
     }
 
     private void updateCheckIn(CheckInForSession checkInForSession) {
-        checkInForSession.setGet_left(LocalDateTime.now(utcClock));
+        checkInForSession.setGet_left(LocalDateTime.now(zoneId));
         checkInForSessionService.save(checkInForSession);
     }
 
     private boolean user_did_get_left_before(CheckInForSession checkInForSession) {
-        LocalDateTime now = LocalDateTime.now(utcClock);
+        LocalDateTime now = LocalDateTime.now(zoneId);
         LocalDateTime get_left = checkInForSession.getGet_left();
         if (get_left == null) return false;
         long min_diff = Math.abs(Duration.between(now, get_left).toMinutes());
@@ -57,7 +59,11 @@ public class StudentSectionOutService {
     }
 
     public void updateAttIfNeeded(long min_diff_between_session, Person student, Section section, Schedule schedule) {
-        if (min_diff_between_session < ACTIVE_SESSION_TIME_TO_BE_COUNTED) {
+        Optional<SecretCodeForCheckIn> secretCodeForCheckInOptional = secretCodeForCheckInService
+                .findByScheduleId(schedule.getScheduleId());
+        if (secretCodeForCheckInOptional.isEmpty()) throw new IllegalArgumentException("Unexpected error from system...");
+        SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInOptional.get();
+        if (min_diff_between_session < ACTIVE_SESSION_TIME_TO_BE_COUNTED && !secretCodeForCheckIn.getIs_interpreted()) {
             AttendanceInfo attendanceInfo = attendanceInfoService
                     .findByPersonIdAndSectionId(student.getId(), section.getSectionId())
                     .orElseThrow(() -> new EntityNotFoundException("Unexpected error from system..."));
@@ -72,12 +78,12 @@ public class StudentSectionOutService {
     }
 
     private long min_diff_between(LocalDateTime getPassed) {
-        LocalDateTime now = LocalDateTime.now(utcClock);
+        LocalDateTime now = LocalDateTime.now(zoneId);
         return Math.abs(Duration.between(now, getPassed).toMinutes());
     }
 
     private boolean canLeftSession(Schedule schedule) {
-        LocalDateTime now = LocalDateTime.now(utcClock);
+        LocalDateTime now = LocalDateTime.now(zoneId);
         int startHour = schedule.getStartTime(),
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();

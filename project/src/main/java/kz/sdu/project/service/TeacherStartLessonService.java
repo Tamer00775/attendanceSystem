@@ -26,7 +26,7 @@ public class TeacherStartLessonService {
     private final AttendanceRecordService attendanceRecordService;
     private final AttendanceInfoService attendanceInfoService;
     private final SecretCodeForCheckInService secretCodeForCheckInService;
-    private static Clock utcClock = Clock.fixed(Instant.now(), ZoneId.of("UTC"));
+    private static Clock utcClock = Clock.fixed(Instant.now(), ZoneOffset.ofHours(5));
     public Map<String, String> start(RequestBody3DTO requestBody3DTO) {
 
         Person teacher = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
@@ -62,7 +62,7 @@ public class TeacherStartLessonService {
 
     private SecretCodeForCheckIn updateSecretCodeIfNeeded(SecretCodeForCheckIn secretCodeForCheckIn) {
 
-        LocalDateTime now = LocalDateTime.now(utcClock);
+        LocalDateTime now = LocalDateTime.now(zoneId);
         LocalDateTime request = secretCodeForCheckIn.getCreated();
         long minutesDiff = Math.abs(Duration.between(now, request).toMinutes());
         log.info("minutesDiff ; {}", minutesDiff);
@@ -77,7 +77,7 @@ public class TeacherStartLessonService {
     }
 
     private boolean canStartLesson(Schedule schedule) {
-        LocalDateTime now = LocalDateTime.now(utcClock);
+        LocalDateTime now = LocalDateTime.now(zoneId);
         int startHour = schedule.getStartTime(),
              endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
@@ -89,7 +89,7 @@ public class TeacherStartLessonService {
     }
 
     private boolean canEndLesson(Schedule schedule) {
-        LocalDateTime now = LocalDateTime.now(utcClock);
+        LocalDateTime now = LocalDateTime.now(zoneId);
         int startHour = schedule.getStartTime(),
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
@@ -101,7 +101,7 @@ public class TeacherStartLessonService {
     }
 
     private boolean isTheSameDay(LocalDateTime created) {
-        LocalDateTime now = LocalDateTime.now(utcClock);
+        LocalDateTime now = LocalDateTime.now(zoneId);
         return (created.getYear() == now.getYear() &&
                 created.getMonth() == now.getMonth() &&
                 created.getDayOfMonth() == now.getDayOfMonth());
@@ -112,7 +112,7 @@ public class TeacherStartLessonService {
                 .findByScheduleId(schedule.getScheduleId());
         String generateSecretCode = RandomStringUtils
                 .random(SIX_SIZED_SECRET_CODE, USE_LETTERS_IN_SECRET_CODE, USE_NUMBERS_IN_SECRET_CODE);
-        LocalDateTime now = LocalDateTime.now(utcClock);
+        LocalDateTime now = LocalDateTime.now(zoneId);
 
         if (secretCodeForCheckInOptional.isPresent()) {
             SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInOptional.get();

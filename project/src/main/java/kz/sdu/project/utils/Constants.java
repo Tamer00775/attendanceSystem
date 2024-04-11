@@ -3,9 +3,10 @@ package kz.sdu.project.utils;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+import java.time.ZoneId;
+
 public class Constants {
+    public static final ZoneId zoneId = ZoneId.of("Asia/Oral");
     public static final String START_DATE_FOR_SEMESTER = "22.01.2024";
     public static final String DATE_FORMAT = "dd.MM.yyyy";
     public static final String TIME_FORMAT = "hh:mm a";
@@ -17,9 +18,9 @@ public class Constants {
     public static final Integer TIME_INTERVAL_BETWEEN_SECRET_CODE = 2;
     public static final Integer LESSON_START_TIME = 8;
     public static final Integer LESSON_END_TIME = 20;
-    public static final Integer TEACHER_START_LESSON_TIME_IS_UNTIL = 45;
-    public static final Integer TEACHER_END_LESSON_TIME_STARTS_FROM = 10;
-    public static final Integer STUDENT_CAN_JOIN_SESSION_UNTIL = 45;
+    public static final Integer TEACHER_START_LESSON_TIME_IS_UNTIL = 15;
+    public static final Integer TEACHER_END_LESSON_TIME_STARTS_FROM = 15;
+    public static final Integer STUDENT_CAN_JOIN_SESSION_UNTIL = 15;
     public static final Integer JOIN_SESSION_RANGE = 45;
     public static final Integer LEFT_SESSION_RANGE = 60;
     public static final Integer ACTIVE_SESSION_TIME_TO_BE_COUNTED = 30;
