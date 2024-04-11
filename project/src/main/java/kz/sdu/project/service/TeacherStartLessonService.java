@@ -143,6 +143,18 @@ public class TeacherStartLessonService {
         students.forEach(student -> initializeAttInfo(student, section));
     }
 
+    private void reInitializeAttInfoAndRecord(Section section, Person teacher, int leftHours) {
+        Schedule schedule = section.getSchedule();
+        List<Person> students = section.getPersons().stream()
+                .filter(student -> !Objects.equals(student.getId(), teacher.getId()))
+                .collect(Collectors.toList());
+        if (students.size() == section.getPersons().size()) {
+            throw new IllegalArgumentException(String.format("Teacher with username %s not for section : %s", teacher.getLogin(), section.getName()));
+        }
+        students.forEach(student -> reInitializeAttRecord(student, schedule, getCurrentWeek(),leftHours));
+        students.forEach(student -> reInitializeAttInfo(student, section,leftHours));
+    }
+
     private void initializeAttInfo(Person student, Section section) {
 
         int totalHours = section.getSchedule().getTotalHours();
@@ -161,6 +173,15 @@ public class TeacherStartLessonService {
         AttendanceInfo attendanceInfo = attendanceInfoOptional.get();
         attendanceInfo.setPercent(attendanceInfo.getPercent() + totalHours);
         attendanceInfo.setFull_time(attendanceInfo.getFull_time() + totalHours);
+        attendanceInfoService.save(attendanceInfo);
+    }
+
+    private void reInitializeAttInfo(Person student, Section section, int leftHours) {
+
+        Optional<AttendanceInfo> attendanceInfoOptional = attendanceInfoService
+                .findByPersonIdAndSectionId(student.getId(), section.getSectionId());
+        AttendanceInfo attendanceInfo = attendanceInfoOptional.get();
+        attendanceInfo.setPercent(attendanceInfo.getPercent() - leftHours);
         attendanceInfoService.save(attendanceInfo);
     }
 
@@ -185,6 +206,19 @@ public class TeacherStartLessonService {
         }
     }
 
+    private void reInitializeAttRecord(Person student, Schedule schedule, Integer currentWeek, int leftHours) {
+
+        int stu_id = student.getId(),
+                sch_id = schedule.getScheduleId(),
+                totalHours = schedule.getTotalHours();
+
+        Optional<AttendanceRecord> attendanceRecordOptional = attendanceRecordService
+                .findByPersonIdAndScheduleIdAndCurrentWeek(stu_id,sch_id,currentWeek);
+        AttendanceRecord attendanceRecord = attendanceRecordOptional.get();
+        attendanceRecord.setTotal_present_hours(attendanceRecord.getTotal_present_hours() + leftHours);
+        attendanceRecordService.save(attendanceRecord);
+    }
+
     private Integer getCurrentWeek() {
         LocalDate startDate = LocalDate.of(2024, 1, 22);
         LocalDate now = LocalDate.now();
@@ -193,6 +227,7 @@ public class TeacherStartLessonService {
     }
 
     public Map<String, String> end(RequestBody3DTO requestBody3DTO) {
+        Person teacher = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
         String sectionName = requestBody3DTO.getSectionName();
         Section section = sectionService.findByName(sectionName)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Section with name %s not found", sectionName)));
@@ -203,7 +238,14 @@ public class TeacherStartLessonService {
         SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInService
                 .findByScheduleId(schedule.getScheduleId())
                 .orElse(null);
+
         if(canEndLesson(schedule) && secretCodeForCheckIn != null) {
+
+            LocalDateTime now = LocalDateTime.now(zoneId);
+            int endHour = now.getHour(),
+                    totalHour = schedule.getStartTime() + schedule.getTotalHours(),
+                    leftHours = totalHour - endHour - 1;
+            reInitializeAttInfoAndRecord(section, teacher, leftHours);
             secretCodeForCheckIn.setIs_interpreted(true);
             secretCodeForCheckInService.save(secretCodeForCheckIn);
             return Map.of("status", END_LESSON_PROCESS_IS_SUCCESSFULLY.name());
