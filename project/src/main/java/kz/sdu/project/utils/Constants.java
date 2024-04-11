@@ -21,6 +21,7 @@ public class Constants {
     public static final Integer TEACHER_START_LESSON_TIME_IS_UNTIL = 15;
     public static final Integer TEACHER_END_LESSON_TIME_STARTS_FROM = 15;
     public static final Integer STUDENT_CAN_JOIN_SESSION_UNTIL = 15;
+    public static final Integer STUDENT_CAN_LEFT_SESSION_FROM = 15;
     public static final Integer JOIN_SESSION_RANGE = 45;
     public static final Integer LEFT_SESSION_RANGE = 60;
     public static final Integer ACTIVE_SESSION_TIME_TO_BE_COUNTED = 30;

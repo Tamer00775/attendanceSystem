@@ -88,7 +88,8 @@ public class StudentSectionOutService {
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         DayOfWeek dayOfWeek2 = DayOfWeek.of(schedule.getDayOfWeek());
-        return now.getHour() >= startHour &&
+        return  now.getMinute() > STUDENT_CAN_LEFT_SESSION_FROM &&
+                now.getHour() >= startHour &&
                 now.getHour() < endHour &&
                 dayOfWeek == dayOfWeek2;
     }

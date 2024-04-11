@@ -94,7 +94,7 @@ public class TeacherStartLessonService {
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         DayOfWeek dayOfWeek2 = DayOfWeek.of(schedule.getDayOfWeek());
-        return now.getMinute() >= TEACHER_END_LESSON_TIME_STARTS_FROM &&
+        return now.getMinute() > TEACHER_END_LESSON_TIME_STARTS_FROM &&
                 now.getHour() >= startHour &&
                 now.getHour() < endHour &&
                 dayOfWeek == dayOfWeek2;
