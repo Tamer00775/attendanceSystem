@@ -23,6 +23,4 @@ public class AttendanceSystemApplication {
 				.apis(RequestHandlerSelectors.basePackage("kz.sdu.project")).build();
 	}
 
-
-
 }

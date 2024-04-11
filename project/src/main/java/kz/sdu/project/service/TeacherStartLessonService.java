@@ -241,11 +241,14 @@ public class TeacherStartLessonService {
 
         if(canEndLesson(schedule) && secretCodeForCheckIn != null) {
 
-            LocalDateTime now = LocalDateTime.now(zoneId);
-            int endHour = now.getHour(),
-                    totalHour = schedule.getStartTime() + schedule.getTotalHours(),
-                    leftHours = totalHour - endHour - 1;
-            reInitializeAttInfoAndRecord(section, teacher, leftHours);
+            if (!secretCodeForCheckIn.getIs_interpreted()) {
+                LocalDateTime now = LocalDateTime.now(zoneId);
+                int endHour = now.getHour(),
+                        totalHour = schedule.getStartTime() + schedule.getTotalHours(),
+                        leftHours = totalHour - endHour - 1;
+                reInitializeAttInfoAndRecord(section, teacher, leftHours);
+            }
+
             secretCodeForCheckIn.setIs_interpreted(true);
             secretCodeForCheckInService.save(secretCodeForCheckIn);
             return Map.of("status", END_LESSON_PROCESS_IS_SUCCESSFULLY.name());
