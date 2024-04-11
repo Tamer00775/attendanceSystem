@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,7 +26,7 @@ public class StudentSectionInService {
     private final CheckInForSessionService checkInForSessionService;
     private final AttendanceInfoService attendanceInfoService;
     private final SecretCodeForCheckInService secretCodeForCheckInService;
-
+    private static Clock utcClock = Clock.fixed(Instant.now(), ZoneId.of("UTC"));
     public String studentInProcess(SectionInRequest sectionInRequest) {
         Person student = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
         Section section = sectionService.findByName(sectionInRequest.getSection())
@@ -92,14 +89,14 @@ public class StudentSectionInService {
             checkInForSession.setSchedule(schedule);
             checkInForSession.setPerson_checkin(person);
         }
-        checkInForSession.setGet_passed(LocalDateTime.now());
+        checkInForSession.setGet_passed(LocalDateTime.now(zoneId));
         checkInForSessionService.save(checkInForSession);
         return JOIN_SESSION_IS_ACCEPTED.name();
     }
 
     private SecretCodeForCheckIn updateSecretCodeIfNeeded(SecretCodeForCheckIn secretCodeForCheckIn) {
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(zoneId);
         LocalDateTime request = secretCodeForCheckIn.getCreated();
         long minutesDiff = Math.abs(Duration.between(now, request).toMinutes());
         log.info("minutesDiff ; {}", minutesDiff);
@@ -114,11 +111,16 @@ public class StudentSectionInService {
     }
 
     private boolean canJoinSession(Schedule schedule) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(zoneId);
         int startHour = schedule.getStartTime(),
                 endHour = startHour + schedule.getTotalHours();
         DayOfWeek dayOfWeek = now.getDayOfWeek();
         DayOfWeek dayOfWeek2 = DayOfWeek.of(schedule.getDayOfWeek());
+        System.out.println("Current LocalDateTime: " + now);
+        System.out.println("Start Hour: " + startHour);
+        System.out.println("End Hour: " + endHour);
+        System.out.println("Current Day of Week: " + dayOfWeek);
+        System.out.println("Scheduled Day of Week: " + dayOfWeek2);
         return now.getMinute() <= STUDENT_CAN_JOIN_SESSION_UNTIL &&
                 now.getHour() >= startHour &&
                 now.getHour() < endHour &&
@@ -126,7 +128,7 @@ public class StudentSectionInService {
     }
 
     private boolean joinedSessionAtThisHour(Optional<CheckInForSession> checkInForSession) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(zoneId);
         LocalDateTime request = checkInForSession.get().getGet_passed();
         long minutesDiff = Math.abs(Duration.between(now, request).toMinutes());
         return minutesDiff < JOIN_SESSION_RANGE;

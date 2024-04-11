@@ -20,6 +20,10 @@
                             <p id="name">PALENSHEEVA PALENSHE</p>
                         </div>
                         <div class="admin-info">
+                            <p>SPECIALITY NAME:</p> 
+                            <p id="name">COMPUTER SCIENCE</p>
+                        </div>
+                        <div class="admin-info">
                             <p>LAST LOGIN DATE:</p> 
                             <p id="login-date">08 FEB 2024</p>
                         </div>
@@ -118,5 +122,32 @@
             </div>
         </div>
     </main>
+
+    <script>
+        (async function () {
+            try {
+                const response = await fetch('http://localhost:8081/api/person/v1/current', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add authorization if needed
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
+                    document.getElementById('login-date').textContent = userData.lastLogin || '';
+                    document.getElementById('speName').textContent = userData.courseCode || '';
+    
+                } else {
+                    console.error('Failed to fetch user details:', response.statusText);
+                }
+            } catch (error) {
+                //console.error('Error during fetch operation:', error);
+            }
+        })();
+    </script>
+
 </body>
 </html>

@@ -43,7 +43,7 @@
                         <a href="./student-page.html">ALL STUDENTS</a>
                         <a href="./teachers-page.html">LIST OF TEACHERS</a>
                         <a href="#">ATTENDANCE</a>
-                        <a href="./courses-page.html"">LIST OF COURSES</a>
+                        <a href="./courses-page.html">LIST OF COURSES</a>
                         <form action="" class="logout">
                             <button >Log out</button>
                         </form>
@@ -96,5 +96,14 @@
             </div>
         </div>
     </main>
+    <script>
+        // Обработчик события для кнопки "Log out"
+        document.querySelector('.logout button').addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+            localStorage.removeItem('token'); // Удаляем токен из локального хранилища
+            window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
+        });
+    </script>
+
 </body>
 </html>

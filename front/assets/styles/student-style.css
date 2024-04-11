@@ -39,7 +39,7 @@ body{
     color: white;
     flex-basis: 100%;
     text-align: left;
-    font-size: 14px;
+    font-size: 12px;
 }
 .logo{
     background: url("../images/logo.jpg");
@@ -122,6 +122,12 @@ body{
     border-radius: 10px;
     padding: 20px;
     color: white;
+    margin-left: 100px;
+}
+.table-containerr {
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
 }
 table {
     width: 100%;
@@ -133,12 +139,17 @@ td {
     text-align: center;
     border-bottom: 1px solid #7F8C8D;
     text-transform: uppercase;
+    color:white;
 }
+
 th {
     padding: 15px;
     text-align: center;
     border-bottom: 1px solid #7F8C8D;
     text-transform: uppercase;
+    color:white;
+
+
 }
 tr:hover {
     background-color: #4A5A6A;

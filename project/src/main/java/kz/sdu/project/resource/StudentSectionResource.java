@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @Slf4j
 @AllArgsConstructor
@@ -22,6 +24,7 @@ public class StudentSectionResource {
 
     private final StudentSectionInService studentSectionInService;
     private final StudentSectionOutService studentOutProcess;
+
     @PostMapping("/in")
     public ResponseEntity<SectionResponseDto> studentInProcess(
             @RequestBody @Validated SectionInRequest sectionInRequest

@@ -103,7 +103,6 @@ public class ScheduleTableShowService {
             ScheduleTableFormatDto scheduleTableFormatDto =
                     schedule.get(rowIndex);
             schedule.set(rowIndex,changeByDay(scheduleTableFormatDto,dayOfWeek,table));
-
             current_lesson_time++;
         }
     }

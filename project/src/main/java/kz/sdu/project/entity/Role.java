@@ -31,7 +31,7 @@ public class Role {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "RolePerson")
+    @ManyToMany(mappedBy = "RolePerson",fetch = FetchType.EAGER)
     private Set<Person> persons;
 
     @Override
