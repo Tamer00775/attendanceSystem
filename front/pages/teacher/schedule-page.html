@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
     <link rel="stylesheet" href="../../assets/styles/schedule-style.css">
-    <title>Admin Page</title>
+    <title>Teacher Schedule Page</title>
 </head>
 <body>
     <header class="header">
@@ -67,87 +67,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>9:00 AM</td>
-                                    <td><p>INF 401</p><p>F 202</p></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>10:00 AM</td>
-                                    <td></td>
-                                    <td><p>INF 401</p><p>F 202</p></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>11:00 AM</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><p>INF 401</p><p>F 202</p></td>
-                                </tr>
-                                <tr>
-                                    <td>12:00 PM</td>
-                                    <td><p>INF 401</p><p>F 202</p></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><p>INF 401</p><p>F 202</p></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>1:00 PM</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><p>INF 401</p><p>F 202</p></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>2:00 PM</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>3:00 PM</td>
-                                    <td><p>INF 401</p><p>F 202</p></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><p>INF 401</p><p>F 202</p></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>4:00 PM</td>
-                                    <td><p>INF 401</p><p>F 202</p></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><p>INF 401</p><p>F 202</p></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>5:00 PM</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -179,6 +98,53 @@
                 //console.error('Error during fetch operation:', error);
             }
         })();
+
+        (async function () {
+            try {
+                const response = await fetch('http://localhost:8081/api/person/schedule', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const scheduleData = await response.json();
+                    populateScheduleTable(scheduleData);
+                } else {
+                    console.error('Failed to fetch schedule data:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error during fetch operation:', error);
+            }
+        })();
+
+        function populateScheduleTable(scheduleData) {
+            const tableBody = document.querySelector('tbody');
+
+            // Loop through the schedule data and populate the table
+            scheduleData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class='only-time'>${item.time}</td>
+                    <td><p>${item.monday}</p></td>
+                    <td><p>${item.tuesday}</p></td>
+                    <td><p>${item.wednesday}</p></td>
+                    <td><p>${item.thursday}</p></td>
+                    <td><p>${item.friday}</p></td>
+                    <td><p>${item.saturday}</p></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Event handler for the "Log out" button
+        document.querySelector('.logout button').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            localStorage.removeItem('token'); // Remove the token from local storage
+            window.location.href = '../../pages/login/login.html'; // Redirect the user to the login page
+        });
     </script>
 </body>
 </html>

@@ -375,7 +375,7 @@ table, tr, td{
     display: flex;
     flex-direction: column;
     gap: 5px;
-    width: 800px; /* Устанавливаем ширину в 100% */
+    width: 600px; /* Устанавливаем ширину в 100% */
     max-height: 400px; /* Ограничиваем максимальную высоту, чтобы предотвратить избыточную прокрутку */
 }
 
@@ -390,20 +390,38 @@ table, tr, td{
     max-height: 400px; /* Ограничиваем максимальную высоту, чтобы предотвратить избыточную прокрутку */
 }
 
-/* Стили для контейнера displayAttendanceDataForSections */
-/* .displayAttendanceDataForSections {
-    margin-top: 50px;
-    padding-left: 300px;
+.breadcrumb {
+    list-style: none;
     display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: 800px;
-    max-height: 500px; 
-} */
+    padding: 0;
+  }
 
+  .breadcrumb-item {
+    margin-right: 0.5em;
+  }
 
+  .breadcrumb-item a {
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+  }
 
-.table-container {
-    overflow: auto; /* Добавить горизонтальную и вертикальную полосы прокрутки */
-    max-height: 400px; /* Максимальная высота контейнера, после которой начнется отображаться полоса прокрутки */
-}
+  .breadcrumb-item a:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumb-item::after {
+    content: '-';
+    color: white;
+    margin: 0 0.5em;
+  }
+
+  .breadcrumb-item:last-child::after {
+    content: none;
+  }
+  .breadcrumb-item active{
+    color: white;
+    text-decoration: none;
+    font-size: 6px;
+
+  }

@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -59,7 +59,7 @@
                         <div class="details">
                             <div class="personal-info">
                                 <p >NAME SURNAME:</p> 
-                                <p id="name"">PALENSHEEVA PALENSHE</p>
+                                <p id="name">PALENSHEEVA PALENSHE</p>
                             </div>
                             <div class="personal-info">
                                 <p >GENDER:</p> 
@@ -130,11 +130,29 @@
         saveButton.addEventListener("click", (e) => {
             e.preventDefault(); 
             const inputFile = document.querySelector('#inputFile');
-            const fileUrl = URL.createObjectURL(inputFile.files[0]);
-            icon.style.backgroundImage = 'url(' + fileUrl + ')';
-            save.style.display = 'block';
+            if (inputFile.files.length > 0) { // Check if a file is selected
+                const fileSize = inputFile.files[0].size;
+                const maxFileSize = 2 * 1024 * 1024; // Set a max file size (e.g., 2MB)
+
+                // Here you can add your own validation for file size or type if necessary
+                if (fileSize <= maxFileSize) {
+                    // File size is acceptable
+                    const fileUrl = URL.createObjectURL(inputFile.files[0]);
+                    icon.style.backgroundImage = 'url(' + fileUrl + ')';
+                    notifClass.style.display = 'block';
+                    notifClass.innerHTML = '<p style="color: green;">PHOTO UPLOADED SUCCESSFULLY!</p>';
+                } else {
+                    // File size is too large
+                    notifClass.style.display = 'block';
+                    notifClass.innerHTML = '<p style="color: white;">SIZE OF PHOTO DOESN’T MATCH!</p>';
+                }
+            } else {
+                // No file was selected
+                notifClass.style.display = 'block';
+                notifClass.innerHTML = '<p style="color: white;">NO FILE SELECTED!</p>';
+            }
         });
     });
     </script>
 </body>
-</html> -->
+</html>

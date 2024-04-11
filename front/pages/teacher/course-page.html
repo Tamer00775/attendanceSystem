@@ -53,22 +53,11 @@
                     <div class="page-name">
                         <h1>START OF COURSES</h1>
                     </div>
-                    <!-- <div class="courses">
-                        <div class="course">
-                            <div class="course-name">
-                                <p><span class="code">CSS 228.01P</span> - ADVANCED ALGORITHM</p>
-                            </div>
-                            <form action="">
-                                <button id="startLessonButton" style="background-color: #F3C997" class="btn">START</button>
-                                <button id="endLessonButton" disabled style="background-color: #FED66D;" class="btn">END</button>
-                            </form>
-                        </div>
-                    </div> -->
                     <div class="courses" id="coursesContainer">
                     </div>
                     <div>
                         <p class="startMessage" style="display: block;"></p>
-                        <!-- <p class="end" style="display: none; background-color: red;">LESSON IS OVER!</p> -->
+                        <p class="endMessage" style="display: none; background-color: red;">LESSON IS OVER!</p> 
                     </div>
                 </div>
             </div>
@@ -133,32 +122,8 @@
             .catch(error => console.error('Error fetching the courses:', error));
         });
 
-        // function startClicked(sectionName) {
-        //     const jwtToken = localStorage.getItem('token');
-        //     if (!jwtToken) {
-        //         alert('No JWT token found in localStorage.');
-        //         return;
-        //     }
-        //     console.log(sectionName);
-        //     try {
-        //         const response = fetch('http://localhost:8081/api/teacher/start', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': `Bearer ${localStorage.getItem('token')}`
-        //             },
-        //             body: JSON.stringify({ sectionName: sectionName })
-        //         });
-        //         console.log("Bla bla bla");
-        //         const data = response.json();
-        //         alert('Secret Code: ' + data.secretCode);
-        //     } catch (error) {
-        //         console.error('Fetch error:', error.message);
-        //         alert('Error in catch occurred');
-        //     }
-        // }
-
         async function startClicked(sectionName) {
+            event.preventDefault();
             // Prompt the user to confirm starting the course
             const isConfirmed = confirm(`Do you want to start the ${sectionName} Course?`);
             if (!isConfirmed) {
@@ -197,9 +162,10 @@
                 paragraph.classList.remove('hidden');
 
                 // Schedule the paragraph to be hidden after 10 minutes
-                setTimeout(() => {
+                setTimeout(function(){
                     paragraph.classList.remove('visible');
                     paragraph.classList.add('hidden');
+                    
                 }, 600000); // 600,000 milliseconds = 10 minutes
 
             } catch (error) {
@@ -208,7 +174,10 @@
             }
         }
 
+
         async function endClicked(sectionName) {
+            event.preventDefault();
+            var paragraph = document.querySelector('.startMessage');
             const isConfirmed = confirm(`Do you want to finish the ${sectionName} Course?`);
             if (!isConfirmed) {
                 return;
@@ -221,6 +190,7 @@
             }
 
             try {
+                
                 const response = await fetch('http://localhost:8081/api/teacher/end', {
                     method: 'POST',
                     headers: {
@@ -228,6 +198,7 @@
                         'Authorization': `Bearer ${jwtToken}`
                     },
                     body: JSON.stringify({ sectionName })
+                    
                 });
 
                 if (!response.ok) {
@@ -238,12 +209,11 @@
                 }
 
                 const data = await response.json();
-                const paragraph = document.querySelector('.endMessage');
+                var paragraph1 = document.querySelector('.endMessage');
                 if (data.status === 'SUCCESSFULLY') {
-                    paragraph.innerText = 'LESSON IS OVER';
-                    paragraph.style.color = 'red';
-                    // Assuming you want to hide the message after 10 minutes
-                    setTimeout(() => paragraph.style.display = 'none', 600000);
+                    paragraph1.innerText = 'LESSON IS OVER';
+                    paragraph1.style.color = 'red';
+                    paragraph1.style.display = 'block';
                 } else {
                     paragraph.innerText = 'END LESSON FAILED';
                     paragraph.style.color = 'red';
@@ -253,36 +223,14 @@
                 alert('Error: ' + error.message);
             }
         }
-
-        // document.getElementById('endLessonButton').addEventListener('click', async function(e){
-        //     e.preventDefault();
-        //     const startMessage = document.querySelector('.start');
-        //     const endMessage = document.querySelector('.end');
-
-        //         startMessage.style.display = 'none';
-        //         endMessage.style.display = 'block';
-        //         await endClicked('CSS 228.01P'); // Pass the section name correctly
-        // });
-
-        
-        // function startClicked() {
-        //     document.getElementById('startLessonButton').disabled = true;
-        //     document.getElementById('endLessonButton').disabled = false;
-        // }
-
-        // function endClicked() {
-        //     document.getElementById('startLessonButton').disabled = false;
-        //     document.getElementById('endLessonButton').disabled = true;
-        // }
     </script>
-
-<script>
-    // Обработчик события для кнопки "Log out"
-    document.querySelector('.logout button').addEventListener('click', function(event) {
-        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
-        localStorage.removeItem('token'); // Удаляем токен из локального хранилища
-        window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
-    });
-</script>
+    <script>
+        // Обработчик события для кнопки "Log out"
+        document.querySelector('.logout button').addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+            localStorage.removeItem('token'); // Удаляем токен из локального хранилища
+            window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
+        });
+    </script>
 </body>
 </html>

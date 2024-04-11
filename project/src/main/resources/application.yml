@@ -2,13 +2,13 @@ spring:
   datasource:
     username: admin
     password: 123456
-    url: jdbc:postgresql://localhost:5432/postgres?serverTimezone=UTC+5
+    url: jdbc:postgresql://localhost:5432/postgres
   jpa:
     open-in-view: false
     properties:
       hibernate:
         jdbc:
-          time_zone: 'Asia/Almaty'
+          time_zone: '+5' 
   jwt:
     secret: secret
   mail:
