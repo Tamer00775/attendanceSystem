@@ -176,10 +176,10 @@ body{
     padding: 3px 0px 2px 10px;
     color: white;
 }
-.visible {
-    display: block !important; /* Use !important to override other styles */
+.hidden {
+    display: none;
 }
 
-.hidden {
-    display: none !important; /* Use !important to override other styles */
+.visible {
+    display: block;
 }

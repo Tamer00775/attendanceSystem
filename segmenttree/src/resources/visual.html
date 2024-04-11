@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segment Tree Visualizer</title>
+    <link rel="stylesheet" href="visual_css.css">
+</head>
+<body>
+    <h2 class="title">Segment Tree Visualizer</h2>
+
+    <label for="arraySize" class="size">Length of array:</label>
+    <input type="number" id="arraySize" name="arraySize" class="size_input"><br><br>
+
+    <label for="elementValue" class="size">Add element:</label>
+    <input type="number" id="elementValue" class="label_input" name="elementValue">
+    <button onclick="addElement()" class="insert">Insert</button><br><br>
+
+    <div id="arrayVisualization"></div>
+    <button onclick="buildSegmentTree()" class="building">Build Segment Tree</button>
+
+<script>
+    let array = [];
+    function updateArrayVisualization() {
+        const arrayVisualization = document.getElementById("arrayVisualization");
+        arrayVisualization.innerHTML = 'Current array: ' + array.join(", ");
+    }
+
+    function addElement() {
+        const arraySize = parseInt(document.getElementById("arraySize").value, 10);
+        const elementValue = document.getElementById("elementValue").value;
+        if (array.length < arraySize) {
+            if (elementValue) {
+                array.push(parseInt(elementValue, 10));
+                document.getElementById("elementValue").value = '';
+                updateArrayVisualization();
+            }
+        } else {
+            alert("You can't add more elements than the specified array size.");
+        }
+    }
+    class Node {
+        constructor(low, high, sum) {
+            this.low = low;
+            this.high = high;
+            this.sum = sum;
+            this.left = null;
+            this.right = null;
+        }
+    }
+
+    function buildST(arr, low, high) {
+        if (low === high) {
+            return new Node(low, high, arr[low]);
+        }
+        const mid = Math.floor((low + high) / 2);
+        const left = buildST(arr, low, mid);
+        const right = buildST(arr, mid + 1, high);
+        const parent = new Node(low, high, left.sum + right.sum);
+        parent.left = left;
+        parent.right = right;
+        return parent;
+    }
+
+    // Build the segment tree from the current array
+    function visualizeTree(node, parentElement = null) {
+        if (!node) return;
+
+        // Create a container for this node
+        let nodeElement = document.createElement('div');
+        nodeElement.className = 'node';
+        nodeElement.innerHTML = `Sum=${node.sum}<br>[${node.low}:${node.high}]`; // Set text in two lines
+
+        // Create a container for the children to make them flex items
+        let childrenContainer = document.createElement('div');
+        childrenContainer.className = 'children';
+
+        // Append the node element to the children container or the root
+        if (parentElement) {
+            parentElement.appendChild(nodeElement);
+        } else {
+            // For the root node, append directly to the visualization container
+            document.getElementById('arrayVisualization').appendChild(nodeElement);
+        }
+
+        // Recursively create elements for the children
+        if (node.left || node.right) {
+            nodeElement.appendChild(childrenContainer);
+            if (node.left) {
+                visualizeTree(node.left, childrenContainer);
+            }
+            if (node.right) {
+                visualizeTree(node.right, childrenContainer);
+            }
+        }
+    }
+
+
+    function buildSegmentTree() {
+        // Clear previous visualization
+        document.getElementById('arrayVisualization').innerHTML = '';
+
+        // Build the tree and start the visualization process
+        const root = buildST(array, 0, array.length - 1);
+        visualizeTree(root);
+    }
+</script>
+</body>
+</html>
