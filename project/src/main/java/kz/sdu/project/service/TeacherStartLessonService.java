@@ -250,6 +250,7 @@ public class TeacherStartLessonService {
             }
 
             secretCodeForCheckIn.setIs_interpreted(true);
+            secretCodeForCheckIn.setCreated(LocalDateTime.now(zoneId));
             secretCodeForCheckInService.save(secretCodeForCheckIn);
             return Map.of("status", END_LESSON_PROCESS_IS_SUCCESSFULLY.name());
         }

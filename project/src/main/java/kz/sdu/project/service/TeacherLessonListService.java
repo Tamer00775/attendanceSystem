@@ -4,6 +4,7 @@ import kz.sdu.project.dto.RequestBodyDTO;
 import kz.sdu.project.dto.TeacherLessonShowDto;
 import kz.sdu.project.entity.Person;
 import kz.sdu.project.entity.Schedule;
+import kz.sdu.project.entity.SecretCodeForCheckIn;
 import kz.sdu.project.entity.Section;
 import kz.sdu.project.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,21 +30,46 @@ public class TeacherLessonListService {
 
     private final PersonService personService;
     private final SectionService sectionService;
+    private final SecretCodeForCheckInService secretCodeForCheckInService;
     public List<TeacherLessonShowDto> lessonList() {
         Person teacher = SecurityUtils.getCurrentPerson();
         List<Section> sections = sectionService.findByPersonId(teacher.getId());
         List<TeacherLessonShowDto> listLesson = new ArrayList<>();
-
+        System.out.println("Huuuuh");
         for (Section section : sections) {
             Schedule schedule = section.getSchedule();
-            listLesson.add(TeacherLessonShowDto.builder()
-                            .sectionName(section.getName())
-                            .courseName(section.getCourse_section().getName())
-                            .startTime(returnStartTime(schedule))
-                            .endTime(returnEndTime(schedule))
-                            .activeStart(canStartLesson(schedule))
-                            .activeEnd(canEndLesson(schedule))
-                    .build());
+            System.out.println(schedule.getScheduleId());
+            System.out.println(secretCodeForCheckInService
+                    .findByScheduleId(schedule.getScheduleId()));
+            SecretCodeForCheckIn secretCodeForCheckIn = secretCodeForCheckInService
+                    .findByScheduleId(schedule.getScheduleId())
+                            .orElse(null);
+
+            if (secretCodeForCheckIn != null) {
+                boolean cannotStart = secretCodeForCheckIn.getIs_interpreted();
+                if (cannotStart) {
+                    LocalDateTime now = LocalDateTime.now(zoneId);
+                    long minutesDiff = Math.abs(Duration.between(now, secretCodeForCheckIn.getCreated()).toMinutes());
+                    if (minutesDiff > 300) cannotStart = false;
+                }
+                listLesson.add(TeacherLessonShowDto.builder()
+                        .sectionName(section.getName())
+                        .courseName(section.getCourse_section().getName())
+                        .startTime(returnStartTime(schedule))
+                        .endTime(returnEndTime(schedule))
+                        .activeStart(cannotStart ?  cannotStart : canStartLesson(schedule))
+                        .activeEnd(cannotStart ?  cannotStart : canEndLesson(schedule))
+                        .build());
+            }else {
+                listLesson.add(TeacherLessonShowDto.builder()
+                        .sectionName(section.getName())
+                        .courseName(section.getCourse_section().getName())
+                        .startTime(returnStartTime(schedule))
+                        .endTime(returnEndTime(schedule))
+                        .activeStart(false)
+                        .activeEnd(false)
+                        .build());
+            }
         }
         return listLesson;
     }
