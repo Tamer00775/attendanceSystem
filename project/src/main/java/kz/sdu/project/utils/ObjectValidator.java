@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.constraints.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 @Component
@@ -49,5 +51,11 @@ public class ObjectValidator {
         return rolePerson
                 .stream()
                 .anyMatch(role -> role.getRole().equals("ROLE_TEACHER"));
+    }
+    public static Integer getCurrentWeek() {
+        LocalDate startDate = LocalDate.of(2024, 1, 22);
+        LocalDate now = LocalDate.now();
+        int diffInDays = (int) ChronoUnit.DAYS.between(startDate, now);
+        return diffInDays / 7 + 1;
     }
 }
