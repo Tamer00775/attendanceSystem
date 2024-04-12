@@ -10,9 +10,9 @@
 <body>
     <header class="header">
         <div class="container">
-            <div class="header__wrapper">
-                <div class="logo">
-                </div>
+            <div class="header__wrapper"> 
+                <a class="logo" href="./home-page.html"></a> 
+            <!-- </div> -->
                 <div class="admin">
                     <div class="admin-details">
                         <div class="admin-info">
@@ -30,7 +30,7 @@
                     </div>
                     <div class="icon" style="background-image: url(../../assets/images/icon.png);">
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
         </div>
     </header>
@@ -60,34 +60,30 @@
                         <p class="endMessage" style="display: none; background-color: red;">LESSON IS OVER!</p> 
                     </div>
                 </div>
+                <!-- Modal HTML instead of alert -->
+                <div id="startModal" class="modal">
+                    <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p class="question">Do you want to start the <span style="color: rgb(155, 118, 49);" id="modalStartCourseSectionName"></span> Course?</p>
+                    <button id="confirmStart" style="margin-left: 260px;" class="modal-btn">Yes</button>
+                    <button id="cancelStart" style="margin-left: 20px;" class="modal-btn">No</button>
+                    </div>
+                </div>
+                <!-- Course end modal -->
+                <div id="endModal" class="modal">
+                    <div class="modal-content">
+                    <span class="close-end">&times;</span>
+                    <p class="question">Do you want to finish the <span style="color: rgb(155, 118, 49);" id="modalEndCourseSectionName"></span> Course?</p>
+                    <button id="confirmEnd" style="margin-left: 260px;" class="modal-btn">Yes</button>
+                    <button id="cancelEnd" style="margin-left: 20px;" class="modal-btn">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
     <script>
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     const startLessonButton = document.getElementById('startLessonButton');
-        //     const endLessonButton = document.getElementById('endLessonButton');
-        //     const startMessage = document.querySelector('.start');
-        //     const endMessage = document.querySelector('.end');
-
-        //     startLessonButton.addEventListener('click', (e) => {
-        //         e.preventDefault();
-        //         startMessage.style.display = 'block';
-        //         endMessage.style.display = 'none';
-        //     });
-
-        //     setTimeout(() => {
-        //         startMessage.style.display = 'none';}, 3000000);
-
-        //     endLessonButton.addEventListener('click', (e) => {
-        //         e.preventDefault();
-        //         startMessage.style.display = 'none';
-        //         endMessage.style.display = 'block'; 
-        //     });
-
-        //     setTimeout(() => {
-        //         endMessage.style.display = 'none';}, 600000);
-        // });
+        let paragraphText = "";
+        let endParagraphText = "";
         document.addEventListener('DOMContentLoaded', function() {
             const jwtToken = localStorage.getItem('token');
             fetch('http://0.0.0.0:8081/api/teacherLessonList', {
@@ -112,8 +108,8 @@
                             <p><span class="code">${course.sectionName}</span> - ${course.courseName}</p>
                         </div>
                         <form action="">
-                            <button onclick="startClicked('${course.sectionName}')" style="background-color: #F3C997; margin-right:20px" class="btn">START</button>
-                            <button onclick="endClicked('${course.sectionName}')" style="background-color: #FED66D;" class="btn">END</button>
+                            <button onclick="startClicked('${course.sectionName}')" class="btn">START</button>
+                            <button onclick="endClicked('${course.sectionName}')" class="end-button" data-section-name="${course.sectionName}" disabled>END</button>
                         </form>
                     `;
                     coursesContainer.appendChild(courseElement);
@@ -124,17 +120,61 @@
 
         async function startClicked(sectionName) {
             event.preventDefault();
-            // Prompt the user to confirm starting the course
-            const isConfirmed = confirm(`Do you want to start the ${sectionName} Course?`);
-            if (!isConfirmed) {
-                return;
+
+            // Get modal elements
+            const modal = document.getElementById('startModal');
+            const modalCourseSectionName = document.getElementById('modalStartCourseSectionName');
+            const confirmStart = document.getElementById('confirmStart');
+            const cancelStart = document.getElementById('cancelStart');
+            const endButton = document.querySelector(`button[data-section-name='${sectionName}'].end-button`);
+            const startButton = document.querySelector(`.btn`);
+            const startButtons = document.querySelectorAll('.btn');
+
+            
+            // Set the section name in the modal
+            modalCourseSectionName.textContent = sectionName;
+
+            // Show the modal
+            modal.style.display = 'block';
+
+            // Function to hide the modal
+            function hideModal() {
+                modal.style.display = 'none';
+                
             }
 
+            // When the user clicks confirm in the modal
+            confirmStart.onclick = function() {
+                modal.style.display = 'none';
+                actuallyStartCourse(sectionName); // Call the function to start the course
+                 // Immediately disable the START button
+                if(paragraphText == "accept"){
+                    endButton.disabled = false; 
+                    startButton.disabled = true;// Enable the END button
+                    startButtons.forEach(button => {
+                        button.disabled = true;
+                    });
+                };
+            };
+
+            // When the user clicks cancel or outside the modal, close the modal
+            cancelStart.onclick = window.onclick = function(event) {
+                if (event.target == modal || event.target == cancelStart) {
+                    hideModal();
+                }
+            };
+
+            // Close the modal if the user clicks on the X (close button)
+            const span = document.getElementsByClassName("close")[0];
+            span.onclick = function() {
+                hideModal();
+            };
+        }
+
+        // This function will handle the actual starting of the course
+        async function actuallyStartCourse(sectionName) {
             const jwtToken = localStorage.getItem('token');
-            if (!jwtToken) {
-                alert('No JWT token found in localStorage.');
-                return;
-            }
+            // ... rest of your existing startClicked function without the confirm dialog ...
 
             try {
                 const xhr = new XMLHttpRequest();
@@ -152,21 +192,36 @@
 
                 const data = JSON.parse(xhr.responseText);
                 var paragraph = document.querySelector('.startMessage');
-                
-                // Change the text content
-                paragraph.innerText = 'LESSON HAS BEGUN.ATTENDANCE CODE: ' + data.secretCode;
+                if (typeof data.statusText === "undefined") {
+                    paragraphText = "fail";
+                    paragraph.innerText = 'COURSE TIME HAS NOT STARTED YET.';
+                    paragraph.style.color = 'white'; 
+                    paragraph.style.border = '1px solid red';
+                    paragraph.style.width = "330px";
+                    paragraph.style.backgroundColor = 'red';
+                    paragraph.style.textAlign = "left";
+                    setTimeout(function() {
+                        paragraph.style.display = 'none'; 
+                    }, 6000);
+                    
+                } else {
+                    // Change the text content
+                    paragraphText = "accept";
+                    paragraph.innerText = 'LESSON HAS BEGUN. ATTENDANCE CODE: ' + data.secretCode;
+                    paragraph.style.color = 'white'; 
+                    paragraph.style.border = '1px solid green';
+                    paragraph.style.width = "630px";
+                    paragraph.style.backgroundColor = 'green';
+                    paragraph.style.textAlign = "left";
+                    setTimeout(function() {
+                        paragraph.style.display = 'none'; 
+                    }, 900000);
+                }
                 
                 // Change the color
-                paragraph.style.color = 'green'; 
+                // paragraph.style.color = 'green'; 
                 paragraph.classList.add('visible');
                 paragraph.classList.remove('hidden');
-
-                // Schedule the paragraph to be hidden after 10 minutes
-                setTimeout(function(){
-                    paragraph.classList.remove('visible');
-                    paragraph.classList.add('hidden');
-                    
-                }, 600000); // 600,000 milliseconds = 10 minutes
 
             } catch (error) {
                 console.error('Fetch error:', error.message);
@@ -174,21 +229,62 @@
             }
         }
 
-
         async function endClicked(sectionName) {
             event.preventDefault();
-            var paragraph = document.querySelector('.startMessage');
-            const isConfirmed = confirm(`Do you want to finish the ${sectionName} Course?`);
-            if (!isConfirmed) {
-                return;
+
+            // Reference the end modal elements
+            const endModal = document.getElementById('endModal');
+            const modalEndCourseSectionName = document.getElementById('modalEndCourseSectionName');
+            const confirmEnd = document.getElementById('confirmEnd');
+            const cancelEnd = document.getElementById('cancelEnd');
+            const endButton = document.querySelector(`button[data-section-name='${sectionName}'].end-button`);
+            const startButton = document.querySelector(`.btn`);
+            const endButtons = document.querySelectorAll(`button[data-section-name='${sectionName}'].end-button`);
+
+            // Set the section name in the modal
+            modalEndCourseSectionName.textContent = sectionName;
+
+            // Show the end modal
+            endModal.style.display = 'block';
+
+            // Function to hide the end modal
+            function hideEndModal() {
+                endModal.style.display = 'none';
             }
 
+            // Handle confirmation of ending the course
+            confirmEnd.onclick = async function() {
+                endModal.style.display = 'none';
+                await actuallyEndCourse(sectionName); // Placeholder for your ending logic
+                hideEndModal();
+                if(endParagraphText == "accept"){
+                    endButton.disabled = true; 
+                    startButton.disabled = false;
+                    endButtons.forEach(button => {
+                        button.disabled = true;
+                    });
+                }
+            };
+
+            // Handle cancellation or clicking outside the modal to close it
+            cancelEnd.onclick = window.onclick = function(event) {
+                if (event.target == endModal || event.target == cancelEnd) {
+                    hideEndModal();
+                }
+            };
+
+            // Close the modal if the user clicks on the "close" span
+            const closeEndSpan = document.querySelector('.close-end');
+            closeEndSpan.onclick = function() {
+                hideEndModal();
+            };
+        }
+
+        // Placeholder for the actual course ending logic
+        async function actuallyEndCourse(sectionName) {
+            event.preventDefault();
             const jwtToken = localStorage.getItem('token');
-            if (!jwtToken) {
-                alert('No JWT token found in localStorage.');
-                return;
-            }
-
+            
             try {
                 
                 const response = await fetch('http://localhost:8081/api/teacher/end', {
@@ -211,12 +307,30 @@
                 const data = await response.json();
                 var paragraph1 = document.querySelector('.endMessage');
                 if (data.status === 'SUCCESSFULLY') {
+                    endParagraphText = "accept";
                     paragraph1.innerText = 'LESSON IS OVER';
-                    paragraph1.style.color = 'red';
-                    paragraph1.style.display = 'block';
+                    paragraph1.style.color = 'white'; 
+                    paragraph1.style.border = '1px solid green';
+                    paragraph1.style.width = "330px";
+                    paragraph1.style.backgroundColor = 'green';
+                    paragraph1.style.textAlign = "left";
+
+                    setTimeout(function() {
+                        paragraph1.style.display = 'none'; 
+                    }, 60000);
+
                 } else {
-                    paragraph.innerText = 'END LESSON FAILED';
-                    paragraph.style.color = 'red';
+                    endParagraphText = "fail";
+                    paragraph1.innerText = 'YOU CANNOT FINISH THE COURSE BEFORE 15 MINUTES.';
+                    paragraph1.style.color = 'white'; 
+                    paragraph1.style.border = '1px solid red';
+                    paragraph1.style.width = "630px";
+                    paragraph1.style.backgroundColor = 'red';
+                    paragraph1.style.textAlign = "left";
+
+                    setTimeout(function() {
+                        paragraph1.style.display = 'none'; 
+                    }, 60000);
                 }
             } catch (error) {
                 console.error('Fetch error:', error);

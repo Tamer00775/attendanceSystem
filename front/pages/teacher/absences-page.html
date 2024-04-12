@@ -124,6 +124,15 @@
     </main>
 
     <script>
+        // Обработчик события для кнопки "Log out"
+        document.querySelector('.logout button').addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+            localStorage.removeItem('token'); // Удаляем токен из локального хранилища
+            window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
+        });
+    </script>
+
+    <script>
         (async function () {
             try {
                 const response = await fetch('http://localhost:8081/api/person/v1/current', {

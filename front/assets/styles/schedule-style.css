@@ -1,3 +1,159 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Header */
+.header__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.admin-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.admin-info {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    width: 400px;
+    align-items: center;
+}
+
+.admin-info p {
+    color: white;
+    flex-basis: 100%;
+    text-align: left;
+    font-size: 13px;
+}
+
+.logo{
+    background: url("../images/logo.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 150px;
+    width: 325px;
+}
+
+.icon{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 125px;
+    width: 100px;
+}
+
+/* Main */
+.main__wrapper {
+    display: flex;
+    gap: 30px;
+}
+
+/* Menu */
+.menu {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 15px;
+    width: 275px;
+    gap: 30px;
+}
+
+.menu a {
+    padding: 5px 20px;
+    background-color: #ffffff;
+    color: #000000;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 20px;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.menu a:hover {
+    background: #727272;
+    border-bottom: 1px solid #DFBC5F;
+    box-shadow: #000000;
+}
+
+#selected {
+    color: #204066;
+    background: #DFBC5F;
+    border: 1px solid #f7d36f;
+    font-weight: 600;
+}
+
+#selected::before {
+    content: ">>>";
+}
+
+.icon {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 125px;
+    width: 100px;
+}
+
+/* Main Content */
+.page-name h1 {
+    text-transform: uppercase;
+    color: #DFBC5F;
+    font-weight: 400;
+    font-size: 27px;
+    margin-top: -15px;
+    margin-bottom: 35px;
+}
+
+/* Schedule Table */
+.schedule-table {
+    width: 740px;
+    border-collapse: collapse;
+}
+
+.schedule-table th,
+.schedule-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    width: 40px;
+    text-align: center;
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+}
+.for-time{
+    background-color: rgb(51, 96, 133);
+}
+
+.schedule-table th {
+    background-color: rgb(51, 96, 133);
+    text-align: center;
+    color: #DFBC5F;
+}
+
+.schedule-table tbody tr:nth-child(even) {
+    background-color: #204066;
+}
+
+.schedule-table tbody tr:hover {
+    background-color: blur;
+}
 /* BASIC STYLE */
 *{
     margin: 0;
@@ -40,14 +196,6 @@ body{
     flex-basis: 100%;
     text-align: left;
     font-size: 13px;
-}
-.logo{
-    background: url("../images/logo.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 150px;
-    width: 325px;
 }
 
 /* MAIN */
@@ -95,69 +243,6 @@ body{
     height: 125px;
     width: 100px;
 }
-
-/* MAIN CONTENT */
-
-.page-name h1{
-    text-transform: uppercase;
-    color: #DFBC5F;
-    font-weight: 400;
-    font-size: 27px;
-    margin-top: -15px;
-    margin-bottom: 35px;
-}
-table{
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-tr{
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-thead td{
-    background: #E5D5AC;
-    border-radius: 30px;
-    font-size: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    padding: 3px;
-    margin-bottom: 20px;
-    min-width: 100px;
-}
-tbody{
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-tbody td{
-    background-color: white;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: small;
-    margin-bottom: 10px;
-    min-height: 35px;
-    min-width: 100px;
-}
-.only-time{
-    background: #DFBC5F;
-    min-height: 25px;
-    min-width: 100px;
-}
-tbody p{
-    font-size: 10px;
-    padding-right: 5px;
-    font-weight: 600;
-    text-align: center;
-}
-
 .logout{
     width: 100%;
 }

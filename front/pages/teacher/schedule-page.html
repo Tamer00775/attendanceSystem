@@ -10,9 +10,9 @@
 <body>
     <header class="header">
         <div class="container">
-            <div class="header__wrapper">
-                <div class="logo">
-                </div>
+            <div class="header__wrapper"> 
+                <a class="logo" href="./home-page.html"></a> 
+            <!-- </div> -->
                 <div class="admin">
                     <div class="admin-details">
                         <div class="admin-info">
@@ -30,7 +30,7 @@
                     </div>
                     <div class="icon" style="background-image: url(../../assets/images/icon.png);">
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
         </div>
     </header>
@@ -39,13 +39,13 @@
             <div class="main__wrapper">
                 <div class="sidebar__wrapper">
                     <nav class="menu">
-                        <a href="#">HOME PAGE</a>
+                        <a href="./home-page.html">HOME PAGE</a>
                         <a href="./schedule-page.html" id="selected">Course schedule</a>
                         <a href="./course-page.html">start course</a>
                         <a href="./attendence-page.html">ATTENDANCE</a>
-                        <a href="./profile-page.html">my profile</a>
+                        <a href="#">my profile</a>
                         <form action="" class="logout">
-                            <button >Log out</button>
+                            <button>Log out</button>
                         </form>
                     </nav>
                 </div>
@@ -54,16 +54,16 @@
                         <h1>COURSE SCHEDULE</h1>
                     </div>
                     <div class="table-container">
-                        <table>
+                        <table class="schedule-table">
                             <thead>
                                 <tr>
-                                    <td>Time</td>
-                                    <td>Monday</td>
-                                    <td>Tuesday</td>
-                                    <td>Wednesday</td>
-                                    <td>Thursday</td>
-                                    <td>Friday</td>
-                                    <td>Saturday</td>
+                                    <th>Time</th>
+                                    <th>Monday</th>
+                                    <th>Tuesday</th>
+                                    <th>Wednesday</th>
+                                    <th>Thursday</th>
+                                    <th>Friday</th>
+                                    <th>Saturday</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -80,7 +80,7 @@
                 const response = await fetch('http://localhost:8081/api/person/v1/current', {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add authorization if needed
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
                         'Content-Type': 'application/json',
                     },
                 });
@@ -123,17 +123,16 @@
         function populateScheduleTable(scheduleData) {
             const tableBody = document.querySelector('tbody');
 
-            // Loop through the schedule data and populate the table
             scheduleData.forEach(item => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td class='only-time'>${item.time}</td>
-                    <td><p>${item.monday}</p></td>
-                    <td><p>${item.tuesday}</p></td>
-                    <td><p>${item.wednesday}</p></td>
-                    <td><p>${item.thursday}</p></td>
-                    <td><p>${item.friday}</p></td>
-                    <td><p>${item.saturday}</p></td>
+                    <td class="for-time">${item.time}</td>
+                    <td>${item.monday}</td>
+                    <td>${item.tuesday}</td>
+                    <td>${item.wednesday}</td>
+                    <td>${item.thursday}</td>
+                    <td>${item.friday}</td>
+                    <td>${item.saturday}</td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -146,5 +145,6 @@
             window.location.href = '../../pages/login/login.html'; // Redirect the user to the login page
         });
     </script>
+
 </body>
 </html>
