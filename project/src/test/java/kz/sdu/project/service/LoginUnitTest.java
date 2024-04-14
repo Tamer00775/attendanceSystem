@@ -43,6 +43,6 @@ public class LoginUnitTest {
         authDto.setPassword("woekrokewf"); // wrong password
 
         Assert.assertThrows("Password was incorrect",
-                IllegalArgumentException.class, () -> authService.login(authDto));
+                UsernameNotFoundException.class, () -> authService.login(authDto));
     }
 }
