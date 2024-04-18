@@ -19,4 +19,5 @@ public class AttendanceStatusDetailDto {
     private String place;
     private String type;
     private Integer week;
+    private Boolean wentInWithCard;
 }

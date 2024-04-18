@@ -1,6 +1,8 @@
 package kz.sdu.project.service;
 
+import kz.sdu.project.specification.PersonSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import kz.sdu.project.entity.Person;
 import kz.sdu.project.repository.PersonRepo;
@@ -17,6 +19,11 @@ public class PersonService {
     @Autowired
     public PersonService(PersonRepo personRepo) {
         this.personRepo = personRepo;
+    }
+
+    public List<Person> findPeopleByLoginPattern(String login) {
+        Specification<Person> spec = PersonSpecification.hasLoginLike(login);
+        return personRepo.findAll(spec);
     }
 
     public Optional<Person> findById(Integer id) {

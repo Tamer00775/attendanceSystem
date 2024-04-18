@@ -140,7 +140,7 @@ public class StudentAttStatusService {
         for (int hour = 0; hour < totalHours; hour++) {
             String attStatus = determineAttendanceStatus(presentHours--,isWithReason);
             String time = formatHour(schedule.getStartTime(), hour);
-            addAttendanceDetailDto(attDetList, date, place, attStatus, time,attendanceRecord.getCurrentWeek(),lecType);
+            addAttendanceDetailDto(attDetList, date, place, attStatus, time,attendanceRecord.getCurrentWeek(),lecType,schedule);
         }
 
         log.info("Completed process AttStatusBySection...");
@@ -160,7 +160,7 @@ public class StudentAttStatusService {
         return (startsAt + hourIncrement) + ":00";
     }
 
-    private void addAttendanceDetailDto(List<AttendanceStatusDetailDto> list, LocalDate date, String place, String status, String time, Integer currentWeek, String lecType) {
+    private void addAttendanceDetailDto(List<AttendanceStatusDetailDto> list, LocalDate date, String place, String status, String time, Integer currentWeek, String lecType, Schedule schedule) {
         list.add(AttendanceStatusDetailDto.builder()
                 .date(date)
                 .place(place)
@@ -168,7 +168,16 @@ public class StudentAttStatusService {
                 .hour(time)
                 .week(currentWeek)
                 .type(lecType)
+                .wentInWithCard(determineAttRecordType(schedule, currentWeek))
                 .build());
+    }
+
+    private Boolean determineAttRecordType(Schedule schedule, Integer currentWeek) {
+        Person student = SecurityUtils.getCurrentPerson();
+        AttendanceRecord attendanceRecord = attendanceRecordService
+                .findByPersonIdAndScheduleIdAndCurrentWeek(student.getId(), schedule.getScheduleId(), currentWeek)
+                .orElseThrow(IllegalArgumentException::new);
+        return attendanceRecord.getRecord_type().equals("CARD");
     }
 
     private LocalDate getCurrentLocalDate(int currentWeek, Integer dayOfWeek) {

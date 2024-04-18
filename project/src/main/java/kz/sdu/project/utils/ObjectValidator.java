@@ -1,6 +1,7 @@
 package kz.sdu.project.utils;
 
 import kz.sdu.project.entity.Role;
+import kz.sdu.project.service.RoleService;
 import lombok.AllArgsConstructor;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.stereotype.Component;
@@ -16,8 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class ObjectValidator {
     private final Validator validator;
-
-
+    private static final RoleService roleService;
     public void validateObject(Object obj) {
         Set<ConstraintViolation<Object>> violationSet = validator.validate(obj);
         violationSet.forEach(violation -> {
@@ -45,6 +45,18 @@ public class ObjectValidator {
         return rolePerson
                 .stream()
                 .anyMatch(role -> role.getRole().equals("ROLE_STUDENT"));
+    }
+
+    public static boolean isNeededPerson(Set<Role> rolePerson,String personRole) {
+        return rolePerson
+                .stream()
+                .anyMatch(role -> role.getRole().equals(personRole));
+    }
+
+    public static boolean validRole(String personRole) {
+        return roleService
+                .findByRole(personRole)
+                .isPresent();
     }
 
     public static boolean isTeacher(Set<Role> rolePerson) {
