@@ -17,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class ObjectValidator {
     private final Validator validator;
-    private static final RoleService roleService;
+    private final RoleService roleService;
     public void validateObject(Object obj) {
         Set<ConstraintViolation<Object>> violationSet = validator.validate(obj);
         violationSet.forEach(violation -> {
@@ -53,17 +53,6 @@ public class ObjectValidator {
                 .anyMatch(role -> role.getRole().equals(personRole));
     }
 
-    public static boolean validRole(String personRole) {
-        return roleService
-                .findByRole(personRole)
-                .isPresent();
-    }
-
-    public static boolean isTeacher(Set<Role> rolePerson) {
-        return rolePerson
-                .stream()
-                .anyMatch(role -> role.getRole().equals("ROLE_TEACHER"));
-    }
     public static Integer getCurrentWeek() {
         LocalDate startDate = LocalDate.of(2024, 1, 22);
         LocalDate now = LocalDate.now();
