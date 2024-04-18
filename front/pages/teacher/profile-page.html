@@ -10,9 +10,9 @@
 <body>
     <header class="header">
         <div class="container">
-            <div class="header__wrapper">
-                <div class="logo">
-                </div>
+            <div class="header__wrapper"> 
+                <a class="logo" href="./home-page.html"></a> 
+            <!-- </div> -->
                 <div class="admin">
                     <div class="admin-details">
                         <div class="admin-info">
@@ -28,9 +28,9 @@
                             <p id="statusName">TEACHER</p>
                         </div>
                     </div>
-                    <div class="icon">
+                    <div class="icon" style="background-image: url(../../assets/images/icon.png);">
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
         </div>
     </header>
@@ -44,7 +44,9 @@
                         <a href="./course-page.html">start course</a>
                         <a href="./attendence-page.html">ATTENDANCE</a>
                         <a href="#" id="selected">my profile</a>
-                        <a href="#">LOG OUT</a>
+                        <form action="" class="logout">
+                            <button >Log out</button>
+                        </form>
                     </nav>
                 </div>
                 <div class="main__content">
@@ -154,5 +156,15 @@
         });
     });
     </script>
+
+    <script>
+        // Обработчик события для кнопки "Log out"
+        document.querySelector('.logout button').addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+            localStorage.removeItem('token'); // Удаляем токен из локального хранилища
+            window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
+        });
+    </script>
+
 </body>
 </html>

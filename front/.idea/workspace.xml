@@ -4,19 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4701ed32-59ba-4505-ba0d-6953cf0d789b" name="Changes" comment="added status,">
-      <change afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/dto/SectionOutRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/StudentSectionOutService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/utils/enums/LessonStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/domain/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/utils/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/entity/CheckInForSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/entity/CheckInForSession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/resource/StudentSectionInResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/resource/TeacherStartLessonResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/resource/TeacherLessonResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/EmailSenderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/EmailSenderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/ScheduleTableShowService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/ScheduleTableShowService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/StudentAttStatusService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/service/StudentAttStatusService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/src/main/resources/liquibase/changelog/20240210163300_add_all_entities.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/resources/liquibase/changelog/20240210163300_add_all_entities.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project/src/main/resources/liquibase/changelog/20240403161500_fill_up_att.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/resources/liquibase/changelog/20240403161500_fill_up_att.sql" afterDir="false" />
+    <list default="true" id="4701ed32-59ba-4505-ba0d-6953cf0d789b" name="Changes" comment="2,3,4">
+      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Gradle__com_google_guava_guava_20_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Gradle__io_springfox_springfox_core_2_9_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Gradle__io_springfox_springfox_schema_2_9_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Gradle__io_springfox_springfox_spi_2_9_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Gradle__io_springfox_springfox_spring_web_2_9_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Gradle__io_springfox_springfox_swagger2_2_9_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Gradle__io_springfox_springfox_swagger_common_2_9_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Gradle__org_mapstruct_mapstruct_1_2_0_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Gradle__org_springframework_plugin_spring_plugin_core_1_2_0_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Gradle__org_springframework_plugin_spring_plugin_metadata_1_2_0_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/student/attendence-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/pages/student/attendence-page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../project/src/main/java/kz/sdu/project/utils/Constants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,9 +44,10 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "blaBla",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/zhan/Desktop/attendanceSystem/front",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }

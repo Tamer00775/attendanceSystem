@@ -57,8 +57,8 @@ public class TeacherLessonListService {
                         .courseName(section.getCourse_section().getName())
                         .startTime(returnStartTime(schedule))
                         .endTime(returnEndTime(schedule))
-                        .activeStart(cannotStart ?  cannotStart : canStartLesson(schedule))
-                        .activeEnd(cannotStart ?  cannotStart : canEndLesson(schedule))
+                        .activeStart(cannotStart ?  false : canStartLesson(schedule))
+                        .activeEnd(cannotStart ?  false : canEndLesson(schedule))
                         .build());
             }else {
                 listLesson.add(TeacherLessonShowDto.builder()
@@ -66,7 +66,7 @@ public class TeacherLessonListService {
                         .courseName(section.getCourse_section().getName())
                         .startTime(returnStartTime(schedule))
                         .endTime(returnEndTime(schedule))
-                        .activeStart(false)
+                        .activeStart(canStartLesson(schedule))
                         .activeEnd(false)
                         .build());
             }

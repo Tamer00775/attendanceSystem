@@ -112,30 +112,117 @@ body{
     gap: 10px;
     width: 100%;
 }
-.course{
+.course {
     width: 470px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between; 
     align-items: center;
-    flex-direction: row;
-    gap: 10px;
+    padding: 0 20px; 
     background: white;
-    border-radius: 15px;
-    height: 30px;
+    border-radius: 7px;
+    height: 32px;
 }
-.course-name span{
+
+.course-name span {
     font-weight: 600;
 }
-.btn{
-    width: 60px;
-    height: 22px;
-    margin-right: 5px;
-    margin-left: 5px;
+
+.btn, .end-button {
+    width: 55px;
+    height: 25px;
     border-radius: 15px;
     font-size: 13px;
     cursor: pointer;
     border: none;
 }
+
+.btn {
+    background-color: #f0c435;
+}
+
+.end-button {
+    background-color: #eb9e3a;
+    margin-left: 10px; 
+}
+.btn:hover {
+    background-color: #81e0a1; 
+}
+.btn:disabled,.btn:disabled:hover{
+    background-color: #f0c435;
+    cursor: default;
+}
+
+.end-button:disabled,
+.end-button:disabled:hover {
+    background-color: #eb9e3a;
+    cursor: default; 
+}
+
+.end-button:hover:not(:disabled) {
+    background-color: #ea677d; 
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    /* background-color: #FCE4AC; */
+}
+
+.modal-content {
+    background-color: #efebe0;
+    border-radius: 15px;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 450px; /* Could be more or less, depending on screen size */
+    height: 200px;
+}
+.question{
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #204066;
+    font-weight: bold;
+    font-size: 17px;
+    margin-top: 20px;
+}
+.close, .close-end {
+  float: right; /* Floats the button to the right side of its containing element */
+  font-size: 25px;
+  font-weight: 100px;
+  cursor: pointer; 
+  margin-top: -15px;
+}
+.modal-btn {
+    margin-top: 80px;
+    margin-left: 20px; /* Apply the margin to both buttons for consistency */
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+    transition: background-color 0.3s ease; /* Smooth transition for the background color */
+    padding: 10px 20px; /* Adjust padding to your preference */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Optional: adds rounded corners */
+    background-color: #dd6565; /* Initial background color */
+    color: #000; /* Text color */
+}
+
+/* Hover styles for modal buttons */
+.modal-btn:hover {
+    background-color: #e8a2a2; /* Darker shade on hover */
+    color: #333; /* Optionally change text color on hover */
+}
+#confirmStart, #confirmEnd {
+    background-color: #45a049; /* Green background */
+    color: white; /* White text */
+}
+
+#confirmStart:hover, #confirmEnd:hover {
+    background-color: #74b277; /* Darker green on hover */
+}
+
 .logout{
     width: 100%;
 }
