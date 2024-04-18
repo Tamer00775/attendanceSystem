@@ -46,4 +46,5 @@ public class PersonListResource {
                 .collect(Collectors.toList());
         return ResponseEntity.ok().body(personList);
     }
+
 }
