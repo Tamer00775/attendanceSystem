@@ -28,7 +28,6 @@ import static kz.sdu.project.utils.ObjectValidator.*;
 @AllArgsConstructor
 @RequestMapping("/api/list")
 public class PersonListResource {
-
     private final PersonService personService;
     private final RoleService roleService;
     @GetMapping("/person")
