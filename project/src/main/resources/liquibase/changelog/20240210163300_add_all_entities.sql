@@ -106,7 +106,8 @@ CREATE TABLE reason_for_absence (
                                     document TEXT,
                                     status VARCHAR(255),
                                     is_accepted BOOLEAN,
-                                    date_info DATE NOT NULL,
+                                    date_from DATE NOT NULL,
+                                    date_to DATE NOT NULL,
                                     FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE,
                                     FOREIGN KEY (section_id) REFERENCES section(section_id) ON DELETE CASCADE
 );

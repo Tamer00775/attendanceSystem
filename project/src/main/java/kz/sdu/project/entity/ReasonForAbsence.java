@@ -35,10 +35,16 @@ public class ReasonForAbsence {
     private Boolean isAccepted;
 
     @Column(
-            name = "date_info",
+            name = "date_from",
             nullable = false
     )
-    private LocalDate date_info;
+    private LocalDate date_from;
+
+    @Column(
+            name = "date_to",
+            nullable = false
+    )
+    private LocalDate date_to;
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
@@ -56,13 +62,12 @@ public class ReasonForAbsence {
                 ", document='" + document + '\'' +
                 ", status='" + status + '\'' +
                 ", isAccepted=" + isAccepted +
-                ", date_info=" + date_info +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(reasonId, description, document, status, isAccepted, date_info);
+        return Objects.hash(reasonId, description, document, status, isAccepted);
     }
 
     @Override
@@ -74,8 +79,7 @@ public class ReasonForAbsence {
                 Objects.equals(description, that.description) &&
                 Objects.equals(document, that.document) &&
                 Objects.equals(status, that.status) &&
-                Objects.equals(isAccepted, that.isAccepted) &&
-                Objects.equals(date_info, that.date_info);
+                Objects.equals(isAccepted, that.isAccepted);
     }
 
 

@@ -29,7 +29,6 @@ public class ReasonForAbsenceDTO {
         dto.setDocument(reasonForAbsence.getDocument());
         dto.setStatus(reasonForAbsence.getStatus());
         dto.setIsAccepted(reasonForAbsence.getIsAccepted());
-        dto.setDateInfo(reasonForAbsence.getDate_info());
         if (reasonForAbsence.getPerson_reason_for_absence() != null) {
             dto.setPersonId(reasonForAbsence.getPerson_reason_for_absence().getId());
         }
