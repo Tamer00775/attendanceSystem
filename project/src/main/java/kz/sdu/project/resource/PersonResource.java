@@ -112,13 +112,6 @@ public class PersonResource {
                 .map(ScheduleDTO::fromEntity).collect(Collectors.toList()));
     }
 
-    @GetMapping("/reasonForAbsence/{id}")
-    public ResponseEntity<List<ReasonForAbsenceDTO>> reasonForAbsence(@PathVariable("id") Integer id) {
-        List<ReasonForAbsence> reasonForAbsences = reasonForAbsenceService.findAllByPersonId(id);
-
-        return ResponseEntity.ok().body(reasonForAbsences.stream()
-                .map(ReasonForAbsenceDTO::fromEntity).collect(Collectors.toList()));
-    }
 
     @GetMapping("/attRecord/{id}")
     public ResponseEntity<List<AttendanceRecordDTO>> attRecord(@PathVariable("id") Integer id) {

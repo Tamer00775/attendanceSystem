@@ -3,5 +3,7 @@ package kz.sdu.project.utils.enums;
 public enum ReasonStatus {
     IN_PROCESS,
     ACCEPTED,
-    REJECTED
+    REJECTED,
+    SUCCESSFULLY_REJECTED,
+    SUCCESSFULLY_ACCEPTED
 }
