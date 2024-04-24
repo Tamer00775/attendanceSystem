@@ -14,6 +14,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
 }
 
 .admin {
@@ -50,6 +51,7 @@ body {
     background-position: center;
     height: 150px;
     width: 325px;
+    margin-left: -70px;
 }
 
 .icon{
@@ -64,6 +66,7 @@ body {
 .main__wrapper {
     display: flex;
     gap: 30px;
+    margin-left: -50px;
 }
 
 /* Menu */
@@ -118,14 +121,16 @@ body {
     color: #DFBC5F;
     font-weight: 400;
     font-size: 27px;
-    margin-top: -15px;
     margin-bottom: 35px;
+    margin-left: 46px;
+    margin-top: -30px;
 }
 
 /* Schedule Table */
 .schedule-table {
     width: 740px;
     border-collapse: collapse;
+    margin-left: 50px;
 }
 
 .schedule-table th,

@@ -101,6 +101,7 @@
             .then(data => {
                 const coursesContainer = document.getElementById('coursesContainer');
                 data.forEach(course => {
+                    console.log(course)
                     const courseElement = document.createElement('div');
                     courseElement.className = 'course';
                     courseElement.innerHTML = `
@@ -113,6 +114,22 @@
                         </form>
                     `;
                     coursesContainer.appendChild(courseElement);
+
+                    const startButton = courseElement.querySelector('.btn');
+                    const endButton = courseElement.querySelector('.end-button');
+
+                    // Enabling or disabling the buttons based on the values in the JSON
+                    if (course.activeStart) {
+                        startButton.removeAttribute('disabled');
+                    } else {
+                        startButton.setAttribute('disabled', 'disabled');
+                    }
+
+                    if (course.activeEnd) {
+                        endButton.removeAttribute('disabled');
+                    } else {
+                        endButton.setAttribute('disabled', 'disabled');
+                    }
                 });
             })
             .catch(error => console.error('Error fetching the courses:', error));
@@ -148,13 +165,13 @@
                 modal.style.display = 'none';
                 actuallyStartCourse(sectionName); // Call the function to start the course
                  // Immediately disable the START button
-                if(paragraphText == "accept"){
-                    endButton.disabled = false; 
-                    startButton.disabled = true;// Enable the END button
-                    startButtons.forEach(button => {
-                        button.disabled = true;
-                    });
-                };
+                // if(paragraphText == "acceptt"){
+                //     endButton.disabled = false; 
+                //     startButton.disabled = true;// Enable the END button
+                //     startButtons.forEach(button => {
+                //         button.disabled = true;
+                //     });
+                // };
             };
 
             // When the user clicks cancel or outside the modal, close the modal
@@ -191,8 +208,27 @@
                 }
 
                 const data = JSON.parse(xhr.responseText);
+                console.log("data" + data);
+                console.log("status" + data.status);
+                
                 var paragraph = document.querySelector('.startMessage');
-                if (typeof data.statusText === "undefined") {
+                if (data.status == "START_LESSON_PROCESS_IS_SUCCESSFULLY") {
+
+                    paragraphText = "accept";
+                    paragraph.innerText = 'LESSON HAS BEGUN. ATTENDANCE CODE: ' + data.secretCode;
+                    paragraph.style.color = 'white'; 
+                    paragraph.style.border = '1px solid green';
+                    paragraph.style.width = "450px";
+                    paragraph.style.backgroundColor = 'green';
+                    paragraph.style.textAlign = "left";
+                    setTimeout(function() {
+                        paragraph.style.display = 'none'; 
+                    }, 900000);
+                    
+                    
+                    
+                } else {
+                    // Change the text content
                     paragraphText = "fail";
                     paragraph.innerText = 'COURSE TIME HAS NOT STARTED YET.';
                     paragraph.style.color = 'white'; 
@@ -203,19 +239,6 @@
                     setTimeout(function() {
                         paragraph.style.display = 'none'; 
                     }, 6000);
-                    
-                } else {
-                    // Change the text content
-                    paragraphText = "accept";
-                    paragraph.innerText = 'LESSON HAS BEGUN. ATTENDANCE CODE: ' + data.secretCode;
-                    paragraph.style.color = 'white'; 
-                    paragraph.style.border = '1px solid green';
-                    paragraph.style.width = "630px";
-                    paragraph.style.backgroundColor = 'green';
-                    paragraph.style.textAlign = "left";
-                    setTimeout(function() {
-                        paragraph.style.display = 'none'; 
-                    }, 900000);
                 }
                 
                 // Change the color
@@ -231,6 +254,8 @@
 
         async function endClicked(sectionName) {
             event.preventDefault();
+
+            console.log('end is clicked')
 
             // Reference the end modal elements
             const endModal = document.getElementById('endModal');
@@ -254,16 +279,19 @@
 
             // Handle confirmation of ending the course
             confirmEnd.onclick = async function() {
+
+                console.log('accpet is')
+
                 endModal.style.display = 'none';
                 await actuallyEndCourse(sectionName); // Placeholder for your ending logic
                 hideEndModal();
-                if(endParagraphText == "accept"){
-                    endButton.disabled = true; 
-                    startButton.disabled = false;
-                    endButtons.forEach(button => {
-                        button.disabled = true;
-                    });
-                }
+                // if(endParagraphText == "accept"){
+                //     endButton.disabled = true; 
+                //     startButton.disabled = false;
+                //     endButtons.forEach(button => {
+                //         button.disabled = true;
+                //     });
+                // }
             };
 
             // Handle cancellation or clicking outside the modal to close it
@@ -305,8 +333,10 @@
                 }
 
                 const data = await response.json();
-                var paragraph1 = document.querySelector('.endMessage');
-                if (data.status === 'SUCCESSFULLY') {
+
+                console.log(data.status + " hereeeeee")
+                var paragraph1 = document.querySelector('.startMessage');
+                if (data.status == 'END_LESSON_PROCESS_IS_SUCCESSFULLY') {
                     endParagraphText = "accept";
                     paragraph1.innerText = 'LESSON IS OVER';
                     paragraph1.style.color = 'white'; 

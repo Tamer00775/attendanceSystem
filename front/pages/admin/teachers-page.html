@@ -62,7 +62,7 @@
                         </table>
                     </div>
                     <div class="button">
-                        <a class="btn" href="./add-student.html">Add</a>
+                        <!-- <a class="btn" href="./add-student.html">Add</a> -->
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
         });
 
         function fetchStudentData() {
-            const apiUrl = 'http://localhost:8081/api/list/teacher';
+            const apiUrl = 'http://localhost:8081/api/list/person?role=ROLE_TEACHER';
             const token = localStorage.getItem('token');
 
             fetch(apiUrl, {

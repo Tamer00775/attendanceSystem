@@ -7,12 +7,7 @@
 }
 body {
     background-color: #204066;
-    width: 100%;
-    height: 1000px; /* Set the height to 1000px */
-    overflow: hidden;
-    font-family: 'Abyssinica SIL', sans-serif;
-    color: #fff;
-    line-height: 1.6;
+    color: #fff; 
 }
 
 .container{
@@ -46,7 +41,7 @@ body {
     color: white;
     flex-basis: 100%;
     text-align: left;
-    font-size: 14px;
+    font-size: 13px;
 }
 .logo{
     background: url("../images/logo.jpg");
@@ -55,6 +50,7 @@ body {
     background-position: center;
     height: 150px;
     width: 325px;
+    margin-left: -70px;
 }
 .icon{
     background-size: cover;
@@ -68,6 +64,7 @@ body {
 .main__wrapper{
     display: flex;
     gap: 30px;
+    margin-left: -50px;
 }
 /* MENU */
 .menu {
@@ -104,17 +101,41 @@ body {
 }
 
 /* MAIN CONTENT */
+/* /////////////////////////////////////// */
 
-.page-name h1{
+.title-name h1{
     text-transform: uppercase;
     color: #DFBC5F;
+    font-weight: 400;
+    font-size: 29px;
+    margin-bottom: 35px;
+    margin-left: 46px;
+    margin-top: -30px;
 }
+
+.page-name{ 
+    text-decoration: none; 
+    margin-left: 46px;
+} 
+.page-name:hover{ 
+    color: white; 
+    /* background-color: blue; */ 
+    text-decoration: underline; 
+ 
+} 
+.page-name span:hover::after{ 
+    text-decoration: underline; 
+    border-left-color: blue; 
+} 
+/* /////////////////////////////////////// */
+
 
 table, tr, td{
     border: 2px solid white;
     border-collapse: collapse;
     color: white;
     align-items: center;
+    text-align: center;
 }
 .id{
     min-width: 50px;
@@ -147,16 +168,49 @@ table, tr, td{
     padding: 5px 10px;
 }
 .absence{
-    min-width: 150px;
+    max-width: 150px;
     text-align: left;
     font-size: 16px;
+    color: wheat;
     padding: 5px 10px;
 }
+/* Default progress bar style */
+progress {
+    /* Default color */
+    color: white; 
+}
+
+/* Custom class for high absence limit */
+.progress-high {
+    color: yellow; /* Color when absence is high */
+}
+
+/* Ensure older browsers use the same color schema */
+progress[value]::-webkit-progress-bar {
+    background-color: #eee;
+}
+
+progress[value]::-webkit-progress-value {
+    background-color: green;
+}
+
+progress.progress-high::-webkit-progress-value {
+    background-color: red;
+}
+
+progress[value]::-moz-progress-bar {
+    background-color: red;
+}
+
 .table-container{
-    margin-top: 50px;
+    margin-top: 30px;
+    margin-left: 46px;
     display: flex;
     flex-direction: column;
     gap: 5px;
+    width: 790px; 
+    max-height: 800px; 
+    overflow-y: auto; 
 }
 .groupButton{
     min-width: 150px;
@@ -229,155 +283,57 @@ table, tr, td{
     display: flex;
     flex-direction: column;
 }
-
-    /* Resets and General Styles */ 
-    * { 
-        margin: 0; 
-        padding: 0; 
-        box-sizing: border-box; 
-        font-family: Arial, sans-serif; /* Updated to Arial as specified */ 
-    } 
- 
-    body { 
-        background-color: #204066; 
-        width: 100%; 
-        overflow: hidden; 
-        font-family: 'Abyssinica SIL', sans-serif; /* Specific font for the body */ 
-        color: #fff; /* Default text color updated to white for visibility */ 
-        line-height: 1.6; 
-    } 
- 
-    .container { 
-        padding: 10px 10%; 
-    } 
- 
-    /* Header Styles */ 
-    .header__wrapper { 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-    } 
- 
-    .admin { 
-        display: flex; 
-        align-items: center; 
-        gap: 5px; 
-    } 
- 
-    .admin-details { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 15px; 
-    } 
- 
-    .admin-info { 
-        display: flex; 
-        gap: 10px; 
-        justify-content: space-between; 
-        width: 400px; 
-        align-items: center; 
-    } 
- 
-    .logo, .icon { 
-        background-size: cover; 
-        background-repeat: no-repeat; 
-        background-position: center; 
-    } 
- 
-    .logo { 
-        height: 150px; 
-        width: 325px; /* Assuming you have your logo image */ 
-    } 
- 
-    .icon { 
-        height: 125px; 
-        width: 100px; /* Assuming you have your icon image */ 
-    } 
- 
-    /* Main and Menu Styles */ 
-    .main__wrapper, .menu { 
-        display: flex; 
-        gap: 30px; 
-    } 
- 
-    .menu { 
-        flex-direction: column; 
-        padding: 40px 15px; 
-        width: 275px; 
-    } 
- 
-    .menu a, .logout button { 
-        background-color: #ffffff; 
-        color: #000000; 
-        padding: 5px 20px; 
-        text-align: center; 
-        text-decoration: none; 
-        font-size: 16px; 
-        border-radius: 20px; 
-        transition: background-color 0.5s, color 0.5s; 
-    } 
- 
-    .menu a:hover, .logout button:hover { 
-        background: #727272; 
-    } 
- 
-    #selected { 
-        background: #DFBC5F; 
-        color: #204066; 
-    } 
- 
-    /* Table and Button Styles */ 
-    table, tr, td, th { 
-        border: 2px solid white; 
-        border-collapse: collapse; 
-    } 
- 
-    .btn, .buttons button { 
-        background: gray; 
-        color: white; 
-        border-radius: 15px; 
-        padding: 5px 10px; 
-        border: 1px solid white; 
-        cursor: pointer; 
-    } 
- 
-    .btn:hover, .buttons button:hover { 
-        color: #DFBC5F; 
-    } 
- 
-    /* Additional Components and Layout Adjustments */ 
-    .page-name h1 { 
-        text-transform: uppercase; 
-        color: #DFBC5F; 
-    } 
- 
-    .attendance-table th, td { 
-        padding: 5px; 
-        text-align: left; 
-    } 
- 
-    /* Responsive Design Adjustments */ 
-    @media (max-width: 768px) { 
-        .header__wrapper, .admin { 
-            flex-direction: column; 
-        } 
- 
-        .main__wrapper { 
-            flex-direction: column; 
-        } 
-    }
-    /* Adjust the size of the attendance table container */
-
-
 /* Стили для контейнера table-container */
-.table-container {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: 600px; /* Устанавливаем ширину в 100% */
-    max-height: 400px; /* Ограничиваем максимальную высоту, чтобы предотвратить избыточную прокрутку */
+
+.table-container th{
+    background-color: rgb(51, 96, 133); 
+    text-align: center; 
+    color: #DFBC5F;
 }
+
+.only-time{
+    background-color: rgb(51, 96, 133); 
+    text-align: center; 
+    color: #DFBC5F;
+}
+
+.teacherN{
+    margin-top: 70px;
+    margin-left: 320px;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+.courseN{
+    line-height: 1em;
+    margin-top: -70px;
+    margin-left: 240px;
+    font-size: 23px;
+    font-weight: bolder;
+    color: #FFF2D2;
+}
+.startD{
+    font-size: small;
+    
+}
+.sectionN{
+    font-size: small;
+}
+.action-btn {
+    padding: 8px 20px;
+    border-radius: 5px;
+    background-color: #DFBC5F;
+    color: rgb(247, 247, 245);
+    border: none;
+    cursor: pointer;
+    margin-right: 100px;
+    margin-left: 260px;
+    margin-top: 20px;
+}
+
+#Leavebtn {
+    background-color: #dd6565; /* Customize Leave button color */
+    margin-left: 20px;
+}
+
 
 /* Стили для контейнера attendance-data-container */
 .attendance-data-container {
@@ -387,7 +343,7 @@ table, tr, td{
     flex-direction: column;
     gap: 5px;
     width: 1000px; /* Устанавливаем ширину в 100% */
-    max-height: 400px; /* Ограничиваем максимальную высоту, чтобы предотвратить избыточную прокрутку */
+    /* max-height: 400px;  */
 }
 
 .breadcrumb {
@@ -406,10 +362,6 @@ table, tr, td{
     font-size: 13px;
   }
 
-  .breadcrumb-item a:hover {
-    text-decoration: underline;
-  }
-
   .breadcrumb-item::after {
     content: '-';
     color: white;
@@ -425,3 +377,148 @@ table, tr, td{
     font-size: 6px;
 
   }
+  .modal { 
+    display: none; /* Hidden by default */ 
+    position: fixed; /* Stay in place */ 
+    z-index: 1; /* Sit on top */ 
+    left: 0; 
+    top: 0; 
+    width: 100%; /* Full width */ 
+    height: 100%; /* Full height */ 
+    overflow: auto; /* Enable scroll if needed */ 
+    /* background-color: #FCE4AC; */ 
+} 
+ 
+.modal-content { 
+    background-color: #efebe0; 
+    border-radius: 15px; 
+    margin: 15% auto; /* 15% from the top and centered */ 
+    padding: 20px; 
+    border: 1px solid #888; 
+    width: 450px; /* Could be more or less, depending on screen size */ 
+    height: 245px; 
+} 
+.question{ 
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+    color: #204066; 
+    font-weight: bold; 
+    font-size: 17px; 
+    margin-top: 20px; 
+} 
+.close, .close-end { 
+  float: right; /* Floats the button to the right side of its containing element */ 
+  font-size: 25px; 
+  font-weight: 100px; 
+  cursor: pointer;
+  color: #000;  
+  margin-top: -15px; 
+} 
+.modal-btn { 
+    margin-top: 80px; 
+    margin-left: 20px; /* Apply the margin to both buttons for consistency */ 
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */ 
+    transition: background-color 0.3s ease; /* Smooth transition for the background color */ 
+    padding: 10px 20px; /* Adjust padding to your preference */ 
+    border: none; /* Remove border */ 
+    border-radius: 5px; /* Optional: adds rounded corners */ 
+    background-color: #dd6565; /* Initial background color */ 
+    color: #000; /* Text color */ 
+} 
+ 
+/* Hover styles for modal buttons */ 
+.modal-btn:hover { 
+    background-color: #e8a2a2; /* Darker shade on hover */ 
+    color: #333; /* Optionally change text color on hover */ 
+} 
+#confirmStart, #confirmLog { 
+    background-color: #45a049; /* Green background */ 
+    color: white; /* White text */ 
+} 
+.code-att{
+    width:170px; 
+    padding: 8px; 
+    margin-top: -38px; 
+    color: black; 
+    margin-left: 420px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    margin-bottom: 10px;
+}
+ 
+#confirmStart:hover, #confirmLog:hover { 
+    background-color: #74b277; /* Darker green on hover */ 
+}
+#confirmStart, #confirmLog { 
+    background-color: #45a049; /* Green background */ 
+    color: white; /* White text */ 
+} 
+ 
+#confirmStart:hover, #confirmLog:hover { 
+    background-color: #74b277; /* Darker green on hover */ 
+}
+.modal_view{
+    display: none; /* По умолчанию модальное окно скрыто */
+    position: fixed;
+    z-index: 1000; /* Выше других элементов */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Добавляет прокрутку, если содержимое больше окна */
+    background-color: rgba(0, 0, 0, 0.5); /* Черный полупрозрачный фон */
+}
+.click-course-name{
+    margin-left: 50px;
+    margin-top: 300px;
+    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+}
+.click-course-code{
+    margin-left: 50px;
+    margin-top: 10px;
+    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+}
+.modal-dialog {
+    position: relative;
+    margin: 10% auto; /* Отступ от верхнего края страницы */
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    width: 80%; /* Ширина модального окна */
+    max-width: 500px; /* Максимальная ширина модального окна */
+}
+
+.modal-content {
+    padding: 20px;
+}
+
+.modal-header,
+.modal-footer {
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.modal-header h5 {
+    margin: 0;
+}
+
+.modal-body {
+    padding-bottom: 10px;
+}
+
+.modal-footer {
+    text-align: right;
+}
+
+.modal-footer button {
+    margin-left: 10px;
+}
+
+#courseCode, #courseText {
+    font-weight: bold;
+    color: yellow;
+}
+.attendanceLink{
+    background-color: cadetblue;   
+}

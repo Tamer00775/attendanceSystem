@@ -1,3 +1,4 @@
+<!-- Zh -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,13 +8,14 @@
     <link rel="stylesheet" href="../../assets/styles/stu-attendence-style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Student Page</title>
+
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <div class="header__wrapper">
-                <div class="logo">
-                </div>
+            <div class="header__wrapper"> 
+                <a class="logo" href="./home-page.html"></a> 
+            <!-- </div> -->
                 <div class="admin">
                     <div class="admin-details">
                         <div class="admin-info">
@@ -21,17 +23,17 @@
                             <p id="name">PALENSHEEVA PALENSHE</p>
                         </div>
                         <div class="admin-info">
-                            <p>SPECIALITY NAME:</p> 
-                            <p id="name">COMPUTER SCIENCE</p>
-                        </div>
-                        <div class="admin-info">
                             <p>LAST LOGIN DATE:</p> 
                             <p id="login-date">08 FEB 2024</p>
+                        </div>
+                        <div class="admin-info">
+                            <p>STATUS:</p> 
+                            <p id="statusName">STUDENT</p>
                         </div>
                     </div>
                     <div class="icon" style="background-image: url(../../assets/images/icon.png);">
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
         </div>
     </header>
@@ -42,97 +44,63 @@
                     <nav class="menu">
                         <a href="./home-page.html">HOME PAGE</a>
                         <a href="./schedule-page.html">Course schedule</a>
-                        <a href="#" id="selected">ATTENDANCE</a>
-                        <a href="./profile-page.html">set profile</a>
-                        <a href="./absences-page.html">absence</a>
+                        <a href="./attendence-page.html"id="selected">ATTENDANCE</a>
+                        <a href="./profile-page.html">my profile</a>
                         <form action="" class="logout">
-                            <button >Log out</button>
+                            <button>Log out</button>
                         </form>
                     </nav>
                 </div>
                 <div class="main__content">
-                    <div class="page-name">
-                        <h1>ATTENDANCE</h1>
+                    <div class="title-name">
+                        <h1 style="color: #DFBC5F; margin-top: -20px; margin-bottom: 10px">ATTENDANCE</h1>
                     </div>
-
-                    <div class="page-message">
-                        <h4></h4>
+                    <div>
+                        <h4 class="BreadcrumbAttSet">
+                            <span class="page-name" id="attendanceLink" style="color: white; font-size:small; font-weight: 300;margin-bottom: 20px">Attendance List</span>
+                            <span id="BreadcrumbAttSet" class="underlineAtt" style="font-weight: 300; font-size: small"></span>
+                            <span id="courseCode" style="font-weight: 300; font-size: small"></span>
+                            <span class="page-message"><h4></h4></span>
+                        </h4>
                     </div>
-
-
-                    <div class="table-container">
+                    <div>
+                    <div class="table-container"></div>
+                    <p class="click-course-name" id="pclass"> * Click <span style="color: #f7d36f; font-family: 'Courier New', Courier, monospace;">course name</span> for viewing attendance list.</p>
+                    <p class="click-course-code" id="pclass1"> * Click <span style="color: #f7d36f; font-family: 'Courier New', Courier, monospace;">course code</span> for setting attendance code.</p>
                     </div>
                     <div class="att-set" style="display: none;">
-                        <!-- <form action="#" class="info-buttons">
-                            <button class="Backbtn"id="back">Back</button>
-                            <p class="course-name">CSS 228 - Advanced Algorithmic Design and Analysis</p>
-                        </form> -->
-
-                        <button class="Backbtn" id="back">Back</button>
-                        <style>
-                            .Backbtn {
-                                background-color:gray;
-                                border: none;
-                                width: 50px;
-                                height: 15px;
-                                color: white;
-                                text-align: center;
-                                text-decoration: none;
-                                display: inline-block;
-                                font-size: 14px;
-                                margin: 4px 2px;
-                                transition-duration: 0.4s;
-                                cursor: pointer;
-                                border-radius: 10px;
-                            }
-                        
-                            .Backbtn:hover {
-                                background-color: gray;
-                                color: white;
-                            }
-                        </style>
 
                         <div style="display: flex; flex-direction: column; gap: 20px;">
                             <div class="personal-info">
                                 <!-- <p>Teacher Name : </p> -->
-                                <p id="teacherName"></p>
+                                <p id="teacherName" class="teacherN"></p>
                             </div>
 
                             <div class="personal-info">
                                 <!-- <p>Course Description:</p> -->
-                                <p id="courseDesc"></p>
+                                <p id="courseDesc" class="courseN"></p>
                             </div>
 
                             <div class="personal-info">
                                 <!-- <p>Start Date:</p> -->
-                                <p id="startDate"></p>
+                                <p id="startDate" class="startD"></p>
                             </div>
 
                             <div class="personal-info">
                                 <!-- <p>Section Name:</p> -->
-                                <p id="sectionName"></p>
+                                <p id="sectionName" class="sectionN"></p>
                             </div>
-
-                            <!-- <form action="#" style="display: flex; color: white;">
-                                <label for="code">
-                                    Enter the code for attendance:
-                                    <input type="text" name="code" id="code">
-                                </label>
-                                <button id="Enterbtn">Enter</button>
-                            </form> -->
-
-                            <form action="#" style="display: flex; flex-direction: column; align-items: left;">
-                                <label for="code" style="color: white; margin-bottom: 10px;">
+                            <form action="#" style="display: flex; flex-direction: column; ">
+                                <label for="code" style="color: white; margin-bottom: 10px; margin-top: -43px; margin-left: 150px;">
                                     Enter the code for attendance:
                                 </label>
-                                <input type="text" name="code" id="code" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc; margin-bottom: 10px;">
-
-                                <button id="Enterbtn" style="padding: 8px 20px; border-radius: 5px; background-color: #DFBC5F; color: white; border: none;margin-bottom: 10px; cursor: pointer;">Enter</button>
-
-                                <button id="Leavebtn" style="padding: 8px 20px; gap:10px ;border-radius: 5px; background-color: red; color: white; border: none; cursor: pointer;">Leave</button>
-
+                                <input type="text" placeholder="Enter attendance code" class="code-att"  name="code" id="code">
+                                
                             </form>
-                            
+                            <div>
+                                <button id="Enterbtn" class="action-btn">Enter</button>
+                                <button id="Leavebtn" class="action-btn">Leave</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -141,7 +109,7 @@
             </div>
         </div>
     </main>
-    <script src="../../assets/scripts/stud.js"></script>
+    <!-- <script src="../../assets/scripts/stud.js"></script> -->
     <div id="attendanceModal" class="modal">
         <div class="modal-content">
             <!-- <span class="close">&times;</span> -->
@@ -155,81 +123,62 @@
         </div>
     </div>
 
-    <!-- <div class="date-selector">
-        <button id="prevDateBtn">Previous Date</button>
-        <span id="selectedDate">Selected Date: </span>
-        <button id="nextDateBtn">Next Date</button>
-    </div> -->
-
-    <div class="attendance-data-container" style="display: none;">
-        <div class="table-container">
-            <!-- Attendance data will be displayed here -->
-            <p>click course name for viewing attendance list</p>
-        </div>
-    </div>
-
-
     <div id="attendanceModal" class="modal">
         <div class="modal-content">
             <!-- Сюда будет добавлено содержимое модального окна -->
         </div>
     </div>
 
+    <div id="startModal" class="modal"> 
+        <div class="modal-content"> 
+           <!-- <span class="close">&times;</span>  -->
+              <p class="question">Do you want to start the <span style="color: rgb(155, 118, 49);" id="modalStartCourseSectionName"></span> Course?</p> 
+           <button id="confirmStart" style="margin-left: 260px;" class="modal-btn">Yes</button> 
+           <button id="cancelStart" style="margin-left: 20px;" class="modal-btn">No</button> 
+        </div> 
+    </div>
 
-    <div class="modal" tabindex="-1">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Modal title</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
+
+    <div id="logModal" class="modal"> 
+        <div class="modal-content"> 
+        <!-- <span class="close">&times;</span>  -->
+        <p class="question">Do you want to leave from <span style="color: rgb(155, 118, 49);" id="modalEndCourseSectionName"></span> Course?</p> 
+        <button id="confirmLog" style="margin-left: 260px;" class="modal-btn">Yes</button> 
+        <button id="cancelSLog" style="margin-left: 20px;" class="modal-btn">No</button> 
+        </div> 
+    </div>
 
 </body>
-
-</html>
-
-
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Находим кнопку "Leave"
-        const leaveButton = document.getElementById('Leavebtn');
-    
-        // Добавляем обработчик события для клика по кнопке "Leave"
-        leaveButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
-    
-            // Находим модальное окно по его классу
-            const modal = document.querySelector('.modal');
-    
-            // Открываем модальное окно
-            modal.style.display = 'block';
-        });
-    });
-    
-</script> -->
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Ожидаем нажатия кнопки "Назад"
-        document.getElementById('back').addEventListener('click', function() {
-            // Перенаправляем пользователя на начальную страницу
+        // Ожидаем нажатия на текст "ATTENDANCE"
+        document.getElementById('attendanceLink').addEventListener('click', function() {
+            // Перенаправляем пользователя на страницу посещаемости
             window.location.href = './attendence-page.html';
         });
-            });
+
+        // Отключаем обработчики событий для courseName и courseCode
+        disableEventListenersForCourseNames();
+        disableEventListenersForCourseCodes();
+    });
+
+    // Функция для отключения обработчиков событий для courseName
+    function disableEventListenersForCourseNames() {
+        document.querySelectorAll('.course-name').forEach(courseName => {
+            courseName.style.pointerEvents = 'none'; // Disable pointer events
+            courseName.style.cursor = 'default'; // Change cursor to default
+        });
+    }
+
+    // Функция для отключения обработчиков событий для courseCode
+    function disableEventListenersForCourseCodes() {
+        document.querySelectorAll('.course-code').forEach(courseCode => {
+            courseCode.style.pointerEvents = 'none'; // Disable pointer events
+            courseCode.style.cursor = 'default'; // Change cursor to default
+        });
+    }
+
 </script>
-
-
-
 <script>
     // Обработчик события для кнопки "Log out"
     document.querySelector('.logout button').addEventListener('click', function(event) {
@@ -238,7 +187,6 @@
         window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
     });
 </script>
-
 <script>
     (async function () {
         try {
@@ -321,16 +269,22 @@
             var cnt = 1;
             for (const key in data) {
                 const course = data[key];
-                table += `<tr> 
-                                <td>${cnt++}</td> 
-                                <td class="course-code" data-sections1="${course.code}">${course.code}</td> 
-                                <td class="course-name" data-sections="${course.sectionNames}">${course.courseName}</td> 
-                                <td>${course.hours}</td> 
-                                <td>${course.presentHours}</td> 
-                                <td>${course.absentHours}</td> 
-                                <td>${course.reasonHours}</td> 
-                                <td>${course.absenceLimit}</td> 
-                              </tr>`;
+                // Check if absenceLimit is greater than 10
+                let progressClass = course.absenceLimit > 5 ? 'progress-high' : '';
+                
+                table += `<tr>
+                            <td>${cnt++}</td>
+                            <td class="course-code" data-sections1="${course.code}">${course.code}</td>
+                            <td class="course-name" data-sections="${course.sectionNames}">${course.courseName}</td>
+                            <td>${course.hours}</td>
+                            <td>${course.presentHours}</td>
+                            <td>${course.absentHours}</td>
+                            <td>${course.reasonHours}</td>
+                            <td class="absence">
+                                <progress class="${progressClass}" value="${course.absenceLimit}" max="30"></progress> 
+                                ${course.absenceLimit}%
+                            </td>
+                        </tr>`;
             }
         
             table += '</table>';
@@ -341,14 +295,16 @@
         function addEventListenerToCourseNames() {
             document.querySelectorAll('.course-name').forEach(courseName => {
                 courseName.addEventListener('click', function() {
-                    // Retrieve the sections from the data-sections attribute
+                    const courseText = this.textContent.trim();
                     const sections = this.getAttribute('data-sections');
-                    // Get token from localStorage
                     const token = localStorage.getItem('token');
-                    // Form URL with sections
                     const apiUrl = `http://localhost:8081/api/student/attStatus/bySection/` + sections;
         
-                    // Fetch attendance data for the selected sections
+                    // Обновление текста "хлебной крошки"
+                    //document.getElementById('BreadcrumbAttSet').textContent = ` - ${courseText}`;
+                    document.getElementById('BreadcrumbAttSet').textContent = ` ➜ ${courseText}`;
+
+        
                     fetch(apiUrl, {
                         method: 'GET',
                         headers: {
@@ -358,12 +314,11 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        // Display attendance data for the selected sections
                         displayAttendanceDataForSections(data);
                     })
                     .catch(error => {
-                        console.error('Error fetching attendance data for sections:', error);
-                        alert('Error fetching attendance data for sections. Please try again later.');
+                        console.error('Ошибка при получении данных о посещаемости для разделов:', error);
+                        alert('Ошибка при получении данных о посещаемости для разделов. Пожалуйста, попробуйте позже.');
                     });
                 });
             });
@@ -374,6 +329,8 @@
         function addEventListenerToCourseCodes() {
             document.querySelectorAll('.course-code').forEach(courseCode => {
                 courseCode.addEventListener('click', async function() {
+                    document.getElementById('pclass').style.display = 'none';
+                    document.getElementById('pclass1').style.display = 'none';
                     //// Retrieve the sections from the data-sections attribute
                     const courseCode = this.getAttribute('data-sections1');
                     try {
@@ -385,15 +342,19 @@
                                 'Content-Type': 'application/json'
                             }
                         });
+
+        
+
+                        document.getElementById('BreadcrumbAttSet').textContent = ` ➜ ${courseCode}`;
                 
                         if (response.ok) {
                             const preInfo = await response.json();
                 
-                            // Update the UI with fetched information
-                            document.getElementById('teacherName').textContent = 'Teacher Name : ' + preInfo.teacherName;
-                            document.getElementById('courseDesc').textContent = 'Course Description : '+ preInfo.courseDesc;
-                            document.getElementById('startDate').textContent = 'Start Date : ' + preInfo.startDate;
-                            document.getElementById('sectionName').textContent = 'Section Name : ' +preInfo.sectionName;
+                            // Update the UI with fetched information\
+                            document.getElementById('modalStartCourseSectionName').textContent = preInfo.courseDesc;
+                            document.getElementById('modalEndCourseSectionName').textContent = preInfo.courseDesc;
+                            document.getElementById('teacherName').textContent = preInfo.teacherName;
+                            document.getElementById('courseDesc').textContent = preInfo.courseDesc;
                  
                             // Display the attendance set section
                             const attSetSection = document.querySelector('.att-set');
@@ -418,6 +379,8 @@
 
                 // Function to display attendance data for selected sections
         function displayAttendanceDataForSections(data) {
+            document.getElementById('pclass').style.display = 'none';
+            document.getElementById('pclass1').style.display = 'none';
             const container = document.querySelector('.table-container');
             let table = '<table>';
             table += '<tr><th>Date</th><th>Hour</th><th>Status</th><th>Place</th><th>Type</th><th>Week</th></tr>';
@@ -425,11 +388,16 @@
             data.forEach(entry => {
                 // Determine the cell content for attendance status
                     let attStatusContent = entry.attStatus;
-                    if(entry.attStatus === "PRESENT") {
+                    if(entry.wentInWithCard) {
                         // Replace with your actual SVG code for the 'Present' status
-                        attStatusContent = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                        attStatusContent = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="yellow" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                                         </svg>`;
+                    }
+                    if(!entry.wentInWithCard){
+                        attStatusContent = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                        </svg>`;  
                     }
                     if(entry.attStatus === "ABSENT") {
                         // Replace with your actual SVG code for the 'Present' status
@@ -454,68 +422,150 @@
                 });
             table += '</table>';
             container.innerHTML = table;
-
-           // // Add event listeners to date rows
-           // document.querySelectorAll('.date-row').forEach(row => {
-           //     row.addEventListener('click', function() {
-           //         // Show the attendance set section
-           //         const attSetSection = document.querySelector('.att-set');
-           //         attSetSection.style.display = 'block';
-           //         container.style.display = 'none'
-       //
-           //         // Populate the course name
-           //         const courseName = this.querySelector('td:first-child').textContent;
-       //
-       //
-           //         document.querySelector('.course-name').textContent = courseName;
-       //
-           //         
-           //     });
-           // });
-        
-
         }
 </script>
-
-
-
-
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {
         // Находим кнопку "Enter"
         const enterButton = document.getElementById('Enterbtn');
+        const leaveButton = document.getElementById('Leavebtn')
+
+        var deer_map = ""
+
+          const yes = document.getElementById('confirmStart');
+          const no = document.getElementById('cancelStart');
+
+
+        const logAttendance = document.getElementById('confirmLog');
+        const noLog = document.getElementById('cancelSLog');
+        
     
-        // Добавляем обработчик события для клика по кнопке "Enter"
-        enterButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
-    
-            // Получаем значение введенного кода для посещения
-            const code = document.getElementById('code').value;
-    
-            // Подтверждение отправки кода посещения
-            const isConfirmed = confirm(`Do you want to send the attendance code?`);
-    
-            // Если подтверждение не получено, прерываем выполнение функции
-            if (!isConfirmed) {
-                return;
-            }
-    
-            // Формируем объект с данными для отправки на сервер
+        yes.addEventListener('click', function(event) {
+            console.log("yes is clicked")
+
+            var code = document.getElementById('code');  
+
+
             const data = {
                 section: "C0002.02",  // Fill this with appropriate section name
-                code: code
-            };
+                code: code.value
+            }; 
+            
+            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
+
+            // Формируем объект с данными для отправки на сервер
+            const modal = document.getElementById('startModal');
+
+            // Открываем модальное окно
+            modal.style.display = 'none';
+
+            sendAttendanceCode(data);  
             
     
             // Отправляем данные на сервер
-            sendAttendanceCode(data);
         });
+
+        no.addEventListener('click', function(event) {
+            console.log("no is clicked")
+            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
+
+            // Формируем объект с данными для отправки на сервер
+            const modal = document.getElementById('startModal');
+
+            // Открываем модальное окно
+            modal.style.display = 'none';
+            
+    
+            // Отправляем данные на сервер
+        });
+
+        logAttendance.addEventListener('click', function(event) {
+
+            
+
+
+            const data2 = {
+                section: "C0002.02"
+            }; 
+
+            const modal = document.getElementById('logModal');
+
+            // Открываем модальное окно
+            modal.style.display = 'none';
+            console.log('data2' + data2.section)
+            sendAttendanceCode2(data2);
+            //window.location.href = './attendence-page.html';
+        });
+
+        
+
+
+        noLog.addEventListener('click', function(event) {
+            console.log("no")
+
+            deer_map = "enter"
+            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
+
+            // Формируем объект с данными для отправки на сервер
+            const modal = document.getElementById('logModal');
+
+            // Открываем модальное окно
+            modal.style.display = 'none';
+            
+    
+            // Отправляем данные на сервер
+        });
+
+
+
+
+        // Добавляем обработчик события для клика по кнопке "Enter"
+        enterButton.addEventListener('click', function(event) {
+            console.log("enter")
+
+            deer_map = "enter"
+            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
+
+            // Формируем объект с данными для отправки на сервер
+            const modal = document.getElementById('startModal');
+
+            // Открываем модальное окно
+            modal.style.display = 'block';
+            
+    
+            // Отправляем данные на сервер
+        });
+
+
+
+        
+        // Добавляем обработчик события для клика по кнопке "Enter"
+        leaveButton.addEventListener('click', function(event) {
+            console.log("leave")
+
+            deer_map = "leave"
+            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
+
+            // Формируем объект с данными для отправки на сервер
+            const modal = document.getElementById('logModal');
+
+            // Открываем модальное окно
+            modal.style.display = 'block';
+            
+    
+            // Отправляем данные на сервер
+        });
+
+
+        
     });
 
 
+
     // Функция для отправки кода посещения на сервер
-    async function sendAttendanceCode(data) {
+    async function sendAttendanceCode(data_pro) {
+        console.log(data_pro)
         // URL для отправки данных
     
         // Токен аутентификации, если требуется
@@ -526,9 +576,10 @@
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(data_pro),
         });
             if (response.ok) {
+                
                 console.log(response.body);
                 const data = await response.json();
                 console.log(data);
@@ -537,104 +588,107 @@
                 // Select the div element with the class "page-message"
 
                 const pageMessageDiv = document.querySelector('.page-message');
-                pageMessageDiv.querySelector('h4').style.color = "lightgreen";
-
-
-                // Rewrite the inner message by modifying the text content
-                pageMessageDiv.querySelector('h4').textContent = 'Current Status : ' + data.code;
-                // Добавьте код для обработки ожидаемого ответа, если необходимо
-            } else {
-                const pageMessageDiv = document.querySelector('.page-message');
-                pageMessageDiv.querySelector('h4').style.color = "lightyellow";
-
-
-                // Rewrite the inner message by modifying the text content
-                pageMessageDiv.querySelector('h4').textContent = 'Current Status : Occured unexpected error in system' + data.code ;
+                console.log(data)
+                
+                //pageMessageDiv.querySelector('h4').textContent = data.code ;
+                  pageMessageDiv.style.marginLeft = '250px';
+                  pageMessageDiv.style.marginTop = '-30px';
+                  pageMessageDiv.style.width = "350px";
+                if(data.code == 'JOIN_TO_SESSION_IS_ALREADY_DONE' || data.code == 'JOIN_SESSION_IS_ACCEPTED'){
+                    pageMessageDiv.style.color = 'white'; 
+                    pageMessageDiv.innerHTML = 'ATTENDANCE SUCCESSFULLY ENTERED !';
+                    pageMessageDiv.style.border = '1px solid green';
+                    pageMessageDiv.style.backgroundColor = 'green';
+                    pageMessageDiv.style.textAlign = "left";
+                }
+                else if(data.code == "WRONG_SECRET_CODE_JOIN_SESSION") {
+                    const pageMessageDiv = document.querySelector('.page-message');
+                    pageMessageDiv.style.color = 'white'; 
+                    pageMessageDiv.innerHTML = 'YOU HAVE ENTERED WRONG CODE !';
+                    pageMessageDiv.style.backgroundColor = 'red';
+                    pageMessageDiv.style.border = '1px solid red';
+                    pageMessageDiv.querySelector('h4').style.color = "lightyellow";
+                    pageMessageDiv.style.textAlign = "left";
+                }
+                else {
+                    const pageMessageDiv = document.querySelector('.page-message');
+                    pageMessageDiv.style.color = 'white'; 
+                    pageMessageDiv.innerHTML = 'YOU HAVE ENTERED NOT ON TIME !';
+                    pageMessageDiv.style.backgroundColor = 'red';
+                    pageMessageDiv.style.border = '1px solid red';
+                    pageMessageDiv.querySelector('h4').style.color = "lightyellow";
+                    pageMessageDiv.style.textAlign = "right";
             } 
+        }
     }
 
 
-
-</script>
-
-
-
-<script>
-
-    document.addEventListener('DOMContentLoaded', function() {
-        // Находим кнопку "Enter"
-        const enterButton = document.getElementById('Leavebtn');
-    
-        // Добавляем обработчик события для клика по кнопке "Enter"
-        enterButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
-    
-            // Получаем значение введенного кода для посещения
-            const code = document.getElementById('code').value;
-    
-            // Подтверждение отправки кода посещения
-            const isConfirmed = confirm(`Do you want to send the attendance code?`);
-    
-            // Если подтверждение не получено, прерываем выполнение функции
-            if (!isConfirmed) {
-                return;
-            }
-    
-            // Формируем объект с данными для отправки на сервер
-            const data = {
-                section: "C0002.02",  // Fill this with appropriate section name
-                code: code
-            };
-            
-    
-            // Отправляем данные на сервер
-            sendAttendanceCode(data);
-        });
-    });
-
-
     // Функция для отправки кода посещения на сервер
-    async function sendAttendanceCode(data) {
-        // URL для отправки данных
-    
-        // Токен аутентификации, если требуется
+    async function sendAttendanceCode2(data_pro) {
+
+        console.log(data_pro + 'data_pro')
+
         const token = localStorage.getItem('token');
+
+        try {
         const response = await fetch('http://localhost:8081/api/student/lesson/out', {
                         method: 'POST',
                         headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(data_pro),
         });
+
+        console.log("response" + response.status)
+        console.log("check" + response.ok)
+
             if (response.ok) {
                 console.log(response.body);
                 const data = await response.json();
                 console.log(data);
-                // Если запрос выполнен успешно, выводим алерт об успешной отправке
-                //alert('Attendance code sent successfully ' + data.code);
-                // Select the div element with the class "page-message"
+
+                console.log("data.code" + data.code)
 
                 const pageMessageDiv = document.querySelector('.page-message');
-                pageMessageDiv.querySelector('h4').style.color = "lightgreen";
+                  pageMessageDiv.style.marginLeft = '400px';
+                  pageMessageDiv.style.marginTop = '-20px';
+                  pageMessageDiv.style.width = "350px";
+                    pageMessageDiv.style.color = 'white'; 
+                    pageMessageDiv.innerHTML = 'YOU LEAVED FROM THIS COURSE !';
+                    pageMessageDiv.style.border = '1px solid green';
+                    pageMessageDiv.style.backgroundColor = 'green';
+                    pageMessageDiv.style.textAlign = "left";
+                if(data.code == 'SESSION_IS_CLOSED_BY_TEACHER' || data.code == 'U_CAN_LEAVE_AFTER_15_MIN'){
+                    pageMessageDiv.innerHTML = 'YOU CAN NOT LEAVE COURSE !';
+                    pageMessageDiv.style.border = '1px solid red';
+                    pageMessageDiv.style.backgroundColor = 'red';
+                }
 
-
-                // Rewrite the inner message by modifying the text content
-                pageMessageDiv.querySelector('h4').textContent = 'Current Status : ' + data.code;
-                // Добавьте код для обработки ожидаемого ответа, если необходимо
             } else {
                 const pageMessageDiv = document.querySelector('.page-message');
-                pageMessageDiv.querySelector('h4').style.color = "lightyellow";
-
-
-                // Rewrite the inner message by modifying the text content
-                pageMessageDiv.querySelector('h4').textContent = 'Current Status : Occured unexpected error in system' + data.code ;
+                  pageMessageDiv.style.marginLeft = '300px';
+                  pageMessageDiv.style.marginTop = '30px';
+                  pageMessageDiv.style.width = "350px";
+                    pageMessageDiv.style.color = 'white'; 
+                    pageMessageDiv.innerHTML = 'YOU CAN NOT LEAVE COURSE !';
+                    pageMessageDiv.style.border = '1px solid green';
+                    pageMessageDiv.style.backgroundColor = 'red';
+                    pageMessageDiv.style.textAlign = "left";
             } 
+
+        } catch (error) {
+                const pageMessageDiv = document.querySelector('.page-message');
+                  pageMessageDiv.style.marginLeft = '300px';
+                  pageMessageDiv.style.marginTop = '30px';
+                  pageMessageDiv.style.width = "350px";
+                    pageMessageDiv.style.color = 'white'; 
+                    pageMessageDiv.innerHTML = 'YOU CAN NOT LEAVE COURSE !';
+                    pageMessageDiv.style.border = '1px solid green';
+                    pageMessageDiv.style.backgroundColor = 'red';
+                    pageMessageDiv.style.textAlign = "left";
+        }
     }
 
-
-
 </script>
-
-</html> 
 </html>

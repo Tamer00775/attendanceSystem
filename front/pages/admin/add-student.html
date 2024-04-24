@@ -10,9 +10,9 @@
 <body>
     <header class="header">
         <div class="container">
-            <div class="header__wrapper">
-                <div class="logo">
-                </div>
+            <div class="header__wrapper"> 
+                <a class="logo" href="./admin-page.html"></a> 
+            <!-- </div> -->
                 <div class="admin">
                     <div class="admin-details">
                         <div class="admin-info">
@@ -29,11 +29,12 @@
                         </div>
                     </div>
                     <div class="icon" style="background-image: url(../../assets/images/icon.png);">
-                    </div>
+                </div>
                 </div>
             </div>
         </div>
     </header>
+
     <main class="main">
         <div class="container">
             <div class="main__wrapper">
@@ -87,11 +88,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="button">
-                            <button class="btn" type="submit">Add</button>
-                        </div>
-                    </form>
-                    
+                    </form> 
                 </div>
             </div>
         </div>
@@ -103,7 +100,3 @@
             localStorage.removeItem('token'); // Удаляем токен из локального хранилища
             window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
         });
-    </script>
-
-</body>
-</html>
