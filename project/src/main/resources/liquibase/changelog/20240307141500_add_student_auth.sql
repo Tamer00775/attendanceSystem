@@ -3,4 +3,13 @@ INSERT INTO person_auth (person_id, last_login, password_hash, active, isRefresh
 (3, '2024-03-03', '$2a$10$BKWMm19cGUC9g8ZVYmFh9eQUTn0XuI0mGHgP18g4jY.6tu9DZ7IPe', TRUE, FALSE),
 (4, '2024-03-03', '$2a$10$fpRMwdQcKCtYaSWDNft9y.rqKGI/bRyQiYPQHxgwnVgaOvvuXLrhG', TRUE, FALSE),
 (5, '2024-03-03', '$2a$10$HjVYeBA4tC3vzzbbHa9CZuJGBolT97Wgg4fLRDuZSS9Pm.MIogRze', TRUE, FALSE),
-(6, '2024-03-03', '$2a$10$pWaYjtqFx7BGllSz72bl0uEyz9qNhRLW2PHj1Kz9ZB3hx4viuw3Hi', TRUE, FALSE);
+(6, '2024-03-03', '$2a$10$pWaYjtqFx7BGllSz72bl0uEyz9qNhRLW2PHj1Kz9ZB3hx4viuw3Hi', TRUE, FALSE),
+(7, '2024-03-03', '$2a$10$examplehash01$', TRUE, FALSE),
+(8, '2024-03-03', '$2a$10$examplehash02$', TRUE, FALSE),
+(9, '2024-03-03', '$2a$10$examplehash03$', TRUE, FALSE),
+(10, '2024-03-03', '$2a$10$examplehash04$', TRUE, FALSE),
+(11, '2024-03-03', '$2a$10$examplehash05$', TRUE, FALSE),
+(12, '2024-03-03', '$2a$10$examplehash06$', TRUE, FALSE),
+(13, '2024-03-03', '$2a$10$examplehash07$', TRUE, FALSE),
+(14, '2024-03-03', '$2a$10$examplehash08$', TRUE, FALSE),
+(15, '2024-03-03', '$2a$10$examplehash09$', TRUE, FALSE);

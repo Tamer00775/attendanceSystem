@@ -1,5 +1,7 @@
 package kz.sdu.project.service;
 
+import kz.sdu.project.dto.ReasonForAbsenceDTO;
+import kz.sdu.project.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import kz.sdu.project.entity.ReasonForAbsence;
@@ -22,6 +24,10 @@ public class ReasonForAbsenceService {
         return reasonForAbsenceRepo.findByPersonIdAndSectionName(personId, sectionName);
     }
 
+    public Optional<ReasonForAbsence> findById(Integer reasonId) {
+        return reasonForAbsenceRepo.findById(reasonId);
+    }
+
     public List<ReasonForAbsence> findAll() {
         return reasonForAbsenceRepo.findAll();
     }
@@ -40,6 +46,18 @@ public class ReasonForAbsenceService {
 
     public void deleteById(Integer id) {
         reasonForAbsenceRepo.deleteById(id);
+    }
+    public static ReasonForAbsenceDTO fromEntity(kz.sdu.project.entity.ReasonForAbsence reasonForAbsence) {
+        ReasonForAbsenceDTO dto = new ReasonForAbsenceDTO();
+        Person person = reasonForAbsence.getPerson_reason_for_absence();
+        dto.setId(reasonForAbsence.getReasonId());
+        dto.setFullName(person.getFirstName() + " " + person.getLastName() + " " + person.getMiddleName());
+        dto.setDescription(reasonForAbsence.getDescription());
+        dto.setDocument(reasonForAbsence.getDocument());
+        dto.setStatus(reasonForAbsence.getStatus());
+        dto.setDateFrom(reasonForAbsence.getDate_from());
+        dto.setDateTo(reasonForAbsence.getDate_to());
+        return dto;
     }
 }
 

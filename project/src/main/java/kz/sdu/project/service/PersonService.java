@@ -2,6 +2,8 @@ package kz.sdu.project.service;
 
 import kz.sdu.project.specification.PersonSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import kz.sdu.project.entity.Person;
@@ -20,10 +22,10 @@ public class PersonService {
     public PersonService(PersonRepo personRepo) {
         this.personRepo = personRepo;
     }
-
-    public List<Person> findPeopleByLoginPattern(String login) {
-        Specification<Person> spec = PersonSpecification.hasLoginLike(login);
-        return personRepo.findAll(spec);
+    public Page<Person> findPeopleByLoginPattern(String login, Pageable pageable, String role) {
+        Specification<Person> spec = Specification.where(PersonSpecification.hasLoginLike(login))
+                .and(PersonSpecification.hasRole(role));
+        return personRepo.findAll(spec, pageable);
     }
 
     public Optional<Person> findById(Integer id) {
@@ -61,4 +63,3 @@ public class PersonService {
         personRepo.deleteById(id);
     }
 }
-
