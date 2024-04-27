@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abyssinica+SIL">
     <link rel="stylesheet" href="../../assets/styles/stu-absence-style.css">
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"></script>
+
     <title>Student Absence Page</title>
 </head>
 <body>
@@ -46,7 +48,9 @@
                         <a href="./home-page.html">HOME PAGE</a>
                         <a href="./schedule-page.html">Course schedule</a>
                         <a href="./attendence-page.html" >ATTENDANCE</a>
+                        <a href="./absences-page.html"id="selected">ABSENCES</a>
                         <a href="./profile-page.html">my profile</a>
+
                         <form action="" class="logout">
                             <button >Log out</button>
                         </form>
@@ -55,28 +59,71 @@
                 <div class="main__content">
                     <div class="page-name">
                         <h1>ABSENCES</h1>
+
                     </div>
-                    <form action="#" class="absence-form">
-                        <label for="section" class="label">
-                            SECTION NAME :
-                            <input type="text" name="section" id="section">
-                        </label>
-                        <label for="date" class="label">
-                            DATE :
-                            <input type="date" name="date" id="date">
-                        </label>
-                        <label for="reason" class="label">
-                            REASON OF ABSENCE :
-                            <input type="text" name="reason" id="reason">
-                        </label>
-                        <label for="section" class="label">
-                            UPLOAD THE DOCUMENT :
-                            <input type="file" name="reason" id="reason">
-                        </label>
-                        <div style=" width: 100%;text-align: center;">
-                            <button class="btn" style="background: #DFBC5F; color: black; font-weight: 600; width: 200px; ">SUBMIT</button>
-                        </div>
+                    <form class="change" action="#">
+                        <button class="btn select" id="button1">ABSENCES</button>
+                        <button class="btn" id="button2">HISTORY</button>
                     </form>
+
+                    <div id="div1">
+
+                        <form action="#" class="absence-form">
+
+
+                            <label for="reason" class="label">
+                                REASON OF ABSENCE :
+                                <input type="text" name="reason" id="reason" required>
+                            </label>
+    
+    
+                            <label for="from" class="label">
+                                FROM :
+                                <input type="date" name="from" id="from" class="from" required> <!-- Add class "from" here -->
+                            </label>
+                            
+                            <label for="to" class="label">
+                                TO :
+                                <input type="date" name="to" id="to" class="to" required> <!-- Add class "to" here -->
+                            </label>
+    
+    
+                            <label for="reason" class="label">
+                                UPLOAD THE DOCUMENT :
+                                <!-- <input type="file" name="reasonfile" id="reasonfile"> -->
+                                <!-- <input type="file" id="file-chooser" /> -->
+                                <input type="file" id="file-chooser" required/>
+    
+                            </label>
+                            
+                            <div style=" width: 100%;text-align: center;">
+                                <button class="btn" style="background: #DFBC5F; color: black; font-weight: 600; width: 200px; ">SUBMIT</button>
+                                
+                            </div>
+                        </form>
+                        
+                    </div>
+
+
+
+                    <div id="div2">
+                        <p>
+
+
+                        
+                        </p>
+                        <div id="div3">
+
+                            
+                        </div>
+    
+                    </div>
+
+
+
+
+                    <!-- <button type="display: none;" id="upload-button">Upload to S3</button> -->
+
                 </div>
                 <div class="notif" style="display: none;">
                     <p style="color: green;">YOU’VE SUBMITTED SUCCESSFULLY!</p>
@@ -85,6 +132,32 @@
             </div>
         </div>
     </main>
+
+
+    <script>
+        // Получаем ссылки на кнопки
+        var button1 = document.getElementById('button1');
+        var button2 = document.getElementById('button2');
+        
+        document.getElementById('div2').style.display = 'none';
+        document.getElementById('div1').style.display = 'block';
+
+
+        // Добавляем обработчики событий для каждой кнопки
+        button1.addEventListener('click', function() {
+            document.getElementById('div1').style.display = 'block';
+            document.getElementById('div2').style.display = 'none';
+
+            console.log('Кнопка ABSENCES нажата');
+        });
+    
+        button2.addEventListener('click', function() {
+            document.getElementById('div2').style.display = 'block';
+            document.getElementById('div1').style.display = 'none';
+
+            console.log('Кнопка HISTORY нажата');
+        });
+    </script>
 
     <script>
         // Обработчик события для кнопки "Log out"
@@ -120,6 +193,242 @@
             }
         })();
     </script>
+
     
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('.absence-form');
+        
+            // Event listener for form submission
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault(); // Prevent default form submission
+        
+                // Get form data
+                const formData = new FormData(form);
+        
+                const reason = document.getElementById('reason').value;
+                const from = document.getElementById('from').value;
+                const to = document.getElementById('to').value;
+                const reasonfile = document.getElementById('file-chooser').value;
+
+                let str = reasonfile; 
+                while (str.includes('\\') && str.length > 0) { 
+                    str = str.substring(1); 
+                }
+
+                const body = {
+                     description: reason, 
+                     document: str, 
+                     from: from, 
+                     to: to
+                   } 
+
+                console.log(body)
+                    
+
+                try {
+                    const response = await fetch('http://0.0.0.0:8081/api/reason/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                       // body: body,
+                        body: JSON.stringify(body)
+
+                    });
+        
+                    if (response.ok) {
+                        uploadThat() 
+                        // Show success message
+                        document.querySelector('.notif p:last-child').style.display = 'none'; // Hide error message
+                        document.querySelector('.notif p:first-child').style.display = 'block'; // Show success message
+                    } else {
+                        // Show error message
+                        document.querySelector('.notif p:first-child').style.display = 'none'; // Hide success message
+                        document.querySelector('.notif p:last-child').style.display = 'block'; // Show error message
+                    }
+                } catch (error) {
+                    console.error('Error during fetch operation:', error);
+                }
+            });
+        
+            // Event listener for pressing Enter key
+            form.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    form.dispatchEvent(new Event('submit')); // Trigger form submission when Enter key is pressed
+                }
+            });
+        });
+        
+    
+    </script>
+    
+    <script>
+        AWS.config.update({
+            accessKeyId: "AKIA3FLD5DVIBVUNAEM7",
+            secretAccessKey: "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",
+            region: "eu-north-1"
+          });
+          
+          function uploadThat() {
+            var fileChooser = document.getElementById('file-chooser');
+            var file = fileChooser.files[0];
+          
+            if (file) {
+              var s3 = new AWS.S3({apiVersion: '2006-03-01'});
+              var params = {
+                Bucket: 'yesko-bucket-s3',
+                Key: file.name,
+                Body: file
+              };
+          
+              s3.putObject(params, function(err, data) {
+                if (err) {
+                  console.log(err, err.stack);
+                } else {
+                  console.log("--------------------------------------------------------------------------------------------------------")
+                  console.log(params)
+                  console.log("Successfully uploaded data to yesko-bucket-s3/" + file.name);
+                }
+              });
+            } else {
+              console.log('No file selected.');
+            }
+          }
+          
+          function downloadFile(s3, bucket, key, downloadLink) {
+            var params = {
+              Bucket: bucket,
+              Key: key
+            };
+            s3.getSignedUrl('getObject', params, function (err, url) {
+              if (err) {
+                console.log(err);
+              } else {
+                downloadLink.href = url;
+              }
+            });
+          }
+          
+          function getSignedDownloadUrl(bucketName, objectKey) {
+            var s3 = new AWS.S3({apiVersion: '2006-03-01'});
+            var params = {
+              Bucket: bucketName,
+              Key: objectKey,
+              Expires: 60 // The URL will be valid for 60 seconds
+            };
+          
+            s3.getSignedUrl('getObject', params, function(err, url) {
+              if (err) {
+                console.log("Error getting signed URL: ", err);
+                return null;
+              } else {
+                console.log("The URL is", url);
+                // If you need to start the download immediately:
+                window.location.href = url;
+              }
+            }
+            );
+        }          
+ 
+    </script>
+
+    <script>
+        // Fetch data from the API endpoint with JWT token
+async function fetchDataWithToken() {
+    try {
+        const token = localStorage.getItem('token'); // Get JWT token from local storage
+        if (!token) {
+            throw new Error('JWT token not found');
+        }
+
+        const response = await fetch('http://localhost:8081/api/reason', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return [];
+    }
+}
+
+// Function to render the data in the HTML
+function renderData(data) {
+    // Create a new div to contain the data
+    const newDataDiv = document.createElement('div3');
+    newDataDiv.classList.add('new-data-container'); // Add a class to style the div if needed
+    const div = document.getElementById('div3');
+
+    data.forEach(item => { 
+        const div2 = document.createElement('div'); 
+        div2.classList.add('div4'); 
+     
+        // Style adjustments 
+        div2.style.backgroundColor = 'var(--bg-color, #f8f9fa)'; 
+        div2.style.border = '1px solid #dee2e6'; 
+        div2.style.borderRadius = '10px'; 
+        div2.style.padding = '20px'; 
+        div2.style.marginBottom = '20px'; 
+        div2.style.position = 'relative'; 
+        div2.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)'; 
+        div2.style.transition = 'all 0.3s ease'; 
+     
+        // Status badge 
+        const status = document.createElement('div'); 
+        status.textContent = item.status; 
+        status.style.position = 'absolute'; 
+        status.style.top = '10px'; 
+        status.style.right = '10px'; 
+        status.style.backgroundColor = '#ffc107'; 
+        status.style.color = '#212529'; 
+        status.style.padding = '5px 10px'; 
+        status.style.borderRadius = '50px'; 
+        status.style.fontWeight = 'bold'; 
+        div2.appendChild(status); 
+     
+        // HTML content with dynamic download link 
+        div2.innerHTML += ` 
+            <p style="margin-bottom: 10px;"><strong>Description:</strong> ${item.description}</p> 
+            <p style="margin-bottom: 10px;"><strong>Document:</strong> <i class="fas fa-file-alt"></i> ${item.document}</p> 
+            <p style="margin-bottom: 10px;"><strong>Date From:</strong> <i class="fas fa-calendar-alt"></i> ${item.dateFrom}</p> 
+            <p style="margin-bottom: 10px;"><strong>Date To:</strong> <i class="fas fa-calendar-check"></i> ${item.dateTo}</p> 
+            <a href="https://yesko-bucket-s3.s3.eu-north-1.amazonaws.com/${encodeURIComponent(item.document)}" download="${encodeURIComponent(item.document)}" style="text-decoration: none; color: #0056b3;">${item.document}</a> 
+        `; 
+     
+        // Hover effects 
+        div2.addEventListener('mouseenter', function() { 
+            this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)'; 
+            this.style.transform = 'scale(1.03)'; 
+        }); 
+     
+        div2.addEventListener('mouseleave', function() { 
+            this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)'; 
+            this.style.transform = 'scale(1)'; 
+        }); 
+     
+        div.appendChild(div2); 
+    });
+    document.body.appendChild(newDataDiv);
+}
+
+// Load and render data
+document.addEventListener('DOMContentLoaded', async () => {
+    const data = await fetchDataWithToken();
+    renderData(data);
+});
+
+
+    </script>
+
 </body>
 </html>

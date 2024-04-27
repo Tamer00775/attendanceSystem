@@ -61,6 +61,7 @@ body{
 .main__wrapper{
     display: flex;
     gap: 30px;
+    margin-left: -50px;
 }
 /* MENU */
 .menu {
@@ -159,8 +160,8 @@ table, tr, td{
     cursor: pointer;
 }
 .btn{
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     background: gray;
     color: white;
     padding: 5px 10px;
@@ -271,4 +272,80 @@ table, tr, td{
 }
 
 
-    
+.change{
+    /* display: flex; */
+    border-bottom: 2px solid white;
+    width: 600px;
+}
+
+/* *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+} */
+/* .logout{
+    width: 100%;
+}
+.logout button{
+    width: 100%;
+    padding: 5px 20px;
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #000000;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 16px;
+    border-radius: 20px;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.logout button:hover{
+    background: #727272;
+    border-bottom: 1px solid #DFBC5F;
+    box-shadow: #000000;
+} */
+
+/* .btn{
+    background: none;
+    cursor: pointer;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-collapse: collapse;
+}
+.btn:first-child{
+    border-right: 1px solid white;
+}
+.btn:last-child{
+    border-left: 1px solid white;
+}
+
+.choose{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 400px;
+    height: 400px;
+}
+#selected{
+    color: #204066;
+    background: #DFBC5F;
+    border: 1px solid #f7d36f;
+    font-weight: 600;
+} */
+
+/* Styling for div4 */
+
+
+
+.btn.select{
+    color: #DFBC5F;
+    border: 1px solid;
+    background-color: #7d7f81;
+    border-radius: 20px;
+    margin-bottom: 4px;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
