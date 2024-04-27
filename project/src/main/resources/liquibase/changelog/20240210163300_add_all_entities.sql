@@ -8,6 +8,7 @@ CREATE TABLE person (
                         email VARCHAR(255) NOT NULL UNIQUE
 );
 
+
 -- 2. Role
 CREATE TABLE role (
                       role_id serial PRIMARY KEY,
