@@ -51,6 +51,10 @@ public class ReasonForAbsence {
     private Person person_reason_for_absence;
 
     @ManyToOne
+    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    private Person person_teacher_reason_for_absence;
+
+    @ManyToOne
     @JoinColumn(name = "section_id", referencedColumnName = "section_id")
     private Section section_reason_for_absence;
 

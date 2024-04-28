@@ -102,6 +102,7 @@ CREATE TABLE schedule (
 CREATE TABLE reason_for_absence (
                                     reason_id serial PRIMARY KEY,
                                     person_id INT,
+                                    teacher_id INT,
                                     section_id INT,
                                     description TEXT,
                                     document TEXT,
@@ -110,6 +111,7 @@ CREATE TABLE reason_for_absence (
                                     date_from DATE NOT NULL,
                                     date_to DATE NOT NULL,
                                     FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE,
+                                    FOREIGN KEY (teacher_id) REFERENCES person(id) ON DELETE CASCADE,
                                     FOREIGN KEY (section_id) REFERENCES section(section_id) ON DELETE CASCADE
 );
 

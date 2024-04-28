@@ -12,4 +12,5 @@ INSERT INTO person_role (person_id, role_id) VALUES
 (12, 1),
 (13, 1),
 (14, 1),
-(15, 1);
+(15, 1),
+(16, 1);

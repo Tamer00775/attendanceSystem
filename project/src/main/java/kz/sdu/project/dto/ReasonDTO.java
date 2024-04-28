@@ -9,6 +9,9 @@ import javax.validation.constraints.Pattern;
 @Data
 @Builder
 public class ReasonDTO {
+    @NotBlank(message = "Section shouldn't be empty.")
+    private String section;
+
     @NotBlank(message = "Description shouldn't be empty.")
     private String description;
 

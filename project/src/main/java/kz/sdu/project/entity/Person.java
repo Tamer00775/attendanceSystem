@@ -51,8 +51,12 @@ public class Person {
     @OneToOne(mappedBy = "person_person_info", cascade = CascadeType.ALL)
     private PersonInfo personInfo;
 
-    @OneToMany(mappedBy = "person_reason_for_absence", cascade = CascadeType.ALL)
-    private Set<ReasonForAbsence> reasonsForAbsence;
+    @OneToMany(mappedBy = "person_reason_for_absence",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<ReasonForAbsence> reasonsForAbsenceForStudent;
+
+    @OneToMany(mappedBy = "person_teacher_reason_for_absence", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<ReasonForAbsence> reasonsForAbsenceForTeacher;
+
 
     @OneToMany(mappedBy = "person_att_record", cascade = CascadeType.ALL)
     private Set<AttendanceRecord> attendanceRecords;
@@ -60,7 +64,7 @@ public class Person {
     @OneToMany(mappedBy = "person_attendanceInfo", cascade = CascadeType.ALL)
     private Set<AttendanceInfo> attendanceInfos;
 
-    @ManyToMany(mappedBy = "persons", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "persons", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Section> sections = new HashSet<>();
 
     @OneToMany(mappedBy = "person_checkin", cascade = CascadeType.ALL)

@@ -13,11 +13,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReasonForAbsenceDTO {
+    private Integer id;
+    private String fullName;
+    private String section;
     private String description;
     private String document;
     private String status;
     private LocalDate dateFrom;
     private LocalDate dateTo;
-    private String fullName;
-    private Integer id;
 }

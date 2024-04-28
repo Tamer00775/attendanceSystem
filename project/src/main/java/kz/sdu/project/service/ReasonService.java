@@ -5,6 +5,8 @@ import kz.sdu.project.dto.ReasonForAbsenceDTO;
 import kz.sdu.project.dto.ReasonStatusDTO;
 import kz.sdu.project.entity.Person;
 import kz.sdu.project.entity.ReasonForAbsence;
+import kz.sdu.project.entity.Role;
+import kz.sdu.project.entity.Section;
 import kz.sdu.project.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import static kz.sdu.project.utils.enums.ReasonStatus.*;
 
@@ -22,6 +26,7 @@ import static kz.sdu.project.utils.enums.ReasonStatus.*;
 @Slf4j
 public class ReasonService {
     private final ReasonForAbsenceService reasonForAbsenceService;
+    private final SectionService sectionService;
 
     public ReasonStatusDTO upload(ReasonDTO reasonDTO) {
         log.info("Starting to process reason for absence upload with document ID: {}", reasonDTO.getDocument());
@@ -39,7 +44,6 @@ public class ReasonService {
             LocalDate from = LocalDate.parse(reasonDTO.getFrom());
             LocalDate to = LocalDate.parse(reasonDTO.getTo());
             log.info("Validating dates: from {} to {}", reasonDTO.getFrom(), reasonDTO.getTo());
-
             if (to.isBefore(from))
                 throw new IllegalArgumentException("To date cannot be earlier than From date.");
             if (from.isBefore(LocalDate.of(2024,1,22)))
@@ -53,7 +57,18 @@ public class ReasonService {
     private ReasonForAbsence createReasonAbsence(ReasonDTO reasonDTO) {
         Person person = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
         ReasonForAbsence reasonForAbsence = new ReasonForAbsence();
+        String sectionName = reasonDTO.getSection().substring(0, reasonDTO.getSection().indexOf(' '));
+        Section section = sectionService
+                .findByName(sectionName)
+                        .orElseThrow();
+        Optional<Person> teacher = section
+                .getPersons()
+                        .stream()
+                                .filter(tea -> isTeacher(tea.getRolePerson()))
+                                        .findAny();
         reasonForAbsence.setPerson_reason_for_absence(person);
+        reasonForAbsence.setPerson_teacher_reason_for_absence(teacher.get());
+        reasonForAbsence.setSection_reason_for_absence(section);
         reasonForAbsence.setDescription(reasonDTO.getDescription());
         reasonForAbsence.setDocument(reasonDTO.getDocument());
         reasonForAbsence.setStatus(IN_PROCESS.name());
@@ -77,9 +92,8 @@ public class ReasonService {
                 .collect(Collectors.toList());
     }
 
-    public List<ReasonForAbsenceDTO> allByStudent() {
+    public List<ReasonForAbsenceDTO> allByStudent(Person person) {
         log.info("Retrieving all reasons for absence");
-        Person person = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
         return reasonForAbsenceService
                 .findAllByPersonId(person.getId())
                 .stream()
@@ -115,7 +129,27 @@ public class ReasonService {
 
     public List<ReasonForAbsenceDTO> all() {
         Person person = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
-        if (person.getId() != 1) return allByStudent();
-        return allByAdmin();
+        if (isTeacher(person.getRolePerson())) return allByTeacher(person);
+        return allByStudent(person);
+    }
+
+    private List<ReasonForAbsenceDTO> allByTeacher(Person person) {
+        System.out.println("person_teacher_reason_for_absence");
+        List<ReasonForAbsence> reasons = reasonForAbsenceService
+                .findAll()
+                .stream()
+                .filter(reasonForAbsence -> reasonForAbsence.getPerson_teacher_reason_for_absence() != null &&
+                        reasonForAbsence.getPerson_teacher_reason_for_absence().getId().equals(person.getId()))
+                .collect(Collectors.toList());
+        return reasons
+                .stream()
+                .map(ReasonForAbsenceService::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    private boolean isTeacher(Set<Role> rolePerson) {
+        return rolePerson
+                .stream()
+                .anyMatch(role -> role.getRole().equals("ROLE_TEACHER"));
     }
 }

@@ -4,8 +4,8 @@ import java.time.*;
 
 public class Main {
     public static void main(String[] args) {
-        ZoneId zoneId = ZoneId.of("Asia/Oral");
-        LocalDateTime now = LocalDateTime.now(zoneId);
-        System.out.println(now);
+        String name = "C0001.01 - AlgorithmsC0001.01 - Algorithms";
+        String sectionName = name.substring(0, name.indexOf(' '));
+        System.out.println(sectionName);
     }
 }
