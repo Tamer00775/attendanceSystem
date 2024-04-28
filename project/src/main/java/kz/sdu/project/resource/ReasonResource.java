@@ -21,9 +21,11 @@ public class ReasonResource {
     private final ReasonService reasonService;
 
     @GetMapping("")
-    public ResponseEntity<List<ReasonForAbsenceDTO>> all() {
+    public ResponseEntity<List<ReasonForAbsenceDTO>> all(
+            @RequestParam(value = "checked", required = false, defaultValue = "false") String checked
+    ) {
         log.info("Received request to fetch all reasons for absence");
-        List<ReasonForAbsenceDTO> allReasons = reasonService.all();
+        List<ReasonForAbsenceDTO> allReasons = reasonService.all(checked);
         log.info("Returning {} reasons for absence", allReasons.size());
         return ResponseEntity.ok().body(allReasons);
     }

@@ -127,22 +127,28 @@ public class ReasonService {
                 .build();
     }
 
-    public List<ReasonForAbsenceDTO> all() {
+    public List<ReasonForAbsenceDTO> all(String checked) {
         Person person = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
-        if (isTeacher(person.getRolePerson())) return allByTeacher(person);
+        if (isTeacher(person.getRolePerson())) return allByTeacher(person,checked);
         return allByStudent(person);
     }
 
-    private List<ReasonForAbsenceDTO> allByTeacher(Person person) {
-        System.out.println("person_teacher_reason_for_absence");
+    private List<ReasonForAbsenceDTO> allByTeacher(Person person, String checked) {
         List<ReasonForAbsence> reasons = reasonForAbsenceService
                 .findAll()
                 .stream()
-                .filter(reasonForAbsence -> reasonForAbsence.getPerson_teacher_reason_for_absence() != null &&
+                    .filter(reasonForAbsence -> reasonForAbsence.getPerson_teacher_reason_for_absence() != null &&
                         reasonForAbsence.getPerson_teacher_reason_for_absence().getId().equals(person.getId()))
                 .collect(Collectors.toList());
+
         return reasons
                 .stream()
+                .filter(reason -> {
+                    if (checked.equals("true")) {
+                        return !reason.getStatus().equals(IN_PROCESS.name());
+                    }
+                    return reason.getStatus().equals(IN_PROCESS.name());
+                })
                 .map(ReasonForAbsenceService::fromEntity)
                 .collect(Collectors.toList());
     }
