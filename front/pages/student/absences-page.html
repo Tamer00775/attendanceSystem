@@ -73,7 +73,14 @@
 
                             <label for="reason" class="label">
                                 REASON OF ABSENCE :
-                                <input type="text" name="reason" id="reason" required>
+                                <!-- <input type="text" name="reason" id="reason" required> -->
+                                <select id="reason" name="reason">
+                                    <option selected value="Due to Health">Due to Health</option>
+                                    <option value="Not in City">Not in City</option>
+                                    <option value="Family circumstances">Family circumstances</option>
+                                    <option value="Other">Other</option>
+
+                                  </select>
                             </label>
     
     
@@ -88,12 +95,14 @@
                             </label>
     
     
-                            <label for="reason" class="label">
+                            <label for="reason" class="label" required>
                                 UPLOAD THE DOCUMENT :
-                                <!-- <input type="file" name="reasonfile" id="reasonfile"> -->
-                                <!-- <input type="file" id="file-chooser" /> -->
-                                <input type="file" id="file-chooser" required/>
-    
+                                <!-- <input type="file" id="file-chooser" required/> -->
+                                <div class="upload-container"required>
+                                    <input type="file" id="file-chooser" required style="display: none;">
+                                    <button id="uploadBtn" onclick="document.getElementById('file-chooser').click()">Upload File</button>
+                                    <div id="fileInfo"></div>
+                                </div>
                             </label>
                             
                             <div style=" width: 100%;text-align: center;">
@@ -104,36 +113,34 @@
                         
                     </div>
 
-
-
                     <div id="div2">
                         <p>
-
-
-                        
                         </p>
-                        <div id="div3">
-
-                            
+                        <div id="div3">   
                         </div>
-    
                     </div>
-
-
-
-
-                    <!-- <button type="display: none;" id="upload-button">Upload to S3</button> -->
-
                 </div>
-                <div class="notif" style="display: none;">
-                    <p style="color: green;">YOU’VE SUBMITTED SUCCESSFULLY!</p>
-                    <p style="color: red;">ERROR HAS OCCURRED, RECHECK THE DATA!</p>
+                <div class="notif">
+                    <p style="display: none;", style="color: lightgreen;">YOU’VE SUBMITTED SUCCESSFULLY!</p>
+                    <p style="display: none;",  style="color: red;">ERROR HAS OCCURRED, RECHECK THE DATA!</p>
                 </div>
             </div>
         </div>
     </main>
 
-
+    <script>
+        document.getElementById('file-chooser').addEventListener('change', function() {
+            var fileInfo = document.getElementById('fileInfo');
+            var files = this.files;
+            if (files.length > 0) {
+                var file = files[0];
+                fileInfo.innerHTML = `File Name: ${file.name} <br> File Type: ${file.type}`;
+            } else {
+                fileInfo.innerHTML = "";
+            }
+        });
+    
+    </script>
     <script>
         // Получаем ссылки на кнопки
         var button1 = document.getElementById('button1');
@@ -399,10 +406,9 @@ function renderData(data) {
         // HTML content with dynamic download link 
         div2.innerHTML += ` 
             <p style="margin-bottom: 10px;"><strong>Description:</strong> ${item.description}</p> 
-            <p style="margin-bottom: 10px;"><strong>Document:</strong> <i class="fas fa-file-alt"></i> ${item.document}</p> 
+            <p style="margin-bottom: 10px;"><strong>Document:</strong> <i class="fas fa-file-alt"></i> <a href="https://yesko-bucket-s3.s3.eu-north-1.amazonaws.com/${encodeURIComponent(item.document)}" download="${encodeURIComponent(item.document)}" style="text-decoration: none; color: #0056b3;">${item.document}</a></p> 
             <p style="margin-bottom: 10px;"><strong>Date From:</strong> <i class="fas fa-calendar-alt"></i> ${item.dateFrom}</p> 
             <p style="margin-bottom: 10px;"><strong>Date To:</strong> <i class="fas fa-calendar-check"></i> ${item.dateTo}</p> 
-            <a href="https://yesko-bucket-s3.s3.eu-north-1.amazonaws.com/${encodeURIComponent(item.document)}" download="${encodeURIComponent(item.document)}" style="text-decoration: none; color: #0056b3;">${item.document}</a> 
         `; 
      
         // Hover effects 

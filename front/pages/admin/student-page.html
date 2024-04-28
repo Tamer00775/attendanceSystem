@@ -84,18 +84,22 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetchAllStudentData();
             setupPagination();
+            setupSearch();
+            fetchAllStudentData(); // Initial fetch without search term
         });
-    
+
         let allStudents = [];
         const studentsPerPage = 5;
         let currentPage = 0;
-    
+        let go = "stop";
+        let currentSearchTerm = ''; 
+
         function fetchAllStudentData() {
-            const apiUrl = 'http://localhost:8081/api/list/person?role=ROLE_STUDENT';
+            const apiUrl = `http://localhost:8081/api/list/person?role=ROLE_STUDENT&login=${currentSearchTerm}&page=${currentPage}`;
             const token = localStorage.getItem('token');
-    
+            console.log("Fetching data from API:", apiUrl); 
+
             fetch(apiUrl, {
                 method: 'GET',
                 headers: {
@@ -103,61 +107,40 @@
                     'Authorization': 'Bearer ' + token
                 },
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
-                allStudents = data;
-                displayStudentData(currentPage);
+                console.log("Data received:", data); 
+                allStudents = data.content; // Update allStudents to hold only the content array
+                displayStudentData(); // Removed the parameter as we are displaying based on currentPage
             })
             .catch(error => {
                 console.error('Error fetching student data:', error);
-                document.querySelector('.table-container').innerHTML = '<p>Error loading student data.</p>';
+                document.querySelector('.table-containerr').innerHTML = '<p>Error loading student data.</p>';
             });
         }
-    
-        function setupPagination() {
-            const paginationLinks = document.querySelectorAll('.pagination a');
-            paginationLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const page = this.dataset.page;
-                    handlePageChange(page);
-                });
+
+
+        function setupSearch() {
+            const searchButton = document.getElementById('search-button');
+            searchButton.addEventListener('click', function() {
+                const searchInput = document.getElementById('search-input');
+                currentSearchTerm = searchInput.value; // Update the current search term
+                currentPage = 0; // Reset to the first page for a new search
+                fetchAllStudentData();
             });
         }
-    
-        function handlePageChange(page) {
-            const totalPages = Math.ceil(allStudents.length / studentsPerPage);
-            if (page === "next") {
-                currentPage = (currentPage < totalPages) ? currentPage + 1 : totalPages;
-            } else if (page === "prev") {
-                currentPage = (currentPage > 1) ? currentPage - 1 : 1;
-            } else {
-                currentPage = parseInt(page);
-            }
-    
-            updatePaginationLinks();
-            displayStudentData(currentPage);
-        }
-    
-        function updatePaginationLinks() {
-            const paginationLinks = document.querySelectorAll('.pagination a');
-            paginationLinks.forEach(link => {
-                link.classList.remove('active');
-            });
-            const activeLink = document.querySelector('.pagination a[data-page="' + currentPage + '"]');
-            if (activeLink) {
-                activeLink.classList.add('active');
-            }
-        }
-    
-        function displayStudentData(pageNumber) {
-            const startIndex = (pageNumber - 1) * studentsPerPage;
-            const endIndex = startIndex + studentsPerPage;
-            const pageStudents = allStudents.slice(startIndex, endIndex);
-    
+
+        function displayStudentData() {
+            const pageStudents = allStudents;
+
             const studentTable = document.getElementById('student-table');
-            studentTable.innerHTML = '<tr><th>First Name</th><th>Last Name</th><th Middle Name</th><th>Email</th><th>Faculty</th></tr>';
-    
+            studentTable.innerHTML = '<tr><th>First Name</th><th>Last Name</th><th>Middle Name</th><th>Email</th><th>Faculty</th></tr>';
+
             pageStudents.forEach(student => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -170,6 +153,55 @@
                 studentTable.appendChild(row);
             });
         }
+
+        function setupPagination() {
+            const paginationLinks = document.querySelectorAll('.pagination a');
+            paginationLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    console.log("I'm pressed!")
+                    let pressed = parseInt(link.innerHTML);
+                    currentPage = pressed;
+                    e.preventDefault();
+                    const page = this.dataset.page;
+                    handlePageChange(page);
+                });
+            });
+            
+            updatePaginationLinks(); // Added to set the initial active state
+        }
+    
+        function handlePageChange(page) {
+            const totalPages = Math.ceil(allStudents.length / studentsPerPage);
+
+            if (page === "next") {
+                currentPage += 1;
+                if (currentPage >= totalPages) {
+                    currentPage = totalPages - 1;
+                }
+            } else if (page === "prev") {
+                currentPage -= 1;
+                if (currentPage < 0) {
+                    currentPage = 0;
+                }
+            } else {
+                currentPage = parseInt(page-1);
+            }
+
+            fetchAllStudentData();
+            updatePaginationLinks(); // Added to update active state of pagination links
+        }
+
+    
+        function updatePaginationLinks() {
+            const paginationLinks = document.querySelectorAll('.pagination a');
+            paginationLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            const activeLink = document.querySelector('.pagination a[data-page="' + currentPage + '"]');
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
     
         document.querySelector('.logout button').addEventListener('click', function(event) {
             event.preventDefault();
@@ -177,7 +209,5 @@
             window.location.href = '../../pages/login/login.html';
         });
     </script>
-    
-    
 </body>
 </html>

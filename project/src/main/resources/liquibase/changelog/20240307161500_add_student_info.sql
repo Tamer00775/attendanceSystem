@@ -12,4 +12,5 @@ INSERT INTO person_info (person_id, gender, imageData, telephone, birth_date, sp
 (12, 'Male', null, '+1234567900', '2000-11-01', 1),
 (13, 'Female', null, '+1234567901', '2001-12-01', 1),
 (14, 'Male', null, '+1234567902', '2002-01-02', 1),
-(15, 'Female', null, '+1234567903', '2003-02-03', 1);
+(15, 'Female', null, '+1234567903', '2003-02-03', 1),
+(16, 'Female', null, '+1234567903', '2003-02-03', 1);

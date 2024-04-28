@@ -139,9 +139,16 @@ table, tr, td{
     padding: 5px 10px;
     cursor: pointer;
 }
-.reason{
+#reason{
     min-width: 50px;
     text-align: left;
+    font-size: 16px;
+    padding: 5px 10px;
+
+    background: white;
+    width: 250px;
+    border-radius: 15px;
+    color: black;
     font-size: 16px;
     padding: 5px 10px;
 
@@ -349,3 +356,64 @@ table, tr, td{
     margin-left: 3px;
 }
 
+
+.custom-upload-btn {
+    display: inline-block;
+    background-color: #DFBC5F;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+.custom-upload-btn:hover {
+    background-color: #DFBC5F;
+  }
+  
+.upload-container {
+    /* margin: 20px; */
+    text-align: center;
+}
+
+#uploadBtn {
+    /* background-color: orange; */
+    /* color: white; */
+    /* border: none; */
+    /* padding: 10px 20px; */
+    /* cursor: pointer; */
+    /* font-size: 16px; */
+
+    display: inline-block;
+    /* background-color: #DFBC5F; */
+    color: white;
+    /* padding: 10px 20px; */
+    border: none;
+    /* border-radius: 5px; */
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+
+
+    min-width: 50px;
+    /* text-align: left; */
+    font-size: 16px;
+    padding: 5px 10px;
+    margin-left: 50px;
+    background: orange;
+    width: 250px;
+    border-radius: 15px;
+    color: black;
+    font-size: 16px;
+    padding: 5px 10px;
+    text-align: center;
+    display: inline-block;
+
+}
+
+#file-chooser {
+    margin-top: 10px;
+
+}

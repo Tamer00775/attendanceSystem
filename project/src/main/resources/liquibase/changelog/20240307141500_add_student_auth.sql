@@ -12,4 +12,5 @@ INSERT INTO person_auth (person_id, last_login, password_hash, active, isRefresh
 (12, '2024-03-03', '$2a$10$examplehash06$', TRUE, FALSE),
 (13, '2024-03-03', '$2a$10$examplehash07$', TRUE, FALSE),
 (14, '2024-03-03', '$2a$10$examplehash08$', TRUE, FALSE),
-(15, '2024-03-03', '$2a$10$examplehash09$', TRUE, FALSE);
+(15, '2024-03-03', '$2a$10$examplehash09$', TRUE, FALSE),
+(16, '2024-03-03', '$2a$10$examplehash09$', TRUE, FALSE);
