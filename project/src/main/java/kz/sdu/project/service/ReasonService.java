@@ -3,10 +3,7 @@ package kz.sdu.project.service;
 import kz.sdu.project.dto.ReasonDTO;
 import kz.sdu.project.dto.ReasonForAbsenceDTO;
 import kz.sdu.project.dto.ReasonStatusDTO;
-import kz.sdu.project.entity.Person;
-import kz.sdu.project.entity.ReasonForAbsence;
-import kz.sdu.project.entity.Role;
-import kz.sdu.project.entity.Section;
+import kz.sdu.project.entity.*;
 import kz.sdu.project.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,6 +25,8 @@ import static kz.sdu.project.utils.enums.ReasonStatus.*;
 public class ReasonService {
     private final ReasonForAbsenceService reasonForAbsenceService;
     private final SectionService sectionService;
+    private final AttendanceInfoService attendanceInfoService;
+    private final AttendanceRecordService attendanceRecordService;
 
     public ReasonStatusDTO upload(ReasonDTO reasonDTO) {
         log.info("Starting to process reason for absence upload with document ID: {}", reasonDTO.getDocument());
@@ -106,12 +106,56 @@ public class ReasonService {
         ReasonForAbsence reasonForAbsence = reasonForAbsenceService
                 .findById(reasonId)
                 .orElseThrow(IllegalArgumentException::new);
+        setUpAttendance(reasonForAbsence);
         reasonForAbsence.setStatus(ACCEPTED.name());
         reasonForAbsenceService.save(reasonForAbsence);
         return ReasonStatusDTO
                 .builder()
                 .status(SUCCESSFULLY_ACCEPTED.name())
                 .build();
+    }
+
+    private void setUpAttendance(ReasonForAbsence reasonForAbsence) {
+        LocalDate startDate = reasonForAbsence.getDate_from(),
+                endDate = reasonForAbsence.getDate_to();
+        while (!startDate.isAfter(endDate)) {
+            updateAttendance(startDate, reasonForAbsence.getPerson_reason_for_absence(), reasonForAbsence.getSection_reason_for_absence());
+            startDate = startDate.plusDays(7);
+        }
+    }
+
+    private void updateAttendance(LocalDate startDate, Person student, Section section) {
+
+        Schedule schedule = section.getSchedule();
+        int currentWeek = getWeek(startDate, LocalDate.of(2024, 1,22));
+        System.out.println("currentWeek : " + currentWeek);
+        AttendanceRecord attendanceRecord = attendanceRecordService
+                .findByPersonIdAndScheduleIdAndCurrentWeek(
+                        student.getId(), schedule.getScheduleId(),currentWeek)
+                .orElse(null);
+        AttendanceInfo attendanceInfo = attendanceInfoService
+                .findByPersonIdAndSectionId(student.getId(), section.getSectionId())
+                .orElse(null);
+        if (attendanceRecord == null || attendanceInfo == null) return;
+        int totalHours = attendanceRecord.getTotal_hours(),
+                presentHours = attendanceRecord.getTotal_present_hours();
+
+        attendanceRecord.setTotal_present_hours(0);
+        attendanceRecord.setIs_with_reason(true);
+
+        attendanceInfo.setReason_time(attendanceInfo.getReason_time() + totalHours);
+        attendanceInfo.setPercent(attendanceInfo.getPercent() - (totalHours - presentHours));
+
+        attendanceInfoService.save(attendanceInfo);
+        attendanceRecordService.save(attendanceRecord);
+    }
+
+    private Integer dayDiff(LocalDate date1,LocalDate date2 ) {
+        return Math.abs((int)ChronoUnit.DAYS.between(date1, date2));
+    }
+
+    private int getWeek(LocalDate date1,LocalDate date2 ) {
+        return Math.abs((int)ChronoUnit.WEEKS.between(date1, date2)) + 1;
     }
 
     public ReasonStatusDTO reject(Integer reasonId) {

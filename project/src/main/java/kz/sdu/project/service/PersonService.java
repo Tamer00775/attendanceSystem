@@ -22,8 +22,11 @@ public class PersonService {
     public PersonService(PersonRepo personRepo) {
         this.personRepo = personRepo;
     }
-    public Page<Person> findPeopleByLoginPattern(String login, Pageable pageable, String role) {
-        Specification<Person> spec = Specification.where(PersonSpecification.hasLoginLike(login))
+    public Page<Person> findPeopleByLoginPattern(String name, Pageable pageable, String role) {
+        Specification<Person> spec = Specification.where(PersonSpecification.hasLoginLike(name)
+                        .or(PersonSpecification.hasFirstNameLike(name))
+                        .or(PersonSpecification.hasLastNameLike(name))
+                        .or(PersonSpecification.hasMiddleNameLike(name)))
                 .and(PersonSpecification.hasRole(role));
         return personRepo.findAll(spec, pageable);
     }
