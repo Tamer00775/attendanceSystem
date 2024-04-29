@@ -110,7 +110,7 @@ public class StudentAttStatusService {
         for (String section : sections) {
             updateAttendanceDetailStatus(finalAttDetList,section,student);
         }
-
+        finalAttDetList.sort(Comparator.comparing(AttendanceStatusDetailDto::getDate));
         return finalAttDetList;
     }
 
