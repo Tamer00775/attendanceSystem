@@ -114,6 +114,14 @@
                                 <button class="btn" style="background: #DFBC5F; color: black; font-weight: 600; width: 200px; ">SUBMIT</button>
                                 
                             </div>
+                            <div id="submitModal" class="modal">
+                                <div class="modal-content">
+                                    <span class="close">&times;</span>
+                                    <p class="question">Are you sure you want to submit?</p>
+                                    <button id="confirmSubmit" style="margin-left: 260px;" class="modal-btn">Yes</button>
+                                    <button id="modal-cancel" style="margin-left: 20px;" class="modal-btn">No</button>
+                                </div>
+                            </div>
                         </form>
                         
                     </div>
@@ -208,13 +216,26 @@
 
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('.absence-form');
-        
+
+        const form = document.querySelector('.absence-form');
+            
+        document.addEventListener('DOMContentLoaded',function() {
+            const modal = document.getElementById('submitModal');
+            const cancelSubmit = document.getElementById('modal-cancel');
+
+            function hideModal() {
+                modal.style.display = 'none';
+            }
+
+            cancelSubmit.onclick = function(e) {
+                e.preventDefault();
+                hideModal();
+            };
+            
             // Event listener for form submission
-            form.addEventListener('submit', async function(event) {
+            form.addEventListener('submit', function(event) {
                 event.preventDefault(); // Prevent default form submission
-        
+                modal.style.display = 'block';
                 // Get form data
                 const formData = new FormData(form);
         
@@ -223,7 +244,18 @@
                 const to = document.getElementById('to').value;
                 const reasonfile = document.getElementById('file-chooser').value;
                 const section = document.getElementById('section').value;
+                const confirmSubmit = document.getElementById('confirmSubmit');
 
+                const span = document.getElementsByClassName("close")[0];
+                span.onclick = function() {
+                    modal.style.display = 'none';
+                };
+
+                confirmSubmit.onclick = async function(e) {
+                    e.preventDefault();
+                    hideModal();
+
+                    
                 let str = reasonfile; 
                 while (str.includes('\\') && str.length > 0) { 
                     str = str.substring(1); 
@@ -261,10 +293,15 @@
                         // Show error message
                         document.querySelector('.notif p:first-child').style.display = 'none'; // Hide success message
                         document.querySelector('.notif p:last-child').style.display = 'block'; // Show error message
+                        document.querySelector('.notif p:last-child').style.backgroundColor = 'red';
                     }
                 } catch (error) {
                     console.error('Error during fetch operation:', error);
                 }
+                };
+
+                
+
             });
         
             // Event listener for pressing Enter key
@@ -409,6 +446,13 @@ function renderData(data) {
         status.style.borderRadius = '50px'; 
         status.style.fontWeight = 'bold'; 
         div2.appendChild(status); 
+
+        if(item.status == "ACCEPTED"){
+            status.style.backgroundColor = 'lightgreen'; 
+        }
+        if(item.status == "REJECTED"){
+            status.style.backgroundColor = '#FF6347'; 
+        }
      
         // HTML content with dynamic download link 
         div2.innerHTML += ` 
