@@ -41,11 +41,11 @@
                     <nav class="menu">
                         <a href="./admin-page.html">HOME PAGE</a>
                         <a href="./student-page.html" id="selected">ALL STUDENTS</a>
-                        <a href="./teachers-page.html" >LIST OF TEACHERS</a>
+                        <a href="./teachers-page.html">LIST OF TEACHERS</a>
                         <a href="./attendence.html">ATTENDANCE</a>
                         <a href="./courses-page.html">LIST OF COURSES</a>
                         <form action="" class="logout">
-                            <button >Log out</button>
+                            <button>Log out</button>
                         </form>
                     </nav>
                 </div>
@@ -56,6 +56,7 @@
                             <input style="width: 300px;" type="text" placeholder="Search..." id="search-input"> 
                             <button id="search-button">Search</button> 
                         </div>
+                    </div>
                     <div class="table-containerr">
                         <table id="student-table">
                             <tr>
@@ -67,39 +68,101 @@
                             </tr>
                         </table>
                     </div>
-                </div>
-                <div class="pagination" style="margin-left: 220px; margin-top: 0px; color: white;">
-                    <a href="#" data-page="prev">&laquo;</a>
-                    <a href="#" data-page="1" class="active">1</a>
-                    <a href="#" data-page="2">2</a>
-                    <a href="#" data-page="3">3</a>
-                    <a href="#" data-page="4">4</a>
-                    <a href="#" data-page="5">5</a>
-                    <a href="#" data-page="6">6</a>
-                    <a href="#" data-page="next">&raquo;</a>
+                    <div id="pagination" style="margin-left: 230px;"></div>
                 </div>
             </div>
         </div>
     </main>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            setupPagination();
+        let currentPage = 0;
+        let totalPages = 0;
+        let allStudents = [];
+        let currentSearchTerm = '';
+
+        document.addEventListener('DOMContentLoaded', function(e) {
+            e.preventDefault();
+            fetchAllStudentData();
             setupSearch();
-            fetchAllStudentData(); // Initial fetch without search term
         });
 
-        let allStudents = [];
-        const studentsPerPage = 5;
-        let currentPage = 0;
-        let go = "stop";
-        let currentSearchTerm = ''; 
+        function displayStudentData() {
+            const table = document.getElementById('student-table');
+            table.innerHTML = `
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Middle Name</th>
+                    <th>Email</th>
+                    <th>Faculty</th>
+                </tr>
+            `; // Reset table headers
+
+            allStudents.forEach(student => {
+                const row = table.insertRow(-1);
+                row.insertCell(0).textContent = student.firstName;
+                row.insertCell(1).textContent = student.lastName;
+                row.insertCell(2).textContent = student.middleName || '';
+                row.insertCell(3).textContent = student.email;
+                row.insertCell(4).textContent = student.speciality;
+                row.style.fontSize = '15px';
+            });
+        }
+
+        function displayPagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = ''; // Clear existing buttons
+
+            // Add 'Previous' button
+            const prevButton = document.createElement('a');
+            prevButton.textContent = '<<';
+            if(currentPage === 0){
+                prevButton.style.color = 'gray';
+                prevButton.disabled = true;
+                prevButton.style.pointerEvents = 'none';
+            }
+            prevButton.onclick = function() {
+                if (currentPage > 0) {
+                    currentPage--;
+                    fetchAllStudentData();
+                }
+            };
+            pagination.appendChild(prevButton);
+
+            // Page number buttons
+            for (let i = 0; i < totalPages; i++) {
+                const pageButton = document.createElement('a');
+                pageButton.textContent = i + 1;
+                pageButton.onclick = function() {
+                    currentPage = i;
+                    fetchAllStudentData();
+                };
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pagination.appendChild(pageButton);
+            }
+
+            // Add 'Next' button
+            const nextButton = document.createElement('a');
+            nextButton.textContent = '>>';
+            if(currentPage === totalPages - 1){
+                nextButton.style.color = 'gray';
+                nextButton.disabled = true;
+                nextButton.style.pointerEvents = 'none';
+            }
+            nextButton.onclick = function() {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    fetchAllStudentData();
+                }
+            };
+            pagination.appendChild(nextButton);
+        }
+
 
         function fetchAllStudentData() {
             const apiUrl = `http://localhost:8081/api/list/person?role=ROLE_STUDENT&login=${currentSearchTerm}&page=${currentPage}`;
             const token = localStorage.getItem('token');
-            console.log("Fetching data from API:", apiUrl); 
-
             fetch(apiUrl, {
                 method: 'GET',
                 headers: {
@@ -114,9 +177,10 @@
                 return response.json();
             })
             .then(data => {
-                console.log("Data received:", data); 
-                allStudents = data.content; // Update allStudents to hold only the content array
-                displayStudentData(); // Removed the parameter as we are displaying based on currentPage
+                allStudents = data.content;
+                totalPages = data.totalPages;
+                displayStudentData();
+                displayPagination();
             })
             .catch(error => {
                 console.error('Error fetching student data:', error);
@@ -124,85 +188,38 @@
             });
         }
 
-
         function setupSearch() {
             const searchButton = document.getElementById('search-button');
             searchButton.addEventListener('click', function() {
                 const searchInput = document.getElementById('search-input');
-                currentSearchTerm = searchInput.value; // Update the current search term
+                currentSearchTerm = searchInput.value;
                 currentPage = 0; // Reset to the first page for a new search
                 fetchAllStudentData();
             });
         }
 
-        function displayStudentData() {
-            const pageStudents = allStudents;
-
-            const studentTable = document.getElementById('student-table');
-            studentTable.innerHTML = '<tr><th>First Name</th><th>Last Name</th><th>Middle Name</th><th>Email</th><th>Faculty</th></tr>';
-
-            pageStudents.forEach(student => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${student.firstName}</td>
-                    <td>${student.lastName}</td>
-                    <td>${student.middleName}</td>
-                    <td>${student.email}</td>
-                    <td>${student.speciality}</td>
-                `;
-                studentTable.appendChild(row);
-            });
-        }
-
-        function setupPagination() {
-            const paginationLinks = document.querySelectorAll('.pagination a');
-            paginationLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    console.log("I'm pressed!")
-                    let pressed = parseInt(link.innerHTML);
-                    currentPage = pressed;
-                    e.preventDefault();
-                    const page = this.dataset.page;
-                    handlePageChange(page);
+        (async function () {
+            try {
+                const response = await fetch('http://localhost:8081/api/person/v1/current', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json',
+                    },
                 });
-            });
-            
-            updatePaginationLinks(); // Added to set the initial active state
-        }
+                
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
     
-        function handlePageChange(page) {
-            const totalPages = Math.ceil(allStudents.length / studentsPerPage);
-
-            if (page === "next") {
-                currentPage += 1;
-                if (currentPage >= totalPages) {
-                    currentPage = totalPages - 1;
+                } else {
+                    console.error('Failed to fetch user details:', response.statusText);
                 }
-            } else if (page === "prev") {
-                currentPage -= 1;
-                if (currentPage < 0) {
-                    currentPage = 0;
-                }
-            } else {
-                currentPage = parseInt(page-1);
+            } catch (error) {
+                //console.error('Error during fetch operation:', error);
             }
+        })();
 
-            fetchAllStudentData();
-            updatePaginationLinks(); // Added to update active state of pagination links
-        }
-
-    
-        function updatePaginationLinks() {
-            const paginationLinks = document.querySelectorAll('.pagination a');
-            paginationLinks.forEach(link => {
-                link.classList.remove('active');
-            });
-            const activeLink = document.querySelector('.pagination a[data-page="' + currentPage + '"]');
-            if (activeLink) {
-                activeLink.classList.add('active');
-            }
-        }
-    
         document.querySelector('.logout button').addEventListener('click', function(event) {
             event.preventDefault();
             localStorage.removeItem('token');

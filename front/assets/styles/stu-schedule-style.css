@@ -20,12 +20,14 @@ body {
     display: flex;
     align-items: center;
     gap: 5px;
+    margin-left: 100px;
 }
 
 .admin-details {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    align-items: right;
 }
 
 .admin-info {
@@ -33,7 +35,7 @@ body {
     gap: 10px;
     justify-content: space-between;
     width: 400px;
-    align-items: center;
+    margin-left: 300px;
 }
 
 .admin-info p {

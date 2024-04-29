@@ -40,20 +40,24 @@
                 <div class="sidebar__wrapper">
                     <nav class="menu">
                         <a href="./admin-page.html">HOME PAGE</a>
-                        <a href="./student-page.html" >ALL STUDENTS</a>
+                        <a href="./student-page.html">ALL STUDENTS</a>
                         <a href="./teachers-page.html" id="selected">LIST OF TEACHERS</a>
                         <a href="./attendence.html">ATTENDANCE</a>
                         <a href="./courses-page.html">LIST OF COURSES</a>
                         <form action="" class="logout">
-                            <button >Log out</button>
+                            <button>Log out</button>
                         </form>
                     </nav>
                 </div>
                 <div class="main__content">
-                    <div class="page-name">
-                        <h1>Teacher LIST</h1>
+                    <div class="page-name"> 
+                        <h1>teacher LIST</h1> 
+                        <div class="search-bar"> 
+                            <input style="width: 300px;" type="text" placeholder="Search..." id="search-input"> 
+                            <button id="search-button">Search</button> 
+                        </div>
                     </div>
-                    <div class="table-container">
+                    <div class="table-containerr">
                         <table id="student-table">
                             <tr>
                                 <th>Full Name</th>
@@ -61,58 +65,156 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="button">
-                        <!-- <a class="btn" href="./add-student.html">Add</a> -->
-                    </div>
+                    <div id="pagination" style="margin-left: 230px;"></div>
                 </div>
             </div>
         </div>
     </main>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchStudentData();
+        let currentPage = 0;
+        let totalPages = 0;
+        let allStudents = [];
+        let currentSearchTerm = '';
+
+        document.addEventListener('DOMContentLoaded', function(e) {
+            e.preventDefault();
+            fetchAllStudentData();
+            setupSearch();
         });
 
-        function fetchStudentData() {
-            const apiUrl = 'http://localhost:8081/api/list/person?role=ROLE_TEACHER';
-            const token = localStorage.getItem('token');
+        function displayStudentData() {
+            const table = document.getElementById('student-table');
+            table.innerHTML = `
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                </tr>
+            `; // Reset table headers
 
-            fetch(apiUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    displayStudentData(data);
-                })
-                .catch(error => {
-                    console.error('Error fetching student data:', error);
-                    document.querySelector('.table-container').innerHTML = '<p>Error loading student data.</p>';
-                });
-        }
-
-        function displayStudentData(data) {
-            const studentTable = document.getElementById('student-table');
-
-            data.forEach(student => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${student.firstName}  ${student.lastName} ${student.middleName}</td>
-                    <td>${student.email}</td>
-                `;
-                studentTable.appendChild(row);
+            allStudents.forEach(student => {
+                const row = table.insertRow(-1);
+                row.insertCell(0).textContent = student.firstName + " " + student.lastName + " " + student.middleName;
+                row.insertCell(1).textContent = student.email;
+                row.style.fontSize = '15px';
             });
         }
 
-        // Обработчик события для кнопки "Log out"
+        function displayPagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = ''; // Clear existing buttons
+
+            // Add 'Previous' button
+            const prevButton = document.createElement('a');
+            prevButton.textContent = '<<';
+            if(currentPage === 0){
+                prevButton.style.color = 'gray';
+                prevButton.disabled = true;
+                prevButton.style.pointerEvents = 'none';
+            }
+            prevButton.onclick = function() {
+                if (currentPage > 0) {
+                    currentPage--;
+                    fetchAllStudentData();
+                }
+            };
+            pagination.appendChild(prevButton);
+
+            // Page number buttons
+            for (let i = 0; i < totalPages; i++) {
+                const pageButton = document.createElement('a');
+                pageButton.textContent = i + 1;
+                pageButton.onclick = function() {
+                    currentPage = i;
+                    fetchAllStudentData();
+                };
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pagination.appendChild(pageButton);
+            }
+
+            // Add 'Next' button
+            const nextButton = document.createElement('a');
+            nextButton.textContent = '>>';
+            if(currentPage === totalPages - 1){
+                nextButton.style.color = 'gray';
+                nextButton.disabled = true;
+                nextButton.style.pointerEvents = 'none';
+            }
+            nextButton.onclick = function() {
+                if (currentPage < totalPages - 1) {
+                    currentPage++;
+                    fetchAllStudentData();
+                }
+            };
+            pagination.appendChild(nextButton);
+        }
+
+
+        function fetchAllStudentData() {
+            const apiUrl = `http://localhost:8081/api/list/person?role=ROLE_TEACHER&login=${currentSearchTerm}&page=${currentPage}`;
+            const token = localStorage.getItem('token');
+            fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                allStudents = data.content;
+                totalPages = data.totalPages;
+                displayStudentData();
+                displayPagination();
+            })
+            .catch(error => {
+                console.error('Error fetching student data:', error);
+                document.querySelector('.table-containerr').innerHTML = '<p>Error loading student data.</p>';
+            });
+        }
+
+        function setupSearch() {
+            const searchButton = document.getElementById('search-button');
+            searchButton.addEventListener('click', function() {
+                const searchInput = document.getElementById('search-input');
+                currentSearchTerm = searchInput.value;
+                currentPage = 0; // Reset to the first page for a new search
+                fetchAllStudentData();
+            });
+        }
+
+        (async function () {
+            try {
+                const response = await fetch('http://localhost:8081/api/person/v1/current', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('name').textContent = `${userData.lastname || ''} ${userData.firstname || ''}`;
+    
+                } else {
+                    console.error('Failed to fetch user details:', response.statusText);
+                }
+            } catch (error) {
+                //console.error('Error during fetch operation:', error);
+            }
+        })();
+
         document.querySelector('.logout button').addEventListener('click', function(event) {
-            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
-            localStorage.removeItem('token'); // Удаляем токен из локального хранилища
-            window.location.href = '../../pages/login/login.html'; // Перенаправляем пользователя на страницу входа
+            event.preventDefault();
+            localStorage.removeItem('token');
+            window.location.href = '../../pages/login/login.html';
         });
     </script>
 </body>
