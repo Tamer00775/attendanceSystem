@@ -60,6 +60,7 @@ public class ReasonForAbsenceService {
         dto.setStatus(reasonForAbsence.getStatus());
         dto.setDateFrom(reasonForAbsence.getDate_from());
         dto.setDateTo(reasonForAbsence.getDate_to());
+        dto.setExtraDescription(reasonForAbsence.getExtraDescription());
         return dto;
     }
 }

@@ -31,6 +31,9 @@ public class ReasonForAbsence {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "extra_description")
+    private String extraDescription;
+
     @Column(name = "is_accepted")
     private Boolean isAccepted;
 

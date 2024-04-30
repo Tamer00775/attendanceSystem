@@ -3,9 +3,11 @@ package kz.sdu.project.utils;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 
 public class Constants {
+    public static final LocalDate systemDateStarts = LocalDate.of(2024, 1,22);
     public static final ZoneId zoneId = ZoneId.of("Asia/Oral");
     public static final String START_DATE_FOR_SEMESTER = "22.01.2024";
     public static final String DATE_FORMAT = "dd.MM.yyyy";

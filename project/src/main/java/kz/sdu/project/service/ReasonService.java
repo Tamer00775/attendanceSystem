@@ -17,6 +17,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static kz.sdu.project.utils.Constants.systemDateStarts;
 import static kz.sdu.project.utils.enums.ReasonStatus.*;
 
 @Service
@@ -55,6 +57,7 @@ public class ReasonService {
     }
 
     private ReasonForAbsence createReasonAbsence(ReasonDTO reasonDTO) {
+
         Person person = Objects.requireNonNull(SecurityUtils.getCurrentPerson());
         ReasonForAbsence reasonForAbsence = new ReasonForAbsence();
         String sectionName = reasonDTO.getSection().substring(0, reasonDTO.getSection().indexOf(' '));
@@ -66,6 +69,9 @@ public class ReasonService {
                         .stream()
                                 .filter(tea -> isTeacher(tea.getRolePerson()))
                                         .findAny();
+        if(!anyDateFits(reasonDTO,section,person)) {
+            throw new IllegalArgumentException("Your date not fits...");
+        }
         reasonForAbsence.setPerson_reason_for_absence(person);
         reasonForAbsence.setPerson_teacher_reason_for_absence(teacher.get());
         reasonForAbsence.setSection_reason_for_absence(section);
@@ -75,8 +81,36 @@ public class ReasonService {
         reasonForAbsence.setIsAccepted(false);
         reasonForAbsence.setDate_from(convertToLocalDate(reasonDTO.getFrom()));
         reasonForAbsence.setDate_to(convertToLocalDate(reasonDTO.getTo()));
+        reasonForAbsence.setExtraDescription(reasonDTO.getExtraDescription());
         log.info("Creating reason for absence for user: {}", person.getId());
         return reasonForAbsenceService.save(reasonForAbsence);
+    }
+
+    private boolean anyDateFits(ReasonDTO reasonDTO, Section section, Person person) {
+        LocalDate startDate = LocalDate.parse(reasonDTO.getFrom()),
+                endDate = LocalDate.parse(reasonDTO.getTo());
+        while (!startDate.isAfter(endDate)) {
+            if(wasLesson(startDate,person, section)) {
+                return true;
+            }
+            startDate = startDate.plusDays(7);
+        }
+        return false;
+    }
+
+    private boolean wasLesson(LocalDate startDate, Person student, Section section) {
+        Schedule schedule = section.getSchedule();
+        int currentWeek = getWeek(startDate,systemDateStarts),
+                dayOfWeek = startDate.getDayOfWeek().getValue();
+        if (!Objects.equals(schedule.getDayOfWeek(), dayOfWeek)) return false;
+        AttendanceRecord attendanceRecord = attendanceRecordService
+                .findByPersonIdAndScheduleIdAndCurrentWeek(
+                        student.getId(), schedule.getScheduleId(),currentWeek)
+                .orElse(null);
+        AttendanceInfo attendanceInfo = attendanceInfoService
+                .findByPersonIdAndSectionId(student.getId(), section.getSectionId())
+                .orElse(null);
+        return attendanceRecord != null && attendanceInfo != null;
     }
 
     private LocalDate convertToLocalDate(String from) {
@@ -125,18 +159,18 @@ public class ReasonService {
     }
 
     private void updateAttendance(LocalDate startDate, Person student, Section section) {
-
         Schedule schedule = section.getSchedule();
-        int currentWeek = getWeek(startDate, LocalDate.of(2024, 1,22));
+        int currentWeek = getWeek(startDate,systemDateStarts);
         System.out.println("currentWeek : " + currentWeek);
         AttendanceRecord attendanceRecord = attendanceRecordService
                 .findByPersonIdAndScheduleIdAndCurrentWeek(
                         student.getId(), schedule.getScheduleId(),currentWeek)
-                .orElse(null);
+                .orElseThrow();
         AttendanceInfo attendanceInfo = attendanceInfoService
                 .findByPersonIdAndSectionId(student.getId(), section.getSectionId())
-                .orElse(null);
-        if (attendanceRecord == null || attendanceInfo == null) return;
+                .orElseThrow();
+        if (attendanceRecord.getIs_with_reason()) return;
+
         int totalHours = attendanceRecord.getTotal_hours(),
                 presentHours = attendanceRecord.getTotal_present_hours();
 

@@ -21,4 +21,5 @@ public class ReasonForAbsenceDTO {
     private String status;
     private LocalDate dateFrom;
     private LocalDate dateTo;
+    private String extraDescription;
 }

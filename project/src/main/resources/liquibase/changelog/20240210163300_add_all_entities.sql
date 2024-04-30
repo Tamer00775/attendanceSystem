@@ -106,6 +106,7 @@ CREATE TABLE reason_for_absence (
                                     section_id INT,
                                     description TEXT,
                                     document TEXT,
+                                    extra_description VARCHAR(255),
                                     status VARCHAR(255),
                                     is_accepted BOOLEAN,
                                     date_from DATE NOT NULL,

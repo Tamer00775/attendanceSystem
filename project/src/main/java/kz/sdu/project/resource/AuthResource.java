@@ -40,7 +40,7 @@ public class AuthResource {
 
     @GetMapping("/message")
     public ResponseEntity<String> message() {
-        return ResponseEntity.ok().body("message");
+        return ResponseEntity.ok().body("HAPPY UNIVERSITY!");
     }
 
 }

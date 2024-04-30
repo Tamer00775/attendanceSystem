@@ -25,4 +25,8 @@ public class ReasonDTO {
     @NotBlank(message = "To date shouldn't be empty.")
     @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "To date must be in the format yyyy-MM-dd.")
     private String to;
+
+    private String extraDescription;
+
+
 }
