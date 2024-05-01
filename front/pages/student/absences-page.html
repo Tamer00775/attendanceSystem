@@ -22,10 +22,6 @@
                             <p id="name">PALENSHEEVA PALENSHE</p>
                         </div>
                         <div class="admin-info">
-                            <p>SPECIALITY NAME:</p> 
-                            <p id="name">COMPUTER SCIENCE</p>
-                        </div>
-                        <div class="admin-info">
                             <p>LAST LOGIN DATE:</p> 
                             <p id="login-date"></p>
                         </div>
@@ -158,6 +154,8 @@
         // Получаем ссылки на кнопки
         var button1 = document.getElementById('button1');
         var button2 = document.getElementById('button2');
+        const info = document.querySelector('#button1');
+        const edit = document.querySelector('#button2');
         
         document.getElementById('div2').style.display = 'none';
         document.getElementById('div1').style.display = 'block';
@@ -167,6 +165,8 @@
         button1.addEventListener('click', function() {
             document.getElementById('div1').style.display = 'block';
             document.getElementById('div2').style.display = 'none';
+            info.classList.add('select'); 
+            edit.classList.remove('select'); 
 
             console.log('Кнопка ABSENCES нажата');
         });
@@ -174,8 +174,9 @@
         button2.addEventListener('click', function() {
             document.getElementById('div2').style.display = 'block';
             document.getElementById('div1').style.display = 'none';
-
             console.log('Кнопка HISTORY нажата');
+            info.classList.remove('select'); 
+            edit.classList.add('select'); 
         });
     </script>
 
@@ -430,6 +431,8 @@ function renderData(data) {
         div2.style.borderRadius = '10px'; 
         div2.style.padding = '20px'; 
         div2.style.marginBottom = '20px'; 
+        div2.style.marginTop = '20px'; 
+        div2.style.marginLeft = '50px'; 
         div2.style.position = 'relative'; 
         div2.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)'; 
         div2.style.transition = 'all 0.3s ease'; 

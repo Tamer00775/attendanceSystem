@@ -26,12 +26,14 @@ body{
     height: 150px;
     width: 325px;
     cursor: pointer;
+    margin-left: -70px;
 }
 
 /* MAIN */
 .main__wrapper{
     display: flex;
     gap: 30px;
+    margin-left: -50px;
 }
 /* MENU */
 .menu {
